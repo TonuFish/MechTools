@@ -174,7 +174,8 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
 
-		var content = line.Length != delimeterIndex ? line[(delimeterIndex + 1)..] : [];
+		// TODO: Think harder about cutting whitespace off here - it might hurt text blobs, but it's very convenient...
+		var content = line.Length != delimeterIndex ? line[(delimeterIndex + 1)..].Trim() : [];
 
 		Span<char> section = (stackalloc char[64])[..delimeterIndex];
 		_ = line[..delimeterIndex].ToUpperInvariant(section);
