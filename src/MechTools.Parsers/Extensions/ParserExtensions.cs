@@ -14,6 +14,7 @@ public static class ParserExtensions
 
 	public static string AddEquipmentAtLocation(ReadOnlySpan<char> chars)
 	{
+		// TODO: Intern -Empty- string
 		return chars.ToString();
 	}
 
@@ -56,7 +57,13 @@ public static class ParserExtensions
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
-		else if (char.IsNumber(chars[0]))
+
+		//int count;
+		//string name;
+		//BattleMechEquipmentLocation location;
+		//int ammo;
+
+		if (char.IsNumber(chars[0]))
 		{
 			// NN Name, Location, Ammo:N+
 			// Format: `1 ISLBXAC10, Right Torso, Ammo:20`
@@ -64,7 +71,7 @@ public static class ParserExtensions
 		}
 
 		var delimeterIndex = chars.LastIndexOf([',', ' ']);
-		if (delimeterIndex == -1)
+		if (delimeterIndex == -1 || delimeterIndex == chars.Length - 2)
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}

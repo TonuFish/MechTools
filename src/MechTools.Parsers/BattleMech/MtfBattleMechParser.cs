@@ -430,9 +430,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 				reader.AdvanceTo(buffer.Start, buffer.End);
 			}
 		}
-		catch (Exception ex)
-		{
-			// TODO: Error handling.
+		// TODO: Error handling.
 		//catch (Exception ex)
 		//{
 		//}
