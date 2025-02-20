@@ -28,6 +28,7 @@ public interface IBattleMechBuilder
 	public void SetHistory(ReadOnlySpan<char> chars);
 	public void SetImageFile(ReadOnlySpan<char> chars);
 	public void SetJumpMp(ReadOnlySpan<char> chars);
+	public void SetLam(ReadOnlySpan<char> chars);
 	public void SetManufacturer(ReadOnlySpan<char> chars);
 	public void SetMass(ReadOnlySpan<char> chars);
 	public void SetModel(ReadOnlySpan<char> chars);

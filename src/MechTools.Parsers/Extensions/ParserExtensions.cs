@@ -197,6 +197,12 @@ public static class ParserExtensions
 		return jumpMp;
 	}
 
+	public static string SetLam(ReadOnlySpan<char> chars)
+	{
+		// TODO: Probably an enum - Only standard in existing files.
+		return chars.ToString();
+	}
+
 	public static string SetManufacturer(ReadOnlySpan<char> chars)
 	{
 		return chars.ToString();

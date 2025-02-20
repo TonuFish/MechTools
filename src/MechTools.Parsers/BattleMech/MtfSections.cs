@@ -21,6 +21,7 @@ internal static class MtfSections
 	public const string History = "HISTORY";
 	public const string ImageFile = "IMAGEFILE";
 	public const string JumpMp = "JUMP MP";
+	public const string Lam = "LAM";
 	public const string Manufacturer = "MANUFACTURER";
 	public const string Mass = "MASS";
 	public const string Model = "MODEL";

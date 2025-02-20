@@ -279,6 +279,9 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			case MtfSections.JumpMp:
 				_builder.SetJumpMp(content);
 				break;
+			case MtfSections.Lam:
+				_builder.SetLam(content);
+				break;
 			case MtfSections.Manufacturer:
 				_builder.SetManufacturer(content);
 				break;

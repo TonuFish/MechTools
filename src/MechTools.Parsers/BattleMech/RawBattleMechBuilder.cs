@@ -154,6 +154,12 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 		_lines.Add(value.ToString());
 	}
 
+	public void SetLam(ReadOnlySpan<char> chars)
+	{
+		var value = ParserExtensions.SetLam(chars);
+		_lines.Add(value);
+	}
+
 	public void SetManufacturer(ReadOnlySpan<char> chars)
 	{
 		var value = ParserExtensions.SetManufacturer(chars);
