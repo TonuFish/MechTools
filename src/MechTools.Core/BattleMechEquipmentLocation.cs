@@ -8,6 +8,7 @@ public enum BattleMechEquipmentLocation
 	LeftArm,
 	LeftLeg,
 	LeftTorso,
+	None,
 	RearLeftLeg,
 	RearRightLeg,
 	RightArm,

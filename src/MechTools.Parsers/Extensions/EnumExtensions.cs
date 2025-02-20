@@ -15,6 +15,7 @@ internal static class EnumExtensions
 
 		return upper switch
 		{
+			// TODO: Check if there's an entry for none.
 			"CL" => BattleMechEquipmentLocation.CentreLeg,
 			"CT" => BattleMechEquipmentLocation.CentreTorso,
 			"FLL" => BattleMechEquipmentLocation.LeftLeg,
@@ -73,6 +74,7 @@ internal static class EnumExtensions
 			MtfSections.EquipmentLocation.LeftArm => BattleMechEquipmentLocation.LeftArm,
 			MtfSections.EquipmentLocation.LeftLeg => BattleMechEquipmentLocation.LeftLeg,
 			MtfSections.EquipmentLocation.LeftTorso => BattleMechEquipmentLocation.LeftTorso,
+			MtfSections.EquipmentLocation.None => BattleMechEquipmentLocation.None, // TODO: ATAE-70 - Thonk.
 			MtfSections.EquipmentLocation.RearLeftLeg => BattleMechEquipmentLocation.RearLeftLeg,
 			MtfSections.EquipmentLocation.RearRightLeg => BattleMechEquipmentLocation.RearRightLeg,
 			MtfSections.EquipmentLocation.RightArm => BattleMechEquipmentLocation.RightArm,

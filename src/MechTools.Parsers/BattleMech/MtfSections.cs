@@ -74,6 +74,7 @@ internal static class MtfSections
 		public const string LeftArm = "LEFT ARM";
 		public const string LeftLeg = "LEFT LEG";
 		public const string LeftTorso = "LEFT TORSO";
+		public const string None = "NONE"; // TODO: This isn't really an equipment location... See "None" ATAE-70 arty
 		public const string RearLeftLeg = "REAR LEFT LEG";
 		public const string RearRightLeg = "REAR RIGHT LEG";
 		public const string RightArm = "RIGHT ARM";
