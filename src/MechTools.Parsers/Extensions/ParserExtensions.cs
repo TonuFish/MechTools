@@ -82,12 +82,14 @@ public static class ParserExtensions
 
 	public static int SetArmourAtLocation(ReadOnlySpan<char> chars)
 	{
+		// TODO: Ugh. This.
 		// TODO: This will fail on weirder values - See ` armor:[^\d]`
+		// Mix armour mech things.
 		// IS Hardened(Inner Sphere):12
 
 		if (!int.TryParse(chars, out var armour))
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			ThrowHelper.ImExcited();
 		}
 
 		return armour;

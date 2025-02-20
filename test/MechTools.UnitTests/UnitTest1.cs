@@ -14,6 +14,7 @@ public sealed class UnitTest1
 	public async Task Test1()
 	{
 		List<string> brokenList = [];
+		var excitedCount = 0;
 
 		foreach (var filePath in Directory.EnumerateFiles(@"..\..\..\..\..\scratch"))
 		{
@@ -27,6 +28,7 @@ public sealed class UnitTest1
 			catch (ImExcitedException)
 			{
 				// I don't care right now.
+				excitedCount++;
 			}
 			catch (Exception ex)
 			{

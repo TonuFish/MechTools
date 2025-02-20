@@ -432,7 +432,9 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		catch (Exception ex)
 		{
 			// TODO: Error handling.
-		}
+		//catch (Exception ex)
+		//{
+		//}
 		finally
 		{
 #pragma warning disable S6966 // Awaitable method should be used
