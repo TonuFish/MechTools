@@ -1,10 +1,12 @@
 ﻿using MechTools.Core;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace MechTools.Parsers.Extensions;
 
 // TODO: Move, these aren't extensions anymore.
 // TODO: Naming of all of these, for now they just match the caller.
+[SkipLocalsInit]
 public static class ParserExtensions
 {
 	public static string AddComment(ReadOnlySpan<char> chars)
@@ -49,35 +51,60 @@ public static class ParserExtensions
 		return (name.ToString(), location, slot, weapon.ToString());
 	}
 
-	public static (string Name, BattleMechEquipmentLocation Location) AddWeaponToWeaponList(ReadOnlySpan<char> chars)
+	public static (int? Count, string Name, BattleMechEquipmentLocation Location, int? Ammo) AddWeaponToWeaponList(
+		ReadOnlySpan<char> chars)
 	{
-		// TODO: Handle unusual weapon formats
-
 		if (chars.Length < 4)
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
 
-		//int count;
-		//string name;
-		//BattleMechEquipmentLocation location;
-		//int ammo;
+		const string stdDel = ", ";
+		const char nameDel = ' ';
 
-		if (char.IsNumber(chars[0]))
-		{
-			// NN Name, Location, Ammo:N+
-			// Format: `1 ISLBXAC10, Right Torso, Ammo:20`
-			ThrowHelper.ImExcited();
-		}
-
-		var delimeterIndex = chars.LastIndexOf([',', ' ']);
-		if (delimeterIndex == -1 || delimeterIndex == chars.Length - 2)
+		var lastBound = chars.LastIndexOf(stdDel, StringComparison.Ordinal);
+		if (lastBound == -1 || lastBound == chars.Length - stdDel.Length)
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
 
-		var location = chars[(delimeterIndex + 2)..].ToEquipmentLocation();
-		return (chars[..delimeterIndex].ToString(), location);
+		int? count;
+		string name;
+		BattleMechEquipmentLocation location;
+		int? ammo;
+
+		if (char.IsNumber(chars[0]))
+		{
+			var nameBound = chars.IndexOf(nameDel);
+			count = int.Parse(chars[..nameBound]);
+
+			if (char.ToUpperInvariant(chars[lastBound + stdDel.Length]) == 'A')
+			{
+				//! `1 ISLBXAC10, Right Torso, Ammo:20`
+				ammo = int.Parse(chars[(lastBound + stdDel.Length + "Ammo:".Length)..]);
+				var locationBound = chars[..lastBound].LastIndexOf(stdDel, StringComparison.Ordinal);
+				name = chars[(nameBound + 1)..locationBound].ToString();
+				location = chars[(locationBound + stdDel.Length)..lastBound].ToEquipmentLocation();
+			}
+			else
+			{
+				//! `1 ISC3SlaveUnit, Center Torso`
+				ammo = null;
+				name = chars[(nameBound + 1)..lastBound].ToString();
+				location = chars[(lastBound + stdDel.Length)..].ToEquipmentLocation();
+			}
+		}
+		else
+		{
+			// Simpler branch
+			//! `Medium Pulse Laser, Center Torso`
+			count = null;
+			name = chars[..lastBound].ToString();
+			location = chars[(lastBound + stdDel.Length)..].ToEquipmentLocation();
+			ammo = null;
+		}
+
+		return (count, name, location, ammo);
 	}
 
 	public static string SetArmourType(ReadOnlySpan<char> chars)
