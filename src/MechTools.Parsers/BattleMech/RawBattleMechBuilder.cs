@@ -55,8 +55,8 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetArmourAtLocation(ReadOnlySpan<char> chars, BattleMechArmourLocation location)
 	{
-		var value = ParserExtensions.SetArmourAtLocation(chars);
-		_lines.Add($"{location}:{value}");
+		(var name, var value) = ParserExtensions.SetArmourAtLocation(chars);
+		_lines.Add($"{location}{(name is not null ? $":{name}" : "")}:{value}");
 	}
 
 	public void SetArmourType(ReadOnlySpan<char> chars)

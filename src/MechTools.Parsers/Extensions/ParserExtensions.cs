@@ -114,19 +114,30 @@ public static class ParserExtensions
 		return chars.ToString();
 	}
 
-	public static int SetArmourAtLocation(ReadOnlySpan<char> chars)
+	public static (string? Name, int Value) SetArmourAtLocation(ReadOnlySpan<char> chars)
 	{
 		// TODO: Ugh. This.
 		// TODO: This will fail on weirder values - See ` armor:[^\d]`
 		// Mix armour mech things.
 		// IS Hardened(Inner Sphere):12
 
-		if (!int.TryParse(chars, out var armour))
+		const char del = ':';
+
+		string? name;
+		int value;
+		var bound = chars.LastIndexOf(del);
+		if (bound != -1)
 		{
-			ThrowHelper.ImExcited();
+			name = chars[..bound].ToString();
+			value = int.Parse(chars[(bound + 1)..]);
+		}
+		else
+		{
+			name = null;
+			value = int.Parse(chars);
 		}
 
-		return armour;
+		return (name, value);
 	}
 
 	public static int SetBaseChassisHeatSinks(ReadOnlySpan<char> chars)
