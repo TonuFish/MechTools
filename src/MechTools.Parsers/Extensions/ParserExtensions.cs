@@ -6,6 +6,7 @@ namespace MechTools.Parsers.Extensions;
 
 // TODO: Move, these aren't extensions anymore.
 // TODO: Naming of all of these, for now they just match the caller.
+// TODO: Still have to decide if this is throw||try.
 [SkipLocalsInit]
 public static class ParserExtensions
 {
@@ -16,6 +17,8 @@ public static class ParserExtensions
 
 	public static string AddEquipmentAtLocation(ReadOnlySpan<char> chars)
 	{
+		// TODO: Rear location ` (R)`
+		// TODO: Omnipod `(omnipod)`
 		// TODO: Intern -Empty- string
 		return chars.ToString();
 	}
@@ -54,6 +57,8 @@ public static class ParserExtensions
 	public static (int? Count, string Name, BattleMechEquipmentLocation Location, int? Ammo) AddWeaponToWeaponList(
 		ReadOnlySpan<char> chars)
 	{
+		// TODO: This needs a proper return object at this point, whether you're dropping ValueTuple or not.
+
 		if (chars.Length < 4)
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
@@ -72,6 +77,9 @@ public static class ParserExtensions
 		string name;
 		BattleMechEquipmentLocation location;
 		int? ammo;
+
+		// TODO: Rear location ` (R)`
+		// TODO: Omnipod `(omnipod)`
 
 		if (char.IsNumber(chars[0]))
 		{
@@ -96,7 +104,6 @@ public static class ParserExtensions
 		}
 		else
 		{
-			// Simpler branch
 			//! `Medium Pulse Laser, Center Torso`
 			count = null;
 			name = chars[..lastBound].ToString();
