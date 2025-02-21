@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 
 namespace MechTools.Parsers;
 
-[SkipLocalsInit]
 internal static class ThrowHelper
 {
 	[MethodImpl(MethodImplOptions.NoInlining)]

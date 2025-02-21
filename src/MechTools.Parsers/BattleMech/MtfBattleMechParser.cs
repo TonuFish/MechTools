@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace MechTools.Parsers.BattleMech;
 
-[SkipLocalsInit]
 public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 {
 	private enum Mode

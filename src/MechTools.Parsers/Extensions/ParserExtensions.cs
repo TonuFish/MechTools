@@ -1,13 +1,11 @@
 ﻿using MechTools.Core;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace MechTools.Parsers.Extensions;
 
 // TODO: Move, these aren't extensions anymore.
 // TODO: Naming of all of these, for now they just match the caller.
 // TODO: Still have to decide if this is throw||try.
-[SkipLocalsInit]
 public static class ParserExtensions
 {
 	public static string AddComment(ReadOnlySpan<char> chars)
