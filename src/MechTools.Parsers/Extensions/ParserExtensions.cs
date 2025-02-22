@@ -52,8 +52,8 @@ public static class ParserExtensions
 		return (name.ToString(), location, slot, weapon.ToString());
 	}
 
-	public static (int? Count, string Name, BattleMechEquipmentLocation Location, int? Ammo) AddWeaponToWeaponList(
-		ReadOnlySpan<char> chars)
+	public static (int? Count, string Name, BattleMechEquipmentLocation Location, bool IsRear, int? Ammo)
+		AddWeaponToWeaponList(ReadOnlySpan<char> chars)
 	{
 		// TODO: This needs a proper return object at this point, whether you're dropping ValueTuple or not.
 
@@ -73,11 +73,8 @@ public static class ParserExtensions
 
 		int? count;
 		string name;
-		BattleMechEquipmentLocation location;
+		ReadOnlySpan<char> locationSlice;
 		int? ammo;
-
-		// TODO: Rear location ` (R)`
-		// TODO: Omnipod `(omnipod)`
 
 		if (char.IsNumber(chars[0]))
 		{
@@ -90,14 +87,14 @@ public static class ParserExtensions
 				ammo = int.Parse(chars[(lastBound + stdDel.Length + "Ammo:".Length)..]);
 				var locationBound = chars[..lastBound].LastIndexOf(stdDel, StringComparison.Ordinal);
 				name = chars[(nameBound + 1)..locationBound].ToString();
-				location = chars[(locationBound + stdDel.Length)..lastBound].ToEquipmentLocation();
+				locationSlice = chars[(locationBound + stdDel.Length)..lastBound];
 			}
 			else
 			{
 				//! `1 ISC3SlaveUnit, Center Torso`
 				ammo = null;
 				name = chars[(nameBound + 1)..lastBound].ToString();
-				location = chars[(lastBound + stdDel.Length)..].ToEquipmentLocation();
+				locationSlice = chars[(lastBound + stdDel.Length)..];
 			}
 		}
 		else
@@ -105,11 +102,21 @@ public static class ParserExtensions
 			//! `Medium Pulse Laser, Center Torso`
 			count = null;
 			name = chars[..lastBound].ToString();
-			location = chars[(lastBound + stdDel.Length)..].ToEquipmentLocation();
+			locationSlice = chars[(lastBound + stdDel.Length)..];
 			ammo = null;
 		}
 
-		return (count, name, location, ammo);
+		var isRear = false;
+
+		const string rearMarker = " (R)";
+		if (locationSlice.EndsWith(rearMarker, StringComparison.OrdinalIgnoreCase))
+		{
+			isRear = true;
+			locationSlice = locationSlice[..^rearMarker.Length];
+		}
+
+		var location = locationSlice.ToEquipmentLocation();
+		return (count, name, location, isRear, ammo);
 	}
 
 	public static string SetArmourType(ReadOnlySpan<char> chars)

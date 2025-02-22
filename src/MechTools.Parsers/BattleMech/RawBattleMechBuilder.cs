@@ -36,10 +36,10 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void AddWeaponToWeaponList(ReadOnlySpan<char> chars)
 	{
-		(var count, var name, var location, var ammo) = ParserExtensions.AddWeaponToWeaponList(chars);
+		(var count, var name, var location, var isRear, var ammo) = ParserExtensions.AddWeaponToWeaponList(chars);
 		if (count.HasValue)
 		{
-			_lines.Add($"{count} {name}, {location}{(ammo.HasValue ? $", ammo:{ammo}" : "")}");
+			_lines.Add($"{count} {name}, {location}{(isRear ? " (R)" : "")}{(ammo.HasValue ? $", ammo:{ammo}" : "")}");
 		}
 		else
 		{
