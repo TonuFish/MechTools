@@ -170,7 +170,12 @@ public static class HelperExtensions
 
 	public static string SetChassis(ReadOnlySpan<char> chars)
 	{
-		return chars.ToString();
+		if (chars.IsWhiteSpace())
+		{
+			ThrowHelper.ExceptionToSpecifyLater();
+		}
+
+		return chars.Trim().ToString();
 	}
 
 	public static string SetClanName(ReadOnlySpan<char> chars)

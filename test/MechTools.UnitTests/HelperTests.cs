@@ -1,10 +1,37 @@
 ﻿using MechTools.Parsers.Extensions;
+using System;
 
 namespace MechTools.UnitTests;
 
 public sealed class HelperTests
 {
 	// TODO: Expand on all the random splattering here.
+
+	[Theory]
+	[InlineData("Crab", "Crab")]
+	[InlineData(" Crab ", "Crab")]
+	public void SetChassis_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = HelperExtensions.SetChassis(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData("")]
+	[InlineData("   ")]
+	public void SetChassis_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Func<object> func = () => HelperExtensions.SetChassis(input);
+
+		// Act
+		// Assert
+		_ = func.ShouldThrow<Exception>();
+	}
 
 	[Theory]
 	[InlineData("Rec Guide:ilClan #24", "Rec Guide", "ilClan #24")]
