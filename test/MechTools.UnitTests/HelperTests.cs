@@ -34,6 +34,32 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[InlineData("Stone Rhino", "Stone Rhino")]
+	[InlineData(" Mad Dog Mk IV ", "Mad Dog Mk IV")]
+	public void SetClanName_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = HelperExtensions.SetClanName(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData("")]
+	[InlineData("   ")]
+	public void SetClanName_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Func<object> func = () => HelperExtensions.SetClanName(input);
+
+		// Act
+		// Assert
+		_ = func.ShouldThrow<Exception>();
+	}
+
+	[Theory]
 	[InlineData("CRB-27b", "CRB-27b")]
 	[InlineData(" AGT-UA 'Ariel' ", "AGT-UA 'Ariel'")]
 	public void SetModel_ValidInput_Works(string input, string expected)
@@ -62,7 +88,7 @@ public sealed class HelperTests
 	[Theory]
 	[InlineData("Rec Guide:ilClan #24", "Rec Guide", "ilClan #24")]
 	[InlineData("Battle of Tukayyid", null, "Battle of Tukayyid")]
-	[InlineData(" TRO : 3067", "TRO", "3067 ")]
+	[InlineData(" TRO : 3067 ", "TRO", "3067")]
 	public void SetSource_ValidInput_Works(string input, string? expectedType, string expectedName)
 	{
 		// Arrange
