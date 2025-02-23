@@ -1,9 +1,6 @@
-﻿using MechTools.Core;
-using System;
+﻿namespace MechTools.Parsers;
 
-namespace MechTools.Parsers;
-
-public interface IBattleMechBuilder<TMech> : IBattleMechBuilder
+public interface IBattleMechBuilder<out TMech> : IBattleMechBuilder
 {
 	public TMech Build();
 }
