@@ -360,13 +360,18 @@ public static class HelperExtensions
 
 	public static (string? Type, string Name) SetSource(ReadOnlySpan<char> chars)
 	{
+		if (chars.IsWhiteSpace())
+		{
+			ThrowHelper.ExceptionToSpecifyLater();
+		}
+
 		// First ':' is type delimeter, remaining text assumed to be name.
 		// If a typeless name contains a colon... It shouldn't.
 
 		var del = chars.IndexOf(':');
 		return del != -1 && del != chars.Length - 1
 			? (chars[..del].Trim().ToString(), chars[(del + 1)..].Trim().ToString())
-			: (null, chars.ToString());
+			: (null, chars.Trim().ToString());
 	}
 
 	public static string SetStructure(ReadOnlySpan<char> chars)

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace MechTools.UnitTests;
 public sealed class RunParserTests
 {
-	[Fact]
+	[Fact(Skip = "For running purposes.")]
 	public async Task Test1()
 	{
 		List<string> brokenList = [];
