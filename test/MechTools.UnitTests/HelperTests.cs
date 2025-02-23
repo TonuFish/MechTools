@@ -34,6 +34,32 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[InlineData("CRB-27b", "CRB-27b")]
+	[InlineData(" AGT-UA 'Ariel' ", "AGT-UA 'Ariel'")]
+	public void SetModel_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = HelperExtensions.SetModel(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData("")]
+	[InlineData("   ")]
+	public void SetModel_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Func<object> func = () => HelperExtensions.SetModel(input);
+
+		// Act
+		// Assert
+		_ = func.ShouldThrow<Exception>();
+	}
+
+	[Theory]
 	[InlineData("Rec Guide:ilClan #24", "Rec Guide", "ilClan #24")]
 	[InlineData("Battle of Tukayyid", null, "Battle of Tukayyid")]
 	[InlineData("TRO : 3067", "TRO", "3067")]
