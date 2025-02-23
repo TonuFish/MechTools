@@ -241,8 +241,8 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetSource(ReadOnlySpan<char> chars)
 	{
-		var value = HelperExtensions.SetSource(chars);
-		_lines.Add(value);
+		(var type, var name) = HelperExtensions.SetSource(chars);
+		_lines.Add((type is not null ? $"{type}:" : "") + name);
 	}
 
 	public void SetStructure(ReadOnlySpan<char> chars)

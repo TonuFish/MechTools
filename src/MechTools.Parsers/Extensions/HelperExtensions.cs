@@ -348,10 +348,15 @@ public static class HelperExtensions
 		return num.ToRulesLevel();
 	}
 
-	public static string SetSource(ReadOnlySpan<char> chars)
+	public static (string? Type, string Name) SetSource(ReadOnlySpan<char> chars)
 	{
-		// TODO: Further parsing?
-		return chars.ToString();
+		// First ':' is type delimeter, remaining text assumed to be name.
+		// If a typeless name contains a colon... It shouldn't.
+
+		var del = chars.IndexOf(':');
+		return del != -1 && del != chars.Length - 1
+			? (chars[..del].Trim().ToString(), chars[(del + 1)..].Trim().ToString())
+			: (null, chars.ToString());
 	}
 
 	public static string SetStructure(ReadOnlySpan<char> chars)
