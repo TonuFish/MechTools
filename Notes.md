@@ -22,3 +22,7 @@ Spartan SPT-N3
 ### Inconsistent `Source`
 
 TODO
+
+### Bad Cockpit
+
+Arbiter ARB-001 SecurityMech
