@@ -84,6 +84,23 @@ internal static class EnumExtensions
 		};
 	}
 
+	public static Configuration ToConfiguration(this ReadOnlySpan<char> chars)
+	{
+		// TODO: String cleanup.
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"BIPED" => Configuration.Biped,
+			"LAM" => Configuration.LAM,
+			"QUAD" => Configuration.Quad,
+			"QUADVEE" => Configuration.QuadVee,
+			"TRIPOD" => Configuration.Tripod,
+			_ => ThrowHelper.ExceptionToSpecifyLater<Configuration>(),
+		};
+	}
+
 	public static RulesLevel ToRulesLevel(this int num)
 	{
 		return num switch

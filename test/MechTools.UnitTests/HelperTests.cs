@@ -1,4 +1,5 @@
-﻿using MechTools.Parsers.Extensions;
+﻿using MechTools.Core;
+using MechTools.Parsers.Extensions;
 using System;
 
 namespace MechTools.UnitTests;
@@ -26,6 +27,33 @@ public sealed class HelperTests
 	{
 		// Arrange
 		Func<object> func = () => HelperExtensions.SetChassis(input);
+
+		// Act
+		// Assert
+		_ = func.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData("QuadVee", Configuration.QuadVee, false)]
+	[InlineData(" Biped Omnimek ", Configuration.Biped, true)]
+	public void SetConfig_ValidInput_Works(string input, Configuration expectedConfiguration, bool expectedIsOmniMech)
+	{
+		// Arrange
+		// Act
+		(var configuration, var isOmniMech) = HelperExtensions.SetConfig(input);
+
+		// Assert
+		configuration.ShouldBe(expectedConfiguration);
+		isOmniMech.ShouldBe(expectedIsOmniMech);
+	}
+
+	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void SetConfig_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Func<object> func = () => HelperExtensions.SetConfig(input);
 
 		// Act
 		// Assert

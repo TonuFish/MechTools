@@ -194,10 +194,25 @@ public static class HelperExtensions
 		return chars.ToString();
 	}
 
-	public static string SetConfig(ReadOnlySpan<char> chars)
+	public static (Configuration Configuration, bool IsOmniMech) SetConfig(ReadOnlySpan<char> chars)
 	{
-		// TODO: Enum?
-		return chars.ToString();
+		if (chars.IsWhiteSpace())
+		{
+			ThrowHelper.ExceptionToSpecifyLater();
+		}
+
+		chars = chars.Trim();
+		const string omniMechMarker = " OmniMek";
+		ReadOnlySpan<char> configurationSlice = chars;
+		var isOmniMech = false;
+		if (chars.EndsWith(omniMechMarker, StringComparison.OrdinalIgnoreCase))
+		{
+			isOmniMech = true;
+			configurationSlice = chars[..^omniMechMarker.Length].TrimEnd();
+		}
+
+		var configuration = configurationSlice.ToConfiguration();
+		return (configuration, isOmniMech);
 	}
 
 	public static string SetDeployment(ReadOnlySpan<char> chars)

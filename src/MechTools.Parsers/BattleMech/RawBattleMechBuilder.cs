@@ -97,8 +97,8 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetConfig(ReadOnlySpan<char> chars)
 	{
-		var value = HelperExtensions.SetConfig(chars);
-		_lines.Add(value);
+		(var configuration, var isOmniMech) = HelperExtensions.SetConfig(chars);
+		_lines.Add($"{configuration}{(isOmniMech ? " OmniMek" : "")}");
 	}
 
 	public void SetDeployment(ReadOnlySpan<char> chars)
