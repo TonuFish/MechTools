@@ -238,6 +238,7 @@ dotnet_diagnostic.CA1825.severity = warning
 dotnet_diagnostic.CA1845.severity = warning
 dotnet_diagnostic.CA1855.severity = warning
 csharp_style_prefer_primary_constructors = false:suggestion
+csharp_prefer_system_threading_lock = true:warning
 
 [*.{cs,vb}]
 dotnet_style_coalesce_expression = true:suggestion

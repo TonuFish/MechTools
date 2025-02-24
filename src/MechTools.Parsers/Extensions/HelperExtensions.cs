@@ -203,7 +203,7 @@ public static class HelperExtensions
 
 		chars = chars.Trim();
 		const string omniMechMarker = " OmniMek";
-		ReadOnlySpan<char> configurationSlice = chars;
+		var configurationSlice = chars;
 		var isOmniMech = false;
 		if (chars.EndsWith(omniMechMarker, StringComparison.OrdinalIgnoreCase))
 		{
