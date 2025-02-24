@@ -314,14 +314,9 @@ public static class HelperExtensions
 		return mass;
 	}
 
-	public static string SetModel(ReadOnlySpan<char> chars)
-	{
-		if (chars.IsWhiteSpace())
+	public static string? SetModel(ReadOnlySpan<char> chars)
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		return chars.Trim().ToString();
+		return chars.IsWhiteSpace() ? null : chars.Trim().ToString();
 	}
 
 	public static string SetMotive(ReadOnlySpan<char> chars)

@@ -127,14 +127,14 @@ public sealed class HelperTests
 
 	[Theory]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void SetModel_InvalidInput_Throws(string input)
+	public void SetModel_EmptyInput_ReturnsNull(string input)
 	{
 		// Arrange
-		Func<object> func = () => HelperExtensions.SetModel(input);
-
 		// Act
+		var result = HelperExtensions.SetModel(input);
+
 		// Assert
-		_ = func.ShouldThrow<Exception>();
+		result.ShouldBeNull();
 	}
 
 	[Theory]

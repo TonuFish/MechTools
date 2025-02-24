@@ -182,7 +182,10 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetModel(ReadOnlySpan<char> chars)
 	{
 		var value = HelperExtensions.SetModel(chars);
+		if (value is not null)
+		{
 		_lines.Add(value);
+	}
 	}
 
 	public void SetMotive(ReadOnlySpan<char> chars)
