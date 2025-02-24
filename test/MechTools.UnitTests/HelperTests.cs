@@ -34,6 +34,32 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[InlineData(" Standard Cockpit ", Cockpit.StandardCockpit)]
+	[InlineData(" Small ", Cockpit.SmallCockpit)]
+	public void SetCockpit_ValidInput_Works(string input, Cockpit expected)
+	{
+		// Arrange
+		// Act
+		var result = HelperExtensions.SetCockpit(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void SetCockpit_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Func<object> func = () => HelperExtensions.SetCockpit(input);
+
+		// Act
+		// Assert
+		_ = func.ShouldThrow<Exception>();
+	}
+
+	[Theory]
 	[InlineData("QuadVee", Configuration.QuadVee, false)]
 	[InlineData(" Biped Omnimek ", Configuration.Biped, true)]
 	public void SetConfig_ValidInput_Works(string input, Configuration expectedConfiguration, bool expectedIsOmniMech)

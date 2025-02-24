@@ -84,6 +84,37 @@ internal static class EnumExtensions
 		};
 	}
 
+	public static Cockpit ToCockpit(this ReadOnlySpan<char> chars)
+	{
+		// TODO: String cleanup.
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"STANDARD COCKPIT" => Cockpit.StandardCockpit,
+			"SMALL COCKPIT" => Cockpit.SmallCockpit,
+			"COMMAND CONSOLE" => Cockpit.CommandConsole,
+			"TORSO-MOUNTED COCKPIT" => Cockpit.TorsoMountedCockpit,
+			"DUAL COCKPIT" => Cockpit.DualCockpit,
+			"INDUSTRIAL COCKPIT" => Cockpit.IndustrialCockpit,
+			"PRIMITIVE COCKPIT" => Cockpit.PrimitiveCockpit,
+			"PRIMITIVE INDUSTRIAL COCKPIT" => Cockpit.PrimitiveIndustrialCockpit,
+			"SUPERHEAVY COCKPIT" => Cockpit.SuperheavyCockpit,
+			"SUPERHEAVY TRIPOD COCKPIT" => Cockpit.SuperheavyTripodCockpit,
+			"TRIPOD COCKPIT" => Cockpit.TripodCockpit,
+			"INTERFACE COCKPIT" => Cockpit.InterfaceCockpit,
+			"VIRTUAL REALITY PILOTING POD" => Cockpit.VirtualRealityPilotingPod,
+			"QUADVEE COCKPIT" => Cockpit.QuadVeeCockpit,
+			"SUPERHEAVY INDUSTRIAL COCKPIT" => Cockpit.SuperheavyIndustrialCockpit,
+			"SUPERHEAVY COMMAND CONSOLE" => Cockpit.SuperheavyCommandConsole,
+			"SMALL COMMAND CONSOLE" => Cockpit.SmallCommandConsole,
+			"TRIPOD INDUSTRIAL COCKPIT" => Cockpit.TripodIndustrialCockpit,
+			"SUPERHEAVY TRIPOD INDUSTRIAL COCKPIT" => Cockpit.SuperheavyTripodIndustrialCockpit,
+			_ => ToShortCockpit(upper),
+		};
+	}
+
 	public static Configuration ToConfiguration(this ReadOnlySpan<char> chars)
 	{
 		// TODO: String cleanup.
@@ -131,6 +162,33 @@ internal static class EnumExtensions
 			"SNIPER" => Role.Sniper,
 			"STRIKER" => Role.Striker,
 			_ => ThrowHelper.ExceptionToSpecifyLater<Role>(),
+		};
+	}
+
+	private static Cockpit ToShortCockpit(this ReadOnlySpan<char> upper)
+	{
+		// already uppercase.
+		return upper switch
+		{
+			"STANDARD" => Cockpit.StandardCockpit,
+			"SMALL" => Cockpit.SmallCockpit,
+			"TORSO MOUNTED" => Cockpit.TorsoMountedCockpit,
+			"DUAL" => Cockpit.DualCockpit,
+			"INDUSTRIAL" => Cockpit.IndustrialCockpit,
+			"PRIMITIVE" => Cockpit.PrimitiveCockpit,
+			"PRIMITIVE INDUSTRIAL" => Cockpit.PrimitiveIndustrialCockpit,
+			"SUPERHEAVY" => Cockpit.SuperheavyCockpit,
+			"SUPERHEAVY TRIPOD" => Cockpit.SuperheavyTripodCockpit,
+			"TRIPOD" => Cockpit.TripodCockpit,
+			"INTERFACE" => Cockpit.InterfaceCockpit,
+			"VRPP" => Cockpit.VirtualRealityPilotingPod,
+			"QUADVEE" => Cockpit.QuadVeeCockpit,
+			"SUPERHEAVY INDUSTRIAL" => Cockpit.SuperheavyIndustrialCockpit,
+			"SUPERHEAVY COMMAND" => Cockpit.SuperheavyCommandConsole,
+			"SMALL COMMAND" => Cockpit.SmallCommandConsole,
+			"TRIPOD INDUSTRIAL" => Cockpit.TripodIndustrialCockpit,
+			"SUPERHEAVY TRIPOD INDUSTRIAL" => Cockpit.SuperheavyTripodIndustrialCockpit,
+			_ => ThrowHelper.ExceptionToSpecifyLater<Cockpit>(),
 		};
 	}
 }

@@ -92,7 +92,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetCockpit(ReadOnlySpan<char> chars)
 	{
 		var value = HelperExtensions.SetCockpit(chars);
-		_lines.Add(value);
+		_lines.Add(value.ToString());
 	}
 
 	public void SetConfig(ReadOnlySpan<char> chars)

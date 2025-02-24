@@ -188,10 +188,9 @@ public static class HelperExtensions
 		return chars.Trim().ToString();
 	}
 
-	public static string SetCockpit(ReadOnlySpan<char> chars)
+	public static Cockpit SetCockpit(ReadOnlySpan<char> chars)
 	{
-		// TODO: Enum?
-		return chars.ToString();
+		return chars.Trim().ToCockpit();
 	}
 
 	public static (Configuration Configuration, bool IsOmniMech) SetConfig(ReadOnlySpan<char> chars)
