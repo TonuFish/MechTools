@@ -21,8 +21,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData("")]
-	[InlineData("   ")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void SetChassis_InvalidInput_Throws(string input)
 	{
 		// Arrange
@@ -47,8 +46,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData("")]
-	[InlineData("   ")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void SetClanName_InvalidInput_Throws(string input)
 	{
 		// Arrange
@@ -73,8 +71,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData("")]
-	[InlineData("   ")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void SetModel_InvalidInput_Throws(string input)
 	{
 		// Arrange
@@ -101,8 +98,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData("")]
-	[InlineData("   ")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void SetSource_InvalidInput_Throws(string input)
 	{
 		// Arrange
