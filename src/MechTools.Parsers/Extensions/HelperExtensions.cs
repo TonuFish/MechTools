@@ -14,22 +14,30 @@ public static class HelperExtensions
 		return chars.ToString();
 	}
 
-	public static string AddEquipmentAtLocation(ReadOnlySpan<char> chars)
+	public static (string Name, bool IsOmniPod, bool IsRear, bool IsTurret) AddEquipmentAtLocation(
+		ReadOnlySpan<char> chars)
 	{
+		// TODO: Real return object.
+
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
-		if (MtfValues.Lookup.CommonEquipmentValues.TryGetValue(chars.Trim(), out var cachedValue))
+		var trimmedChars = chars.Trim();
+		if (MtfValues.Lookup.CommonEquipmentValues.TryGetValue(trimmedChars, out var cachedValue))
 		{
-			return cachedValue;
+			return (cachedValue, false, false, false);
 		}
 
-		// Let's be order independent.
-		// R ; T ; omni ; R omni ; T omni
-		// TODO: Rear location ` (R)`
-		// TODO: Turret ` (T)`
-		// TODO: Omnipod ` (omnipod)`
+		const string omnipodDel = " (OMNIPOD)";
+		const string rearDel = " (R)";
+		const string turretDel = " (T)";
 
-		return chars.ToString();
+		var omnipodBound = trimmedChars.LastIndexOf(omnipodDel, StringComparison.OrdinalIgnoreCase);
+		var rearBound = trimmedChars.LastIndexOf(rearDel, StringComparison.OrdinalIgnoreCase);
+		var turretBound = trimmedChars.LastIndexOf(turretDel, StringComparison.OrdinalIgnoreCase);
+
+		return rearBound == -1 || turretBound == -1 || omnipodBound == -1
+			? (chars.ToString(), false, false, false)
+			: AddAnnotatedEquipmentAtLocation(trimmedChars, omnipodBound, rearBound, turretBound);
 	}
 
 	public static string AddQuirk(ReadOnlySpan<char> chars)
@@ -119,11 +127,11 @@ public static class HelperExtensions
 
 		var isRear = false;
 
-		const string rearMarker = " (R)";
-		if (locationSlice.EndsWith(rearMarker, StringComparison.OrdinalIgnoreCase))
+		const string rearDel = " (R)";
+		if (locationSlice.EndsWith(rearDel, StringComparison.OrdinalIgnoreCase))
 		{
 			isRear = true;
-			locationSlice = locationSlice[..^rearMarker.Length];
+			locationSlice = locationSlice[..^rearDel.Length];
 		}
 
 		var location = locationSlice.ToEquipmentLocation();
@@ -205,20 +213,20 @@ public static class HelperExtensions
 
 		chars = chars.Trim();
 
-		const string omniMechMarker = " OmniMech";
-		const string omniMekMarker = " OmniMek";
+		const string omniMechDel = " OmniMech";
+		const string omniMekDel = " OmniMek";
 
 		var configurationSlice = chars;
 		var isOmniMech = false;
-		if (chars.EndsWith(omniMechMarker, StringComparison.OrdinalIgnoreCase))
+		if (chars.EndsWith(omniMechDel, StringComparison.OrdinalIgnoreCase))
 		{
 			isOmniMech = true;
-			configurationSlice = chars[..^omniMechMarker.Length].TrimEnd();
+			configurationSlice = chars[..^omniMechDel.Length].TrimEnd();
 		}
-		else if (chars.EndsWith(omniMekMarker, StringComparison.OrdinalIgnoreCase))
+		else if (chars.EndsWith(omniMekDel, StringComparison.OrdinalIgnoreCase))
 		{
 			isOmniMech = true;
-			configurationSlice = chars[..^omniMekMarker.Length].TrimEnd();
+			configurationSlice = chars[..^omniMekDel.Length].TrimEnd();
 		}
 
 		var configuration = configurationSlice.ToConfiguration();
@@ -456,5 +464,22 @@ public static class HelperExtensions
 		}
 
 		return count;
+	}
+
+	private static (string Name, bool IsOmniPod, bool IsRear, bool IsTurret) AddAnnotatedEquipmentAtLocation(
+		ReadOnlySpan<char> trimmedChars,
+		int omnipodBound,
+		int rearBound,
+		int turretBound)
+	{
+		// TODO: Come back to this when you feel like it.
+
+		// Let's be order independent.
+		// R ; T ; omni ; R omni ; T omni
+		// TODO: Omnipod ` (omnipod)`
+		// TODO: Rear location ` (R)`
+		// TODO: Turret ` (T)`
+
+		throw new NotImplementedException();
 	}
 }

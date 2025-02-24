@@ -17,8 +17,8 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void AddEquipmentAtLocation(ReadOnlySpan<char> chars, BattleMechEquipmentLocation location)
 	{
-		var value = HelperExtensions.AddEquipmentAtLocation(chars);
-		_lines.Add(value);
+		(var name, var isOmniPod, var isRear, var isTurret) = HelperExtensions.AddEquipmentAtLocation(chars);
+		_lines.Add($"{name}{(isRear ? " (R)" : "")}{(isTurret ? " (T)" : "")}{(isOmniPod ? " (OMNIPOD)}" : "")}");
 	}
 
 	public void AddQuirk(ReadOnlySpan<char> chars)

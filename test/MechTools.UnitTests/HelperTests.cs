@@ -11,18 +11,22 @@ public sealed class HelperTests
 
 	#region Add Equipment
 
-	[Theory]
-	[InlineData(" -empty- ", "-Empty-")]
-	public void AddEquipmentAtLocation_CachedInput_ReturnsCachedValue(string input, string cacheKey)
+	[Fact]
+	public void AddEquipmentAtLocation_CachedInput_ReturnsCachedValue()
 	{
 		// Arrange
-		_ = MtfValues.Lookup.CommonEquipmentValues.TryGetValue(cacheKey, out var expected);
+		const string input = " -empty- ";
+		const string cacheKey= "-Empty-";
+		_ = MtfValues.Lookup.CommonEquipmentValues.TryGetValue(cacheKey, out var cachedValue);
 
 		// Act
-		var result = HelperExtensions.AddEquipmentAtLocation(input);
+		(var name, var isOmniPod, var isRear, var isTurret) = HelperExtensions.AddEquipmentAtLocation(input);
 
 		// Assert
-		result.ShouldBeSameAs(expected);
+		name.ShouldBeSameAs(cachedValue);
+		isOmniPod.ShouldBeFalse();
+		isRear.ShouldBeFalse();
+		isTurret.ShouldBeFalse();
 	}
 
 	#endregion Add Equipment
