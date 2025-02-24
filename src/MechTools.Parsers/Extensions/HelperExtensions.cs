@@ -206,13 +206,21 @@ public static class HelperExtensions
 		}
 
 		chars = chars.Trim();
-		const string omniMechMarker = " OmniMek";
+
+		const string omniMechMarker = " OmniMech";
+		const string omniMekMarker = " OmniMek";
+
 		var configurationSlice = chars;
 		var isOmniMech = false;
 		if (chars.EndsWith(omniMechMarker, StringComparison.OrdinalIgnoreCase))
 		{
 			isOmniMech = true;
 			configurationSlice = chars[..^omniMechMarker.Length].TrimEnd();
+		}
+		else if (chars.EndsWith(omniMekMarker, StringComparison.OrdinalIgnoreCase))
+		{
+			isOmniMech = true;
+			configurationSlice = chars[..^omniMekMarker.Length].TrimEnd();
 		}
 
 		var configuration = configurationSlice.ToConfiguration();

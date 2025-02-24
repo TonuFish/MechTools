@@ -61,6 +61,7 @@ public sealed class HelperTests
 
 	[Theory]
 	[InlineData(" QuadVee ", Configuration.QuadVee, false)]
+	[InlineData(" Biped Omnimech ", Configuration.Biped, true)]
 	[InlineData(" Biped Omnimek ", Configuration.Biped, true)]
 	public void SetConfig_ValidInput_Works(string input, Configuration expectedConfiguration, bool expectedIsOmniMech)
 	{
