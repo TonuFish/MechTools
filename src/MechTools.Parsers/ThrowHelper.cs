@@ -27,6 +27,16 @@ internal static class ThrowHelper
 	{
 		throw new ImExcitedException();
 	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	[DebuggerHidden]
+	public static void ThrowIfEmptyOrWhiteSpace(ReadOnlySpan<char> chars)
+	{
+		if (chars.IsWhiteSpace())
+		{
+			ExceptionToSpecifyLater();
+		}
+	}
 }
 
 /// <summary>

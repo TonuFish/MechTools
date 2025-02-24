@@ -16,6 +16,8 @@ public static class HelperExtensions
 
 	public static string AddEquipmentAtLocation(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+
 		// TODO: Rear location ` (R)`
 		// TODO: Omnipod `(omnipod)`
 		// TODO: Intern -Empty- string
@@ -170,40 +172,28 @@ public static class HelperExtensions
 
 	public static string SetChassis(ReadOnlySpan<char> chars)
 	{
-		if (chars.IsWhiteSpace())
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		return chars.Trim().ToString();
 	}
 
 	public static string SetClanName(ReadOnlySpan<char> chars)
 	{
-		if (chars.IsWhiteSpace())
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		return chars.Trim().ToString();
 	}
 
 	public static Cockpit SetCockpit(ReadOnlySpan<char> chars)
 	{
-		if (chars.IsWhiteSpace())
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		return chars.Trim().ToCockpit();
 	}
 
 	public static (Configuration Configuration, bool IsOmniMech) SetConfig(ReadOnlySpan<char> chars)
 	{
-		if (chars.IsWhiteSpace())
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		chars = chars.Trim();
 
@@ -386,10 +376,7 @@ public static class HelperExtensions
 
 	public static (string? Type, string Name) SetSource(ReadOnlySpan<char> chars)
 	{
-		if (chars.IsWhiteSpace())
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		// First ':' is type delimeter, remaining text assumed to be name.
 		// If a typeless name contains a colon... It shouldn't.
