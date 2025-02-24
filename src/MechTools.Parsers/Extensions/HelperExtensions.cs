@@ -190,6 +190,11 @@ public static class HelperExtensions
 
 	public static Cockpit SetCockpit(ReadOnlySpan<char> chars)
 	{
+		if (chars.IsWhiteSpace())
+		{
+			ThrowHelper.ExceptionToSpecifyLater();
+		}
+
 		return chars.Trim().ToCockpit();
 	}
 
