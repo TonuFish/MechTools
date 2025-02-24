@@ -9,7 +9,7 @@ public sealed class HelperTests
 	// TODO: Expand on all the random splattering here.
 
 	[Theory]
-	[InlineData("Crab", "Crab")]
+	[InlineData(" Crab ", "Crab")]
 	[InlineData(" Man O' War ", "Man O' War")]
 	public void SetChassis_ValidInput_Works(string input, string expected)
 	{
@@ -60,7 +60,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData("QuadVee", Configuration.QuadVee, false)]
+	[InlineData(" QuadVee ", Configuration.QuadVee, false)]
 	[InlineData(" Biped Omnimek ", Configuration.Biped, true)]
 	public void SetConfig_ValidInput_Works(string input, Configuration expectedConfiguration, bool expectedIsOmniMech)
 	{
@@ -87,7 +87,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData("Stone Rhino", "Stone Rhino")]
+	[InlineData(" Stone Rhino ", "Stone Rhino")]
 	[InlineData(" Mad Dog Mk IV ", "Mad Dog Mk IV")]
 	public void SetClanName_ValidInput_Works(string input, string expected)
 	{
@@ -112,7 +112,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData("CRB-27b", "CRB-27b")]
+	[InlineData(" CRB-27b ", "CRB-27b")]
 	[InlineData(" AGT-UA 'Ariel' ", "AGT-UA 'Ariel'")]
 	public void SetModel_ValidInput_Works(string input, string expected)
 	{
@@ -137,8 +137,8 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData("Rec Guide:ilClan #24", "Rec Guide", "ilClan #24")]
-	[InlineData("Battle of Tukayyid", null, "Battle of Tukayyid")]
+	[InlineData(" Rec Guide:ilClan #24 ", "Rec Guide", "ilClan #24")]
+	[InlineData(" Battle of Tukayyid ", null, "Battle of Tukayyid")]
 	[InlineData(" TRO : 3067 ", "TRO", "3067")]
 	public void SetSource_ValidInput_Works(string input, string? expectedType, string expectedName)
 	{
