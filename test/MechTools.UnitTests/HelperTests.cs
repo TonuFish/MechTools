@@ -1,4 +1,5 @@
 ﻿using MechTools.Core;
+using MechTools.Parsers.BattleMech;
 using MechTools.Parsers.Extensions;
 using System;
 
@@ -7,6 +8,24 @@ namespace MechTools.UnitTests;
 public sealed class HelperTests
 {
 	// TODO: Expand on all the random splattering here.
+
+	#region Add Equipment
+
+	[Theory]
+	[InlineData(" -empty- ", "-Empty-")]
+	public void AddEquipmentAtLocation_CachedInput_ReturnsCachedValue(string input, string cacheKey)
+	{
+		// Arrange
+		_ = MtfValues.Lookup.CommonEquipmentValues.TryGetValue(cacheKey, out var expected);
+
+		// Act
+		var result = HelperExtensions.AddEquipmentAtLocation(input);
+
+		// Assert
+		result.ShouldBeSameAs(expected);
+	}
+
+	#endregion Add Equipment
 
 	[Theory]
 	[InlineData(" Crab ", "Crab")]

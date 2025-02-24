@@ -1,6 +1,6 @@
 ﻿using MechTools.Core;
+using MechTools.Parsers.BattleMech;
 using System;
-using System.Collections.Generic;
 
 namespace MechTools.Parsers.Extensions;
 
@@ -18,9 +18,17 @@ public static class HelperExtensions
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
+		if (MtfValues.Lookup.CommonEquipmentValues.TryGetValue(chars.Trim(), out var cachedValue))
+		{
+			return cachedValue;
+		}
+
+		// Let's be order independent.
+		// R ; T ; omni ; R omni ; T omni
 		// TODO: Rear location ` (R)`
-		// TODO: Omnipod `(omnipod)`
-		// TODO: Intern -Empty- string
+		// TODO: Turret ` (T)`
+		// TODO: Omnipod ` (omnipod)`
+
 		return chars.ToString();
 	}
 
@@ -305,7 +313,7 @@ public static class HelperExtensions
 	}
 
 	public static string? SetModel(ReadOnlySpan<char> chars)
-		{
+	{
 		return chars.IsWhiteSpace() ? null : chars.Trim().ToString();
 	}
 
