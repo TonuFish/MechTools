@@ -240,7 +240,7 @@ public static class HelperExtensions
 
 	public static string SetEjection(ReadOnlySpan<char> chars)
 	{
-		// TODO: Enum? Only one value in files: `Full Head Ejection System`
+		// TODO: bool - `Full Head Ejection System` IC or not.
 		return chars.ToString();
 	}
 
