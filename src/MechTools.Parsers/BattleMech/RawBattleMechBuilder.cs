@@ -30,13 +30,13 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void AddWeaponQuirk(ReadOnlySpan<char> chars)
 	{
 		// TODO: Further parsing
-		(var name, var location, var slot, var weapon) = HelperExtensions.AddWeaponQuirk(chars);
+		(var location, var name, var slot, var weapon) = HelperExtensions.AddWeaponQuirk(chars);
 		_lines.Add($"{name}:{location}:{slot}:{weapon}");
 	}
 
 	public void AddWeaponToWeaponList(ReadOnlySpan<char> chars)
 	{
-		(var count, var name, var location, var isRear, var ammo) = HelperExtensions.AddWeaponToWeaponList(chars);
+		(var ammo, var count, var location, var name, var isRear) = HelperExtensions.AddWeaponToWeaponList(chars);
 		if (count.HasValue)
 		{
 			_lines.Add($"{count} {name}, {location}{(isRear ? " (R)" : "")}{(ammo.HasValue ? $", ammo:{ammo}" : "")}");

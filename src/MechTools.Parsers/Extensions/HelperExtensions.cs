@@ -14,8 +14,7 @@ public static class HelperExtensions
 		return chars.ToString();
 	}
 
-	public static (string Name, bool IsOmniPod, bool IsRear, bool IsTurret) AddEquipmentAtLocation(
-		ReadOnlySpan<char> chars)
+	public static EquipmentData AddEquipmentAtLocation(ReadOnlySpan<char> chars)
 	{
 		// TODO: Real return object.
 
@@ -24,7 +23,7 @@ public static class HelperExtensions
 		var trimmedChars = chars.Trim();
 		if (MtfValues.Lookup.CommonEquipmentValues.TryGetValue(trimmedChars, out var cachedValue))
 		{
-			return (cachedValue, false, false, false);
+			return new(cachedValue, false, false, false);
 		}
 
 		const string omnipodDel = " (OMNIPOD)";
@@ -36,7 +35,7 @@ public static class HelperExtensions
 		var turretBound = trimmedChars.LastIndexOf(turretDel, StringComparison.OrdinalIgnoreCase);
 
 		return rearBound == -1 || turretBound == -1 || omnipodBound == -1
-			? (chars.ToString(), false, false, false)
+			? new(chars.ToString(), false, false, false)
 			: AddAnnotatedEquipmentAtLocation(trimmedChars, omnipodBound, rearBound, turretBound);
 	}
 
@@ -45,7 +44,7 @@ public static class HelperExtensions
 		return chars.ToString();
 	}
 
-	public static (string Name, BattleMechEquipmentLocation Location, int Slot, string Weapon) AddWeaponQuirk(
+	public static WeaponQuirkData AddWeaponQuirk(
 		ReadOnlySpan<char> chars)
 	{
 		if (chars.Length < 10
@@ -68,11 +67,10 @@ public static class HelperExtensions
 		_ = enumerator.MoveNext();
 		var weapon = chars[enumerator.Current];
 
-		return (name.ToString(), location, slot, weapon.ToString());
+		return new(location, name.ToString(), slot, weapon.ToString());
 	}
 
-	public static (int? Count, string Name, BattleMechEquipmentLocation Location, bool IsRear, int? Ammo)
-		AddWeaponToWeaponList(ReadOnlySpan<char> chars)
+	public static WeaponListData AddWeaponToWeaponList(ReadOnlySpan<char> chars)
 	{
 		// TODO: This needs a proper return object at this point, whether you're dropping ValueTuple or not.
 
@@ -135,7 +133,7 @@ public static class HelperExtensions
 		}
 
 		var location = locationSlice.ToEquipmentLocation();
-		return (count, name, location, isRear, ammo);
+		return new(ammo, count, location, name, isRear);
 	}
 
 	public static string SetArmourType(ReadOnlySpan<char> chars)
@@ -207,7 +205,7 @@ public static class HelperExtensions
 		return chars.Trim().ToCockpit();
 	}
 
-	public static (Configuration Configuration, bool IsOmniMech) SetConfig(ReadOnlySpan<char> chars)
+	public static ConfigurationData SetConfig(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
@@ -230,7 +228,7 @@ public static class HelperExtensions
 		}
 
 		var configuration = configurationSlice.ToConfiguration();
-		return (configuration, isOmniMech);
+		return new(configuration, isOmniMech);
 	}
 
 	public static string SetDeployment(ReadOnlySpan<char> chars)
@@ -466,7 +464,7 @@ public static class HelperExtensions
 		return count;
 	}
 
-	private static (string Name, bool IsOmniPod, bool IsRear, bool IsTurret) AddAnnotatedEquipmentAtLocation(
+	private static EquipmentData AddAnnotatedEquipmentAtLocation(
 		ReadOnlySpan<char> trimmedChars,
 		int omnipodBound,
 		int rearBound,

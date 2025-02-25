@@ -41,11 +41,11 @@ public sealed class HelperTests
 	public void SetChassis_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Func<object> func = () => HelperExtensions.SetChassis(input);
+		Action action = () => HelperExtensions.SetChassis(input);
 
 		// Act
 		// Assert
-		_ = func.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<Exception>();
 	}
 
 	[Theory]
@@ -67,11 +67,11 @@ public sealed class HelperTests
 	public void SetCockpit_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Func<object> func = () => HelperExtensions.SetCockpit(input);
+		Action action = () => HelperExtensions.SetCockpit(input);
 
 		// Act
 		// Assert
-		_ = func.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<Exception>();
 	}
 
 	[Theory]
@@ -95,11 +95,11 @@ public sealed class HelperTests
 	public void SetConfig_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Func<object> func = () => HelperExtensions.SetConfig(input);
+		Action action = () => HelperExtensions.SetConfig(input);
 
 		// Act
 		// Assert
-		_ = func.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<Exception>();
 	}
 
 	[Theory]
@@ -120,11 +120,11 @@ public sealed class HelperTests
 	public void SetClanName_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Func<object> func = () => HelperExtensions.SetClanName(input);
+		Action action = () => HelperExtensions.SetClanName(input);
 
 		// Act
 		// Assert
-		_ = func.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<Exception>();
 	}
 
 	[Theory]
@@ -172,11 +172,11 @@ public sealed class HelperTests
 	public void SetSource_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Func<object> func = () => HelperExtensions.SetSource(input);
+		Action action = () => HelperExtensions.SetSource(input);
 
 		// Act
 		// Assert
-		_ = func.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<Exception>();
 	}
 
 	#region Add Equipment
