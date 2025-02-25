@@ -211,22 +211,22 @@ public static class HelperExtensions
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
-		chars = chars.Trim();
+		var trimmedChars = chars.Trim();
 
 		const string omniMechDel = " OmniMech";
 		const string omniMekDel = " OmniMek";
 
-		var configurationSlice = chars;
+		var configurationSlice = trimmedChars;
 		var isOmniMech = false;
-		if (chars.EndsWith(omniMechDel, StringComparison.OrdinalIgnoreCase))
+		if (trimmedChars.EndsWith(omniMechDel, StringComparison.OrdinalIgnoreCase))
 		{
 			isOmniMech = true;
-			configurationSlice = chars[..^omniMechDel.Length].TrimEnd();
+			configurationSlice = trimmedChars[..^omniMechDel.Length].TrimEnd();
 		}
-		else if (chars.EndsWith(omniMekDel, StringComparison.OrdinalIgnoreCase))
+		else if (trimmedChars.EndsWith(omniMekDel, StringComparison.OrdinalIgnoreCase))
 		{
 			isOmniMech = true;
-			configurationSlice = chars[..^omniMekDel.Length].TrimEnd();
+			configurationSlice = trimmedChars[..^omniMekDel.Length].TrimEnd();
 		}
 
 		var configuration = configurationSlice.ToConfiguration();

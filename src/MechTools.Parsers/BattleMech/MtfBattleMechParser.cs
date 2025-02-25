@@ -167,7 +167,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 	private void ProcessDefaultLine(ReadOnlySpan<char> line)
 	{
 		var delimeterIndex = line.IndexOf(':');
-		if (delimeterIndex is -1 or > 64)
+		if ((uint)delimeterIndex > 64)
 		{
 			// TODO: `Antlion LK-3D` - Why on earth do we randomly have markup here?
 			ThrowHelper.ExceptionToSpecifyLater();
