@@ -9,27 +9,19 @@ public sealed class HelperTests
 {
 	// TODO: Expand on all the random splattering here.
 
-	#region Add Equipment
-
-	[Fact]
-	public void AddEquipmentAtLocation_CachedInput_ReturnsCachedValue()
+	[Theory]
+	[InlineData(null, "")]
+	[InlineData("   ", "   ")]
+	[InlineData(" This is a comment. ", " This is a comment. ")]
+	public void AddComment_AnyInput_Works(string? input, string expected)
 	{
 		// Arrange
-		const string input = " -empty- ";
-		const string cacheKey= "-Empty-";
-		_ = MtfValues.Lookup.CommonEquipmentValues.TryGetValue(cacheKey, out var cachedValue);
-
 		// Act
-		(var name, var isOmniPod, var isRear, var isTurret) = HelperExtensions.AddEquipmentAtLocation(input);
+		var result = HelperExtensions.AddComment(input);
 
 		// Assert
-		name.ShouldBeSameAs(cachedValue);
-		isOmniPod.ShouldBeFalse();
-		isRear.ShouldBeFalse();
-		isTurret.ShouldBeFalse();
+		result.ShouldBe(expected);
 	}
-
-	#endregion Add Equipment
 
 	[Theory]
 	[InlineData(" Crab ", "Crab")]
@@ -186,4 +178,26 @@ public sealed class HelperTests
 		// Assert
 		_ = func.ShouldThrow<Exception>();
 	}
+
+	#region Add Equipment
+
+	[Fact]
+	public void AddEquipmentAtLocation_CachedInput_ReturnsCachedValue()
+	{
+		// Arrange
+		const string input = " -empty- ";
+		const string cacheKey = "-Empty-";
+		_ = MtfValues.Lookup.CommonEquipmentValues.TryGetValue(cacheKey, out var cachedValue);
+
+		// Act
+		(var name, var isOmniPod, var isRear, var isTurret) = HelperExtensions.AddEquipmentAtLocation(input);
+
+		// Assert
+		name.ShouldBeSameAs(cachedValue);
+		isOmniPod.ShouldBeFalse();
+		isRear.ShouldBeFalse();
+		isTurret.ShouldBeFalse();
+	}
+
+	#endregion Add Equipment
 }
