@@ -7,29 +7,26 @@ namespace MechTools.Parsers;
 
 internal static class ThrowHelper
 {
-	[MethodImpl(MethodImplOptions.NoInlining)]
-	[DoesNotReturn, DebuggerHidden]
+	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
 	public static void ExceptionToSpecifyLater()
 	{
 		throw new InvalidOperationException();
 	}
 
-	[MethodImpl(MethodImplOptions.NoInlining)]
-	[DoesNotReturn, DebuggerHidden]
+	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
 	public static T ExceptionToSpecifyLater<T>()
 	{
 		throw new InvalidOperationException();
 	}
 
-	[MethodImpl(MethodImplOptions.NoInlining)]
-	[DoesNotReturn, DebuggerHidden]
+	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
 	public static void ImExcited()
 	{
 		throw new ImExcitedException();
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	[DebuggerHidden]
+	[DebuggerHidden, StackTraceHidden]
 	public static void ThrowIfEmptyOrWhiteSpace(ReadOnlySpan<char> chars)
 	{
 		if (chars.IsWhiteSpace())

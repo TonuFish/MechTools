@@ -1,6 +1,7 @@
 ﻿using MechTools.Core;
 using MechTools.Parsers.BattleMech;
 using System;
+using System.Globalization;
 
 namespace MechTools.Parsers.Extensions;
 
@@ -41,6 +42,7 @@ public static class HelperExtensions
 
 	public static string AddQuirk(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.ToString();
 	}
 
@@ -171,7 +173,7 @@ public static class HelperExtensions
 
 	public static int SetBaseChassisHeatSinks(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, out var heatSinks))
+		if (!int.TryParse(chars, NumberStyles.None, null, out var heatSinks))
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
@@ -187,21 +189,18 @@ public static class HelperExtensions
 	public static string SetChassis(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-
 		return chars.Trim().ToString();
 	}
 
 	public static string SetClanName(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-
 		return chars.Trim().ToString();
 	}
 
 	public static Cockpit SetCockpit(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-
 		return chars.Trim().ToCockpit();
 	}
 
@@ -233,6 +232,7 @@ public static class HelperExtensions
 
 	public static string SetDeployment(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.ToString();
 	}
 
@@ -245,12 +245,15 @@ public static class HelperExtensions
 	public static string SetEngine(ReadOnlySpan<char> chars)
 	{
 		// TODO: Further parsing
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.ToString();
 	}
 
 	public static int SetEra(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, out var era))
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+
+		if (!int.TryParse(chars, NumberStyles.None, null, out var era))
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
@@ -289,7 +292,7 @@ public static class HelperExtensions
 
 	public static int SetJumpMp(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, out var jumpMp))
+		if (!int.TryParse(chars, NumberStyles.None, null, out var jumpMp))
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
@@ -310,7 +313,7 @@ public static class HelperExtensions
 
 	public static int SetMass(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, out var mass))
+		if (!int.TryParse(chars, NumberStyles.None, null, out var mass))
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
@@ -331,7 +334,7 @@ public static class HelperExtensions
 
 	public static int SetMulId(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, out var mulId))
+		if (!int.TryParse(chars, NumberStyles.None, null, out var mulId))
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
@@ -380,7 +383,7 @@ public static class HelperExtensions
 
 	public static RulesLevel SetRulesLevel(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, out var num))
+		if (!int.TryParse(chars, NumberStyles.None, null, out var num))
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
@@ -446,7 +449,7 @@ public static class HelperExtensions
 
 	public static int SetWalkMp(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, out var walkMp))
+		if (!int.TryParse(chars, NumberStyles.None, null, out var walkMp))
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
@@ -456,7 +459,7 @@ public static class HelperExtensions
 
 	public static int SetWeaponListCount(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, out var count))
+		if (!int.TryParse(chars, NumberStyles.None, null, out var count))
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
