@@ -60,12 +60,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData(":jettison_capable:RA:4:CLHAG30")]
-	[InlineData("jettison_capable:RA:4:CLHAG30:")]
-	[InlineData("jettison_capable:RA:4::CLHAG30")]
-	[InlineData("jettison_capable:RA:4")]
-	[InlineData("jettison_capable:QQ:4:CLHAG30")]
-	[InlineData("jettison_capable:RA:-1:CLHAG30")]
+	[MemberData(nameof(TestData.InvalidWeaponQuirks), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void AddWeaponQuirk_InvalidInput_Throws(string input)
 	{
