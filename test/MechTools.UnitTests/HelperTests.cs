@@ -24,6 +24,31 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[InlineData(" \u3220 \u3221 \u3222 \u3223 \u3224 ", "\u3220 \u3221 \u3222 \u3223 \u3224")]
+	[InlineData(" This is a comment. ", "This is a comment.")]
+	public void AddQuirk_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = HelperExtensions.AddQuirk(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void AddQuirk_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => HelperExtensions.AddQuirk(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
 	[InlineData(" Crab ", "Crab")]
 	[InlineData(" Man O' War ", "Man O' War")]
 	public void SetChassis_ValidInput_Works(string input, string expected)

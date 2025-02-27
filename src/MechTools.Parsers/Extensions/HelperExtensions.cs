@@ -43,7 +43,7 @@ public static class HelperExtensions
 	public static string AddQuirk(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static WeaponQuirkData AddWeaponQuirk(
