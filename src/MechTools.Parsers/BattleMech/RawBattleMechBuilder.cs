@@ -7,7 +7,7 @@ namespace MechTools.Parsers.BattleMech;
 
 internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 {
-	private readonly List<string> _lines = [];
+	private readonly List<string> _lines = new(50); // TODO: Better number.
 
 	public void AddComment(ReadOnlySpan<char> chars)
 	{

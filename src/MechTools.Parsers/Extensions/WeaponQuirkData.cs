@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace MechTools.Parsers.Extensions;
 
 [StructLayout(LayoutKind.Auto)]
-public readonly ref struct WeaponQuirkData
+public readonly struct WeaponQuirkData
 {
 	public readonly required BattleMechEquipmentLocation Location { get; init; }
 	public readonly required string Name { get; init; }

@@ -12,7 +12,16 @@
 		<WarningsAsErrors>CA1008;CA2016;CS4014;CS8602</WarningsAsErrors>
 	</PropertyGroup>
 
-	<ItemGroup Condition="$(ProjectName.Contains('Test')) == 'False'">
-		<Compile Include="$(SolutionDir)\ModuleSettings.cs" Visible="false" />
-	</ItemGroup>
+	<Choose>
+		<When Condition="$(ProjectName.Contains('Test')) == 'False'">
+			<PropertyGroup>
+				<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+			</PropertyGroup>
+
+			<ItemGroup>
+				<Compile Include="$(SolutionDir)\ModuleSettings.cs" Visible="false" />
+			</ItemGroup>
+		</When>
+	</Choose>
+
 </Project>

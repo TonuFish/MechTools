@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace MechTools.Parsers.Extensions;
 
 [StructLayout(LayoutKind.Auto)]
-public readonly ref struct EquipmentData
+public readonly struct EquipmentData
 {
 	public readonly required string Name { get; init; }
 	public readonly required bool IsOmniPod { get; init; }

@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace MechTools.Parsers.Extensions;
 
 [StructLayout(LayoutKind.Auto)]
-public readonly ref struct WeaponListData
+public readonly struct WeaponListData
 {
 	public readonly int? Ammo { get; init; }
 	public readonly int? Count { get; init; }

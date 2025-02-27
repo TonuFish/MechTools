@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace MechTools.Parsers.Extensions;
 
 [StructLayout(LayoutKind.Auto)]
-public readonly ref struct ConfigurationData
+public readonly struct ConfigurationData
 {
 	public readonly required Configuration Configuration { get; init; }
 	public readonly required bool IsOmniMech { get; init; }
