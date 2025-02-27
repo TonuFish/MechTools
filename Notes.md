@@ -26,3 +26,7 @@ TODO
 ### Bad Cockpit
 
 Arbiter ARB-001 SecurityMech
+
+### Empty Deployment
+
+Seraph C-SRP-O Caelestis
