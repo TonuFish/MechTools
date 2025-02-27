@@ -24,8 +24,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData(" \u3220 \u3221 \u3222 \u3223 \u3224 ", "\u3220 \u3221 \u3222 \u3223 \u3224")]
-	[InlineData(" This is a comment. ", "This is a comment.")]
+	[InlineData(" easy_maintain ", "easy_maintain")]
 	public void AddQuirk_ValidInput_Works(string input, string expected)
 	{
 		// Arrange
@@ -42,6 +41,34 @@ public sealed class HelperTests
 	{
 		// Arrange
 		Action action = () => HelperExtensions.AddQuirk(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidWeaponQuirks), MemberType = typeof(TestData))]
+	public void AddWeaponQuirk_ValidInput_Works(string input, WeaponQuirkData expected)
+	{
+		// Arrange
+		// Act
+		var result = HelperExtensions.AddWeaponQuirk(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData(":jettison_capable:RA:4:CLHAG30")]
+	[InlineData("jettison_capable:RA:4:CLHAG30:")]
+	[InlineData("jettison_capable:RA:4::CLHAG30")]
+	[InlineData("jettison_capable:RA:4")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void AddWeaponQuirk_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => HelperExtensions.AddWeaponQuirk(input);
 
 		// Act
 		// Assert
