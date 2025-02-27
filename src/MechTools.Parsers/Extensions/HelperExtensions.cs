@@ -2,6 +2,7 @@
 using MechTools.Parsers.BattleMech;
 using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace MechTools.Parsers.Extensions;
 
@@ -46,9 +47,10 @@ public static class HelperExtensions
 		return chars.Trim().ToString();
 	}
 
-	public static WeaponQuirkData AddWeaponQuirk(
-		ReadOnlySpan<char> chars)
+	public static WeaponQuirkData AddWeaponQuirk(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+
 		if (chars.Length < 10
 			|| chars[0] == ':'
 			|| chars[^1] == ':'
@@ -60,14 +62,14 @@ public static class HelperExtensions
 
 		var enumerator = chars.Split(':');
 		_ = enumerator.MoveNext();
-		var name = chars[enumerator.Current];
+		var name = chars[enumerator.Current].Trim();
 		_ = enumerator.MoveNext();
-		var location = chars[enumerator.Current].FromAbbreviationToEquipmentLocation();
+		var location = chars[enumerator.Current].Trim().FromAbbreviationToEquipmentLocation();
 		_ = enumerator.MoveNext();
 		// TODO: TryParse
-		var slot = int.Parse(chars[enumerator.Current]);
+		var slot = int.Parse(chars[enumerator.Current].Trim());
 		_ = enumerator.MoveNext();
-		var weapon = chars[enumerator.Current];
+		var weapon = chars[enumerator.Current].Trim();
 
 		return new(location, name.ToString(), slot, weapon.ToString());
 	}
@@ -76,7 +78,10 @@ public static class HelperExtensions
 	{
 		// TODO: This needs a proper return object at this point, whether you're dropping ValueTuple or not.
 
-		if (chars.Length < 4)
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+
+		var trimmedChars = chars.Trim();
+		if (trimmedChars.Length < 4)
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
@@ -84,8 +89,8 @@ public static class HelperExtensions
 		const string stdDel = ", ";
 		const char nameDel = ' ';
 
-		var lastBound = chars.LastIndexOf(stdDel, StringComparison.Ordinal);
-		if (lastBound == -1 || lastBound == chars.Length - stdDel.Length)
+		var lastBound = trimmedChars.LastIndexOf(stdDel, StringComparison.Ordinal);
+		if (lastBound == -1 || lastBound == trimmedChars.Length - stdDel.Length)
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
@@ -95,33 +100,34 @@ public static class HelperExtensions
 		ReadOnlySpan<char> locationSlice;
 		int? ammo;
 
-		if (char.IsNumber(chars[0]))
+		if (char.IsNumber(trimmedChars[0]))
 		{
-			var nameBound = chars.IndexOf(nameDel);
-			count = int.Parse(chars[..nameBound]);
+			var nameBound = trimmedChars.IndexOf(nameDel);
+			count = int.Parse(trimmedChars[..nameBound]);
 
-			if (char.ToUpperInvariant(chars[lastBound + stdDel.Length]) == 'A')
+			// TODO: Be more whitespace tolerant.
+			if (char.ToUpperInvariant(trimmedChars[lastBound + stdDel.Length]) == 'A')
 			{
 				//! `1 ISLBXAC10, Right Torso, Ammo:20`
-				ammo = int.Parse(chars[(lastBound + stdDel.Length + "Ammo:".Length)..]);
-				var locationBound = chars[..lastBound].LastIndexOf(stdDel, StringComparison.Ordinal);
-				name = chars[(nameBound + 1)..locationBound].ToString();
-				locationSlice = chars[(locationBound + stdDel.Length)..lastBound];
+				ammo = int.Parse(trimmedChars[(lastBound + stdDel.Length + "Ammo:".Length)..]);
+				var locationBound = trimmedChars[..lastBound].LastIndexOf(stdDel, StringComparison.Ordinal);
+				name = trimmedChars[(nameBound + 1)..locationBound].ToString();
+				locationSlice = trimmedChars[(locationBound + stdDel.Length)..lastBound];
 			}
 			else
 			{
 				//! `1 ISC3SlaveUnit, Center Torso`
 				ammo = null;
-				name = chars[(nameBound + 1)..lastBound].ToString();
-				locationSlice = chars[(lastBound + stdDel.Length)..];
+				name = trimmedChars[(nameBound + 1)..lastBound].ToString();
+				locationSlice = trimmedChars[(lastBound + stdDel.Length)..];
 			}
 		}
 		else
 		{
 			//! `Medium Pulse Laser, Center Torso`
 			count = null;
-			name = chars[..lastBound].ToString();
-			locationSlice = chars[(lastBound + stdDel.Length)..];
+			name = trimmedChars[..lastBound].ToString();
+			locationSlice = trimmedChars[(lastBound + stdDel.Length)..];
 			ammo = null;
 		}
 
@@ -142,7 +148,7 @@ public static class HelperExtensions
 	{
 		// TODO: Enum-ify.
 		// Brackets = origin
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static (string? Name, int Value) SetArmourAtLocation(ReadOnlySpan<char> chars)
@@ -173,17 +179,13 @@ public static class HelperExtensions
 
 	public static int SetBaseChassisHeatSinks(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, NumberStyles.None, null, out var heatSinks))
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		return heatSinks;
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return ParseSimpleNumber(chars);
 	}
 
 	public static string SetCapabilities(ReadOnlySpan<char> chars)
 	{
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static string SetChassis(ReadOnlySpan<char> chars)
@@ -233,92 +235,78 @@ public static class HelperExtensions
 	public static string SetDeployment(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static string SetEjection(ReadOnlySpan<char> chars)
 	{
 		// TODO: bool - `Full Head Ejection System` IC or not.
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static string SetEngine(ReadOnlySpan<char> chars)
 	{
 		// TODO: Further parsing
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static int SetEra(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-
-		if (!int.TryParse(chars, NumberStyles.None, null, out var era))
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		return era;
+		return ParseSimpleNumber(chars);
 	}
 
 	public static string SetGenerator(ReadOnlySpan<char> chars)
 	{
 		// TODO: More parsing and better return object - Special handle the popular generators
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static string SetGyro(ReadOnlySpan<char> chars)
 	{
 		// TODO: Enum?
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static string SetHeatSinks(ReadOnlySpan<char> chars)
 	{
 		// TODO: Enum ([IS|Clan]? Single, [IS|Clan]? Double, Laser, Compact)
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static string SetHistory(ReadOnlySpan<char> chars)
 	{
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static string SetImageFile(ReadOnlySpan<char> chars)
 	{
 		// TODO: Maybe some validation? Idk, doesn't feel worth.
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static int SetJumpMp(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, NumberStyles.None, null, out var jumpMp))
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		return jumpMp;
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return ParseSimpleNumber(chars);
 	}
 
 	public static string SetLam(ReadOnlySpan<char> chars)
 	{
 		// TODO: Probably an enum - Only standard in existing files.
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static string SetManufacturer(ReadOnlySpan<char> chars)
 	{
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static int SetMass(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, NumberStyles.None, null, out var mass))
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		return mass;
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return ParseSimpleNumber(chars);
 	}
 
 	public static string? SetModel(ReadOnlySpan<char> chars)
@@ -329,66 +317,63 @@ public static class HelperExtensions
 	public static string SetMotive(ReadOnlySpan<char> chars)
 	{
 		// TODO: enum, Track || Wheel
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static int SetMulId(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, NumberStyles.None, null, out var mulId))
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		return mulId;
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return ParseSimpleNumber(chars);
 	}
 
 	public static string SetMyomer(ReadOnlySpan<char> chars)
 	{
 		// TODO: Kinda enum, kinda freeform :\
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static (string Name, string Value) SetNoCrit(ReadOnlySpan<char> chars) //! TODO
 	{
 		// TODO: Needs the same investigate as SystemManufacturer - seems to have same format.
 		// TODO: Both likely enums `nocrit:Standard:None`
-		var delimeterIndex = chars.IndexOf(':');
-		if (delimeterIndex == -1)
+
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+
+		var bound = chars.IndexOf(':');
+		if (bound == -1)
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
 
-		return (chars[..delimeterIndex].ToString(), chars[(delimeterIndex + 1)..].ToString());
+		// TODO: Test bound isn't too far along in chars.
+
+		return (chars[..bound].ToString().Trim(), chars[(bound + 1)..].Trim().ToString());
 	}
 
 	public static string SetNotes(ReadOnlySpan<char> chars)
 	{
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static string SetOverview(ReadOnlySpan<char> chars)
 	{
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static string SetPrimaryFactory(ReadOnlySpan<char> chars)
 	{
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static Role SetRole(ReadOnlySpan<char> chars)
 	{
-		return chars.ToRole();
+		return chars.Trim().ToRole();
 	}
 
 	public static RulesLevel SetRulesLevel(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, NumberStyles.None, null, out var num))
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		return num.ToRulesLevel();
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return ParseSimpleNumber(chars).ToRulesLevel();
 	}
 
 	public static (string? Type, string Name) SetSource(ReadOnlySpan<char> chars)
@@ -398,9 +383,9 @@ public static class HelperExtensions
 		// First ':' is type delimeter, remaining text assumed to be name.
 		// If a typeless name contains a colon... It shouldn't.
 
-		var del = chars.IndexOf(':');
-		return del != -1 && del != chars.Length - 1
-			? (chars[..del].Trim().ToString(), chars[(del + 1)..].Trim().ToString())
+		var bound = chars.IndexOf(':');
+		return bound != -1 && bound != chars.Length - 1
+			? (chars[..bound].Trim().ToString(), chars[(bound + 1)..].Trim().ToString())
 			: (null, chars.Trim().ToString());
 	}
 
@@ -414,57 +399,53 @@ public static class HelperExtensions
 		//"Reinforced",
 		//"Composite",
 		//"Endo-Composite"
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static (string Part, string Name) SetSystemManufacturer(ReadOnlySpan<char> chars) //! TODO
 	{
 		// TODO: Enum part? `^systemmanufacturer:[^:]+:[^:]+$` -- Not sure if Name is allowed to have `:`
-		var delimeterIndex = chars.IndexOf(':');
-		if (delimeterIndex == -1)
+		var bound = chars.IndexOf(':');
+		if (bound == -1)
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
 
-		return (chars[..delimeterIndex].ToString(), chars[(delimeterIndex + 1)..].ToString());
+		// TODO: Test bound isn't too far along in chars.
+
+		return (chars[..bound].Trim().ToString(), chars[(bound + 1)..].Trim().ToString());
 	}
 
 	public static (string Part, string Name) SetSystemMode(ReadOnlySpan<char> chars) //! TODO
 	{
 		// TODO: Needs the same investigate as SystemManufacturer - seems to have same format.
-		var delimeterIndex = chars.IndexOf(':');
-		if (delimeterIndex == -1)
+		var bound = chars.IndexOf(':');
+		if (bound == -1)
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
 
-		return (chars[..delimeterIndex].ToString(), chars[(delimeterIndex + 1)..].ToString());
+		// TODO: Test bound isn't too far along in chars.
+
+		return (chars[..bound].Trim().ToString(), chars[(bound + 1)..].Trim().ToString());
 	}
 
 	public static string SetTechBase(ReadOnlySpan<char> chars)
 	{
 		// TODO: Enum.
-		return chars.ToString();
+		return chars.Trim().ToString();
 	}
 
 	public static int SetWalkMp(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, NumberStyles.None, null, out var walkMp))
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		return walkMp;
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return ParseSimpleNumber(chars);
 	}
 
 	public static int SetWeaponListCount(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars, NumberStyles.None, null, out var count))
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		return count;
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return ParseSimpleNumber(chars);
 	}
 
 	private static EquipmentData AddAnnotatedEquipmentAtLocation(
@@ -482,5 +463,16 @@ public static class HelperExtensions
 		// TODO: Turret ` (T)`
 
 		throw new NotImplementedException();
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	private static int ParseSimpleNumber(ReadOnlySpan<char> chars)
+	{
+		if (!int.TryParse(chars.Trim(), NumberStyles.None, null, out var number))
+		{
+			ThrowHelper.ExceptionToSpecifyLater();
+		}
+
+		return number;
 	}
 }
