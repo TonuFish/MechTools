@@ -2,38 +2,11 @@
 using MechTools.Parsers.BattleMech;
 using System;
 
-namespace MechTools.Parsers.Extensions;
+namespace MechTools.Parsers.Helpers;
 
-// TODO: Extension methods -> Normal static methods
-internal static class EnumExtensions
+internal static class MtfEnumConversions
 {
-	public static BattleMechEquipmentLocation FromAbbreviationToEquipmentLocation(this ReadOnlySpan<char> chars)
-	{
-		// TODO: Cleanup later, yick.
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
-		_ = chars.ToUpperInvariant(upper);
-
-		return upper switch
-		{
-			// TODO: Check if there's an entry for none.
-			"CL" => BattleMechEquipmentLocation.CentreLeg,
-			"CT" => BattleMechEquipmentLocation.CentreTorso,
-			"FLL" => BattleMechEquipmentLocation.LeftLeg,
-			"FRL" => BattleMechEquipmentLocation.RightLeg,
-			"HD" => BattleMechEquipmentLocation.Head,
-			"LA" => BattleMechEquipmentLocation.LeftArm,
-			"LL" => BattleMechEquipmentLocation.LeftLeg,
-			"LT" => BattleMechEquipmentLocation.LeftTorso,
-			"RLL" => BattleMechEquipmentLocation.RearLeftLeg,
-			"RRL" => BattleMechEquipmentLocation.RearRightLeg,
-			"RA" => BattleMechEquipmentLocation.RightArm,
-			"RL" => BattleMechEquipmentLocation.RightLeg,
-			"RT" => BattleMechEquipmentLocation.RightTorso,
-			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
-		};
-	}
-
-	public static BattleMechArmourLocation ToArmourLocation(this ReadOnlySpan<char> chars)
+	public static BattleMechArmourLocation GetArmourLocation(ReadOnlySpan<char> chars)
 	{
 		// TODO: May not be necessarily at all.
 
@@ -59,32 +32,7 @@ internal static class EnumExtensions
 		};
 	}
 
-	public static BattleMechEquipmentLocation ToEquipmentLocation(this ReadOnlySpan<char> chars)
-	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
-		_ = chars.ToUpperInvariant(upper);
-
-		return upper switch
-		{
-			MtfSections.EquipmentLocation.CentreLeg => BattleMechEquipmentLocation.CentreLeg,
-			MtfSections.EquipmentLocation.CentreTorso => BattleMechEquipmentLocation.CentreTorso,
-			MtfSections.EquipmentLocation.FrontLeftLeg => BattleMechEquipmentLocation.LeftLeg,
-			MtfSections.EquipmentLocation.FrontRightLeg => BattleMechEquipmentLocation.RightLeg,
-			MtfSections.EquipmentLocation.Head => BattleMechEquipmentLocation.Head,
-			MtfSections.EquipmentLocation.LeftArm => BattleMechEquipmentLocation.LeftArm,
-			MtfSections.EquipmentLocation.LeftLeg => BattleMechEquipmentLocation.LeftLeg,
-			MtfSections.EquipmentLocation.LeftTorso => BattleMechEquipmentLocation.LeftTorso,
-			MtfSections.EquipmentLocation.None => BattleMechEquipmentLocation.None, // TODO: ATAE-70 - Thonk.
-			MtfSections.EquipmentLocation.RearLeftLeg => BattleMechEquipmentLocation.RearLeftLeg,
-			MtfSections.EquipmentLocation.RearRightLeg => BattleMechEquipmentLocation.RearRightLeg,
-			MtfSections.EquipmentLocation.RightArm => BattleMechEquipmentLocation.RightArm,
-			MtfSections.EquipmentLocation.RightLeg => BattleMechEquipmentLocation.RightLeg,
-			MtfSections.EquipmentLocation.RightTorso => BattleMechEquipmentLocation.RightTorso,
-			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
-		};
-	}
-
-	public static Cockpit ToCockpit(this ReadOnlySpan<char> chars)
+	public static Cockpit GetCockpit(ReadOnlySpan<char> chars)
 	{
 		// TODO: String cleanup.
 		Span<char> upper = (stackalloc char[64])[..chars.Length];
@@ -111,11 +59,11 @@ internal static class EnumExtensions
 			"TRIPOD COCKPIT" => Cockpit.TripodCockpit,
 			"TRIPOD INDUSTRIAL COCKPIT" => Cockpit.TripodIndustrialCockpit,
 			"VIRTUAL REALITY PILOTING POD" => Cockpit.VirtualRealityPilotingPod,
-			_ => ToShortCockpit(upper),
+			_ => GetShortCockpit(upper),
 		};
 	}
 
-	public static Configuration ToConfiguration(this ReadOnlySpan<char> chars)
+	public static Configuration GetConfiguration(ReadOnlySpan<char> chars)
 	{
 		// TODO: String cleanup.
 		Span<char> upper = (stackalloc char[64])[..chars.Length];
@@ -132,20 +80,57 @@ internal static class EnumExtensions
 		};
 	}
 
-	public static RulesLevel ToRulesLevel(this int num)
+	public static BattleMechEquipmentLocation GetEquipmentLocation(ReadOnlySpan<char> chars)
 	{
-		return num switch
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
 		{
-			1 => RulesLevel.Introductory,
-			2 => RulesLevel.Standard,
-			3 => RulesLevel.Advanced,
-			4 => RulesLevel.Experimental,
-			5 => RulesLevel.Unofficial,
-			_ => ThrowHelper.ExceptionToSpecifyLater<RulesLevel>(),
+			MtfSections.EquipmentLocation.CentreLeg => BattleMechEquipmentLocation.CentreLeg,
+			MtfSections.EquipmentLocation.CentreTorso => BattleMechEquipmentLocation.CentreTorso,
+			MtfSections.EquipmentLocation.FrontLeftLeg => BattleMechEquipmentLocation.LeftLeg,
+			MtfSections.EquipmentLocation.FrontRightLeg => BattleMechEquipmentLocation.RightLeg,
+			MtfSections.EquipmentLocation.Head => BattleMechEquipmentLocation.Head,
+			MtfSections.EquipmentLocation.LeftArm => BattleMechEquipmentLocation.LeftArm,
+			MtfSections.EquipmentLocation.LeftLeg => BattleMechEquipmentLocation.LeftLeg,
+			MtfSections.EquipmentLocation.LeftTorso => BattleMechEquipmentLocation.LeftTorso,
+			MtfSections.EquipmentLocation.None => BattleMechEquipmentLocation.None, // TODO: ATAE-70 - Thonk.
+			MtfSections.EquipmentLocation.RearLeftLeg => BattleMechEquipmentLocation.RearLeftLeg,
+			MtfSections.EquipmentLocation.RearRightLeg => BattleMechEquipmentLocation.RearRightLeg,
+			MtfSections.EquipmentLocation.RightArm => BattleMechEquipmentLocation.RightArm,
+			MtfSections.EquipmentLocation.RightLeg => BattleMechEquipmentLocation.RightLeg,
+			MtfSections.EquipmentLocation.RightTorso => BattleMechEquipmentLocation.RightTorso,
+			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
+		};
+	}
+	public static BattleMechEquipmentLocation GetEquipmentLocationFromAbbreviation(ReadOnlySpan<char> chars)
+	{
+		// TODO: Cleanup later, yick.
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			// TODO: Check if there's an entry for none.
+			"CL" => BattleMechEquipmentLocation.CentreLeg,
+			"CT" => BattleMechEquipmentLocation.CentreTorso,
+			"FLL" => BattleMechEquipmentLocation.LeftLeg,
+			"FRL" => BattleMechEquipmentLocation.RightLeg,
+			"HD" => BattleMechEquipmentLocation.Head,
+			"LA" => BattleMechEquipmentLocation.LeftArm,
+			"LL" => BattleMechEquipmentLocation.LeftLeg,
+			"LT" => BattleMechEquipmentLocation.LeftTorso,
+			"RLL" => BattleMechEquipmentLocation.RearLeftLeg,
+			"RRL" => BattleMechEquipmentLocation.RearRightLeg,
+			"RA" => BattleMechEquipmentLocation.RightArm,
+			"RL" => BattleMechEquipmentLocation.RightLeg,
+			"RT" => BattleMechEquipmentLocation.RightTorso,
+			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
 		};
 	}
 
-	public static Role ToRole(this ReadOnlySpan<char> chars)
+	public static Role GetRole(ReadOnlySpan<char> chars)
 	{
 		Span<char> upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
@@ -165,7 +150,20 @@ internal static class EnumExtensions
 		};
 	}
 
-	private static Cockpit ToShortCockpit(this ReadOnlySpan<char> upper)
+	public static RulesLevel GetRulesLevel(int num)
+	{
+		return num switch
+		{
+			1 => RulesLevel.Introductory,
+			2 => RulesLevel.Standard,
+			3 => RulesLevel.Advanced,
+			4 => RulesLevel.Experimental,
+			5 => RulesLevel.Unofficial,
+			_ => ThrowHelper.ExceptionToSpecifyLater<RulesLevel>(),
+		};
+	}
+
+	private static Cockpit GetShortCockpit(this ReadOnlySpan<char> upper)
 	{
 		// already uppercase.
 		return upper switch

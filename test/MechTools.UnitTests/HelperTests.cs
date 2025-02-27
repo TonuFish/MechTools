@@ -1,71 +1,19 @@
 ﻿using MechTools.Core;
 using MechTools.Parsers.BattleMech;
-using MechTools.Parsers.Extensions;
+using MechTools.Parsers.Helpers;
 using System;
 
 namespace MechTools.UnitTests;
 
 public sealed class HelperTests
 {
-	// TODO: Expand on all the random splattering here.
-
-	[Theory]
-	[InlineData(null, "")]
-	[InlineData("   ", "   ")]
-	[InlineData(" This is a comment. ", " This is a comment. ")]
-	public void AddComment_AnyInput_Works(string? input, string expected)
-	{
-		// Arrange
-		// Act
-		var result = HelperExtensions.AddComment(input);
-
-		// Assert
-		result.ShouldBe(expected);
-	}
-
-	[Theory]
-	[InlineData(" easy_maintain ", "easy_maintain")]
-	public void AddQuirk_ValidInput_Works(string input, string expected)
-	{
-		// Arrange
-		// Act
-		var result = HelperExtensions.AddQuirk(input);
-
-		// Assert
-		result.ShouldBe(expected);
-	}
 
 	[Theory]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void AddQuirk_InvalidInput_Throws(string input)
+	public void GetChassis_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Action action = () => HelperExtensions.AddQuirk(input);
-
-		// Act
-		// Assert
-		_ = action.ShouldThrow<Exception>();
-	}
-
-	[Theory]
-	[MemberData(nameof(TestData.ValidWeaponQuirks), MemberType = typeof(TestData))]
-	public void AddWeaponQuirk_ValidInput_Works(string input, WeaponQuirkData expected)
-	{
-		// Arrange
-		// Act
-		var result = HelperExtensions.AddWeaponQuirk(input);
-
-		// Assert
-		result.ShouldBe(expected);
-	}
-
-	[Theory]
-	[MemberData(nameof(TestData.InvalidWeaponQuirks), MemberType = typeof(TestData))]
-	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void AddWeaponQuirk_InvalidInput_Throws(string input)
-	{
-		// Arrange
-		Action action = () => HelperExtensions.AddWeaponQuirk(input);
+		Action action = () => MtfHelper.GetChassis(input);
 
 		// Act
 		// Assert
@@ -75,11 +23,11 @@ public sealed class HelperTests
 	[Theory]
 	[InlineData(" Crab ", "Crab")]
 	[InlineData(" Man O' War ", "Man O' War")]
-	public void SetChassis_ValidInput_Works(string input, string expected)
+	public void GetChassis_ValidInput_Works(string input, string expected)
 	{
 		// Arrange
 		// Act
-		var result = HelperExtensions.SetChassis(input);
+		var result = MtfHelper.GetChassis(input);
 
 		// Assert
 		result.ShouldBe(expected);
@@ -87,10 +35,36 @@ public sealed class HelperTests
 
 	[Theory]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void SetChassis_InvalidInput_Throws(string input)
+	public void GetClanName_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Action action = () => HelperExtensions.SetChassis(input);
+		Action action = () => MtfHelper.GetClanName(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Stone Rhino ", "Stone Rhino")]
+	[InlineData(" Mad Dog Mk IV ", "Mad Dog Mk IV")]
+	public void GetClanName_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetClanName(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetCockpit_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetCockpit(input);
 
 		// Act
 		// Assert
@@ -100,11 +74,26 @@ public sealed class HelperTests
 	[Theory]
 	[InlineData(" Standard Cockpit ", Cockpit.StandardCockpit)]
 	[InlineData(" Small ", Cockpit.SmallCockpit)]
-	public void SetCockpit_ValidInput_Works(string input, Cockpit expected)
+	public void GetCockpit_ValidInput_Works(string input, Cockpit expected)
 	{
 		// Arrange
 		// Act
-		var result = HelperExtensions.SetCockpit(input);
+		var result = MtfHelper.GetCockpit(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+	// TODO: Expand on all the random splattering here.
+
+	[Theory]
+	[InlineData(null, "")]
+	[InlineData("   ", "   ")]
+	[InlineData(" This is a comment. ", " This is a comment. ")]
+	public void GetComment_AnyInput_Works(string? input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetComment(input);
 
 		// Assert
 		result.ShouldBe(expected);
@@ -113,10 +102,10 @@ public sealed class HelperTests
 	[Theory]
 	[InlineData("OtherValue")]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void SetCockpit_InvalidInput_Throws(string input)
+	public void GetConfig_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Action action = () => HelperExtensions.SetCockpit(input);
+		Action action = () => MtfHelper.GetConfig(input);
 
 		// Act
 		// Assert
@@ -127,11 +116,11 @@ public sealed class HelperTests
 	[InlineData(" QuadVee ", Configuration.QuadVee, false)]
 	[InlineData(" Biped Omnimech ", Configuration.Biped, true)]
 	[InlineData(" Biped Omnimek ", Configuration.Biped, true)]
-	public void SetConfig_ValidInput_Works(string input, Configuration expectedConfiguration, bool expectedIsOmniMech)
+	public void GetConfig_ValidInput_Works(string input, Configuration expectedConfiguration, bool expectedIsOmniMech)
 	{
 		// Arrange
 		// Act
-		(var configuration, var isOmniMech) = HelperExtensions.SetConfig(input);
+		(var configuration, var isOmniMech) = MtfHelper.GetConfig(input);
 
 		// Assert
 		configuration.ShouldBe(expectedConfiguration);
@@ -139,77 +128,75 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData("OtherValue")]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void SetConfig_InvalidInput_Throws(string input)
-	{
-		// Arrange
-		Action action = () => HelperExtensions.SetConfig(input);
-
-		// Act
-		// Assert
-		_ = action.ShouldThrow<Exception>();
-	}
-
-	[Theory]
-	[InlineData(" Stone Rhino ", "Stone Rhino")]
-	[InlineData(" Mad Dog Mk IV ", "Mad Dog Mk IV")]
-	public void SetClanName_ValidInput_Works(string input, string expected)
+	public void GetModel_EmptyInput_ReturnsNull(string input)
 	{
 		// Arrange
 		// Act
-		var result = HelperExtensions.SetClanName(input);
-
-		// Assert
-		result.ShouldBe(expected);
-	}
-
-	[Theory]
-	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void SetClanName_InvalidInput_Throws(string input)
-	{
-		// Arrange
-		Action action = () => HelperExtensions.SetClanName(input);
-
-		// Act
-		// Assert
-		_ = action.ShouldThrow<Exception>();
-	}
-
-	[Theory]
-	[InlineData(" CRB-27b ", "CRB-27b")]
-	[InlineData(" AGT-UA 'Ariel' ", "AGT-UA 'Ariel'")]
-	public void SetModel_ValidInput_Works(string input, string expected)
-	{
-		// Arrange
-		// Act
-		var result = HelperExtensions.SetModel(input);
-
-		// Assert
-		result.ShouldBe(expected);
-	}
-
-	[Theory]
-	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void SetModel_EmptyInput_ReturnsNull(string input)
-	{
-		// Arrange
-		// Act
-		var result = HelperExtensions.SetModel(input);
+		var result = MtfHelper.GetModel(input);
 
 		// Assert
 		result.ShouldBeNull();
 	}
 
 	[Theory]
-	[InlineData(" Rec Guide:ilClan #24 ", "Rec Guide", "ilClan #24")]
-	[InlineData(" Battle of Tukayyid ", null, "Battle of Tukayyid")]
-	[InlineData(" TRO : 3067 ", "TRO", "3067")]
-	public void SetSource_ValidInput_Works(string input, string? expectedType, string expectedName)
+	[InlineData(" CRB-27b ", "CRB-27b")]
+	[InlineData(" AGT-UA 'Ariel' ", "AGT-UA 'Ariel'")]
+	public void GetModel_ValidInput_Works(string input, string expected)
 	{
 		// Arrange
 		// Act
-		(var type, var name) = HelperExtensions.SetSource(input);
+		var result = MtfHelper.GetModel(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetQuirk_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetQuirk(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" easy_maintain ", "easy_maintain")]
+	public void GetQuirk_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetQuirk(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetSource_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetSource(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Rec Guide:ilClan #24 ", "Rec Guide", "ilClan #24")]
+	[InlineData(" Battle of Tukayyid ", null, "Battle of Tukayyid")]
+	[InlineData(" TRO : 3067 ", "TRO", "3067")]
+	public void GetSource_ValidInput_Works(string input, string? expectedType, string expectedName)
+	{
+		// Arrange
+		// Act
+		(var type, var name) = MtfHelper.GetSource(input);
 
 		// Assert
 		type.ShouldBe(expectedType);
@@ -217,21 +204,34 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[MemberData(nameof(TestData.InvalidWeaponQuirks), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void SetSource_InvalidInput_Throws(string input)
+	public void GetWeaponQuirk_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Action action = () => HelperExtensions.SetSource(input);
+		Action action = () => MtfHelper.GetWeaponQuirk(input);
 
 		// Act
 		// Assert
 		_ = action.ShouldThrow<Exception>();
 	}
 
-	#region Add Equipment
+	[Theory]
+	[MemberData(nameof(TestData.ValidWeaponQuirks), MemberType = typeof(TestData))]
+	public void GetWeaponQuirk_ValidInput_Works(string input, WeaponQuirkData expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetWeaponQuirk(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	#region Get Equipment
 
 	[Fact]
-	public void AddEquipmentAtLocation_CachedInput_ReturnsCachedValue()
+	public void GetEquipmentAtLocation_CachedInput_ReturnsCachedValue()
 	{
 		// Arrange
 		const string input = " -empty- ";
@@ -239,7 +239,7 @@ public sealed class HelperTests
 		_ = MtfValues.Lookup.CommonEquipmentValues.TryGetValue(cacheKey, out var cachedValue);
 
 		// Act
-		(var name, var isOmniPod, var isRear, var isTurret) = HelperExtensions.AddEquipmentAtLocation(input);
+		(var name, var isOmniPod, var isRear, var isTurret) = MtfHelper.GetEquipmentAtLocation(input);
 
 		// Assert
 		name.ShouldBeSameAs(cachedValue);
@@ -248,5 +248,5 @@ public sealed class HelperTests
 		isTurret.ShouldBeFalse();
 	}
 
-	#endregion Add Equipment
+	#endregion Get Equipment
 }

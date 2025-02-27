@@ -1,7 +1,7 @@
 ﻿using MechTools.Core;
 using System.Runtime.InteropServices;
 
-namespace MechTools.Parsers.Extensions;
+namespace MechTools.Parsers.Helpers;
 
 [StructLayout(LayoutKind.Auto)]
 public readonly struct WeaponListData
