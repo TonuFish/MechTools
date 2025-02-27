@@ -67,7 +67,7 @@ public static class HelperExtensions
 		var location = chars[enumerator.Current].Trim().FromAbbreviationToEquipmentLocation();
 		_ = enumerator.MoveNext();
 		// TODO: TryParse
-		var slot = int.Parse(chars[enumerator.Current].Trim());
+		var slot = ParseSimpleNumber(chars[enumerator.Current]);
 		_ = enumerator.MoveNext();
 		var weapon = chars[enumerator.Current].Trim();
 
