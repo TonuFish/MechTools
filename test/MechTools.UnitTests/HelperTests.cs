@@ -7,6 +7,40 @@ namespace MechTools.UnitTests;
 
 public sealed class HelperTests
 {
+	// TODO: GetArmourAtLocation
+	// TODO: GetArmourType
+	// TODO: GetBaseChassisHeatSinks
+	// TODO: GetCapabilities
+	// TODO: GetDeployment
+	// TODO: GetEjection
+	// TODO: GetEngine
+	// TODO: GetEquipmentAtLocation
+	// TODO: GetEra
+	// TODO: GetGenerator
+	// TODO: GetGyro
+	// TODO: GetHeatSinks
+	// TODO: GetHistory
+	// TODO: GetImageFile
+	// TODO: GetJumpMp
+	// TODO: GetLam
+	// TODO: GetManufacturer
+	// TODO: GetMass
+	// TODO: GetMotive
+	// TODO: GetMulId
+	// TODO: GetMyomer
+	// TODO: GetNoCrit
+	// TODO: GetNotes
+	// TODO: GetOverview
+	// TODO: GetPrimaryFactory
+	// TODO: GetRole
+	// TODO: GetRulesLevel
+	// TODO: GetStructure
+	// TODO: GetSystemManufacturer
+	// TODO: GetSystemMode
+	// TODO: GetTechBase
+	// TODO: GetWalkMp
+	// TODO: GetWeaponForWeaponList
+	// TODO: GetWeaponListCount
 
 	[Theory]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]

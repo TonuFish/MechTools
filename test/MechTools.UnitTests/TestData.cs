@@ -11,6 +11,8 @@ internal static class TestData
 			"   ");
 	}
 
+	#region Weapon Quirks
+
 	public static TheoryData<string> InvalidWeaponQuirks()
 	{
 		return new(
@@ -32,7 +34,9 @@ internal static class TestData
 	{
 		return new()
 		{
-			{ " jettison_capable :RA : 4 : CLHAG30 ", new(Core.BattleMechEquipmentLocation.RightArm, "jettison_capable", 4, "CLHAG30") },
+			{ " jettison_capable : RA : 4 : CLHAG30 ", new(Core.BattleMechEquipmentLocation.RightArm, "jettison_capable", 4, "CLHAG30") },
 		};
 	}
+
+	#endregion Weapon Quirks
 }
