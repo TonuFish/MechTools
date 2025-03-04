@@ -75,7 +75,7 @@ public static class MtfHelper
 		return chars.ToString();
 	}
 
-	public static ConfigurationData GetConfig(ReadOnlySpan<char> chars)
+	public static ConfigurationData GetConfiguration(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 

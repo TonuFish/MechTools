@@ -102,10 +102,10 @@ public sealed class HelperTests
 	[Theory]
 	[InlineData("OtherValue")]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void GetConfig_InvalidInput_Throws(string input)
+	public void GetConfiguration_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Action action = () => MtfHelper.GetConfig(input);
+		Action action = () => MtfHelper.GetConfiguration(input);
 
 		// Act
 		// Assert
@@ -116,11 +116,11 @@ public sealed class HelperTests
 	[InlineData(" QuadVee ", Configuration.QuadVee, false)]
 	[InlineData(" Biped Omnimech ", Configuration.Biped, true)]
 	[InlineData(" Biped Omnimek ", Configuration.Biped, true)]
-	public void GetConfig_ValidInput_Works(string input, Configuration expectedConfiguration, bool expectedIsOmniMech)
+	public void GetConfiguration_ValidInput_Works(string input, Configuration expectedConfiguration, bool expectedIsOmniMech)
 	{
 		// Arrange
 		// Act
-		(var configuration, var isOmniMech) = MtfHelper.GetConfig(input);
+		(var configuration, var isOmniMech) = MtfHelper.GetConfiguration(input);
 
 		// Assert
 		configuration.ShouldBe(expectedConfiguration);

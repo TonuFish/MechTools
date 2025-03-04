@@ -245,8 +245,8 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			case MtfSections.Cockpit:
 				_builder.SetCockpit(content);
 				break;
-			case MtfSections.Config:
-				_builder.SetConfig(content);
+			case MtfSections.Configuration:
+				_builder.SetConfiguration(content);
 				break;
 			case MtfSections.Deployment:
 				_builder.SetDeployment(content);

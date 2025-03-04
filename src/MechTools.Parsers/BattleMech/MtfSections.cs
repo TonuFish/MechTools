@@ -9,7 +9,7 @@ internal static class MtfSections
 	public const string Chassis = "CHASSIS";
 	public const string ClanName = "CLANNAME";
 	public const string Cockpit = "COCKPIT";
-	public const string Config = "CONFIG";
+	public const string Configuration = "CONFIG";
 	public const string Deployment = "DEPLOYMENT";
 	public const string Ejection = "EJECTION";
 	public const string Engine = "ENGINE";

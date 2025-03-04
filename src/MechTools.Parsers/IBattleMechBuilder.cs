@@ -17,7 +17,7 @@ public interface IBattleMechBuilder
 	public void SetChassis(ReadOnlySpan<char> chars);
 	public void SetClanName(ReadOnlySpan<char> chars);
 	public void SetCockpit(ReadOnlySpan<char> chars);
-	public void SetConfig(ReadOnlySpan<char> chars);
+	public void SetConfiguration(ReadOnlySpan<char> chars);
 	public void SetDeployment(ReadOnlySpan<char> chars);
 	public void SetEjection(ReadOnlySpan<char> chars);
 	public void SetEngine(ReadOnlySpan<char> chars);
