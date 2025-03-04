@@ -181,7 +181,6 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 
 		switch (section)
 		{
-			// TODO: Test if alphabetising this list gives better code gen.
 			// TODO: Consider adding a call to the builder for starting each equipment section. Nop for defaults.
 			// TODO: Handle the unknown case.
 			case MtfSections.ArmourLocation.CentreLeg:
@@ -207,14 +206,14 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			case MtfSections.ArmourLocation.LeftTorso:
 				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.LeftTorso);
 				break;
-			case MtfSections.ArmourLocation.RightArm:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RightArm);
-				break;
 			case MtfSections.ArmourLocation.RearLeftLeg:
 				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearLeftLeg);
 				break;
 			case MtfSections.ArmourLocation.RearRightLeg:
 				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearRightLeg);
+				break;
+			case MtfSections.ArmourLocation.RightArm:
+				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RightArm);
 				break;
 			case MtfSections.ArmourLocation.RightTorso:
 				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RightTorso);

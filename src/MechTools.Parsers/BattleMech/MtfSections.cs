@@ -1,14 +1,13 @@
 ﻿namespace MechTools.Parsers.BattleMech;
 
-// TODO: Sections kept in value alphabetical order --- Test this is worthwhile RE: Switch in parser default branch.
 internal static class MtfSections
 {
+	public const char Comment = '#';
 	public const string Armour = "ARMOR";
 	public const string BaseChassisHeatSinks = "BASE CHASSIS HEAT SINKS";
 	public const string Capabilities = "CAPABILITIES";
 	public const string Chassis = "CHASSIS";
 	public const string ClanName = "CLANNAME";
-	public const char Comment = '#';
 	public const string Cockpit = "COCKPIT";
 	public const string Config = "CONFIG";
 	public const string Deployment = "DEPLOYMENT";
@@ -54,14 +53,14 @@ internal static class MtfSections
 		public const string LeftArm = "LA ARMOR";
 		public const string LeftLeg = "LL ARMOR";
 		public const string LeftTorso = "LT ARMOR";
+		public const string RearCentreTorso = "RTC ARMOR";
+		public const string RearLeftLeg = "RLL ARMOR";
+		public const string RearLeftTorso = "RTL ARMOR";
+		public const string RearRightLeg = "RRL ARMOR";
+		public const string RearRightTorso = "RTR ARMOR";
 		public const string RightArm = "RA ARMOR";
 		public const string RightLeg = "RL ARMOR";
-		public const string RearLeftLeg = "RLL ARMOR";
-		public const string RearRightLeg = "RRL ARMOR";
 		public const string RightTorso = "RT ARMOR";
-		public const string RearCentreTorso = "RTC ARMOR";
-		public const string RearLeftTorso = "RTL ARMOR";
-		public const string RearRightTorso = "RTR ARMOR";
 	}
 
 	public static class EquipmentLocation
