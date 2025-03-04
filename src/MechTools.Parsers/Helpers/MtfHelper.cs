@@ -241,7 +241,7 @@ public static class MtfHelper
 
 		// TODO: Test bound isn't too far along in chars.
 
-		return (chars[..bound].ToString().Trim(), chars[(bound + 1)..].Trim().ToString());
+		return (chars[..bound].Trim().ToString(), chars[(bound + 1)..].Trim().ToString());
 	}
 
 	public static string GetNotes(ReadOnlySpan<char> chars)
