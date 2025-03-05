@@ -30,3 +30,7 @@ Arbiter ARB-001 SecurityMech
 ### Empty Deployment
 
 Seraph C-SRP-O Caelestis
+
+### Bad Gyro
+
+Jenner JR7-C2

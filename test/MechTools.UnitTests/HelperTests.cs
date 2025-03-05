@@ -8,36 +8,22 @@ namespace MechTools.UnitTests;
 public sealed class HelperTests
 {
 	// TODO: GetArmourAtLocation
-	// TODO: GetBaseChassisHeatSinks
-	// TODO: GetCapabilities
-	// TODO: GetDeployment
 	// TODO: GetEjection
 	// TODO: GetEngine
 	// TODO: GetEquipmentAtLocation
-	// TODO: GetEra
 	// TODO: GetGenerator
-	// TODO: GetGyro
 	// TODO: GetHeatSinks
-	// TODO: GetHistory
 	// TODO: GetImageFile
-	// TODO: GetJumpMp
 	// TODO: GetLam
 	// TODO: GetManufacturer
-	// TODO: GetMass
 	// TODO: GetMotive
-	// TODO: GetMulId
 	// TODO: GetMyomer
 	// TODO: GetNoCrit
-	// TODO: GetNotes
-	// TODO: GetOverview
 	// TODO: GetPrimaryFactory
-	// TODO: GetRole
-	// TODO: GetRulesLevel
 	// TODO: GetStructure
 	// TODO: GetSystemManufacturer
 	// TODO: GetSystemMode
 	// TODO: GetTechBase
-	// TODO: GetWalkMp
 	// TODO: GetWeaponForWeaponList
 	// TODO: GetWeaponListCount
 
@@ -61,6 +47,55 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetArmourType(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetBaseChassisHeatSinks_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetBaseChassisHeatSinks(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" 10 ", 10)]
+	public void GetBaseChassisHeatSinks_ValidInput_Works(string input, int expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetBaseChassisHeatSinks(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetCapabilities_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetCapabilities(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Capabilities text here. ", "Capabilities text here.")]
+	public void GetCapabilities_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetCapabilities(input);
 
 		// Assert
 		result.ShouldBe(expected);
@@ -141,7 +176,6 @@ public sealed class HelperTests
 		// Assert
 		result.ShouldBe(expected);
 	}
-	// TODO: Expand on all the random splattering here.
 
 	[Theory]
 	[InlineData(null, "")]
@@ -187,6 +221,158 @@ public sealed class HelperTests
 
 	[Theory]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetDeployment_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetDeployment(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Deployment text here. ", "Deployment text here.")]
+	public void GetDeployment_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetDeployment(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetEra_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetEra(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" 2719 ", 2719)]
+	public void GetEra_ValidInput_Works(string input, int expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetEra(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetGyro_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetGyro(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" standard gyro ", Gyro.Standard)]
+	public void GetGyro_ValidInput_Works(string input, Gyro expected)
+	{
+		// TODO: Consider if the ` gyro` suffix should be optional.
+
+		// Arrange
+		// Act
+		var result = MtfHelper.GetGyro(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetHistory_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetHistory(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" History text here. ", "History text here.")]
+	public void GetHistory_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetHistory(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetJumpMp_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetJumpMp(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" 0 ", 0)]
+	[InlineData(" 1 ", 1)]
+	public void GetJumpMp_ValidInput_Works(string input, int expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetJumpMp(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData(" 0 ")]
+	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetMass_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetMass(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" 50 ", 50)]
+	public void GetMass_ValidInput_Works(string input, int expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetMass(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetModel_EmptyInput_ReturnsNull(string input)
 	{
 		// Arrange
@@ -205,6 +391,79 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetModel(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetMulId_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetMulId(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" 717 ", 717)]
+	public void GetMulId_ValidInput_Works(string input, int expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetMulId(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetNotes_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetNotes(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Notes text here. ", "Notes text here.")]
+	public void GetNotes_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetNotes(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetOverview_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetOverview(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Overview text here. ", "Overview text here.")]
+	public void GetOverview_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetOverview(input);
 
 		// Assert
 		result.ShouldBe(expected);
@@ -235,6 +494,56 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetRole_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetRole(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" sniper ", Role.Sniper)]
+	public void GetRole_ValidInput_Works(string input, Role expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetRole(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetRulesLevel_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetRulesLevel(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" standard ", RulesLevel.Standard)]
+	public void GetRulesLevel_ValidInput_Works(string input, RulesLevel expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetRulesLevel(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetSource_InvalidInput_Throws(string input)
 	{
@@ -259,6 +568,32 @@ public sealed class HelperTests
 		// Assert
 		type.ShouldBe(expectedType);
 		name.ShouldBe(expectedName);
+	}
+
+	[Theory]
+	[InlineData(" 0 ")]
+	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetWalkMp_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetWalkMp(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" 1 ", 1)]
+	public void GetWalkMp_ValidInput_Works(string input, int expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetWalkMp(input);
+
+		// Assert
+		result.ShouldBe(expected);
 	}
 
 	[Theory]

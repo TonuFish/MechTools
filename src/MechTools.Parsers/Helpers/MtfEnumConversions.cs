@@ -6,6 +6,8 @@ namespace MechTools.Parsers.Helpers;
 
 internal static class MtfEnumConversions
 {
+	// TODO: Naming.
+
 	public static BattleMechArmourLocation GetArmourLocation(ReadOnlySpan<char> chars)
 	{
 		// TODO: May not be necessarily at all.
@@ -127,6 +129,25 @@ internal static class MtfEnumConversions
 			"RL" => BattleMechEquipmentLocation.RightLeg,
 			"RT" => BattleMechEquipmentLocation.RightTorso,
 			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
+		};
+	}
+
+	public static Gyro GetGyro(ReadOnlySpan<char> chars)
+	{
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		// TODO: There's exactly one entry of a gyro without " Gyro" suffix... Sigh.
+
+		return upper switch
+		{
+			"Compact Gyro" => Gyro.Compact,
+			"Heavy Duty Gyro" => Gyro.HeavyDuty,
+			"None" => Gyro.None,
+			"Standard Gyro" => Gyro.Standard,
+			"Superheavy Gyro" => Gyro.SuperHeavyDuty,
+			"XL" or "XL Gyro" => Gyro.XL,
+			_ => ThrowHelper.ExceptionToSpecifyLater<Gyro>(),
 		};
 	}
 

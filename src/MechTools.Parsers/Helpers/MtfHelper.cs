@@ -157,10 +157,9 @@ public static class MtfHelper
 		return chars.Trim().ToString();
 	}
 
-	public static string GetGyro(ReadOnlySpan<char> chars)
+	public static Gyro GetGyro(ReadOnlySpan<char> chars)
 	{
-		// TODO: Enum?
-		return chars.Trim().ToString();
+		return MtfEnumConversions.GetGyro(chars.Trim());
 	}
 
 	public static string GetHeatSinks(ReadOnlySpan<char> chars)

@@ -67,7 +67,7 @@ internal static class Program
 		{
 			foreach (var line in File.ReadAllLines(filePath))
 			{
-				const string tag = "armor:";
+				const string tag = "gyro:";
 				var span = line.AsSpan().Trim();
 				if (span.Length > tag.Length && span.StartsWith(tag, StringComparison.OrdinalIgnoreCase))
 				{

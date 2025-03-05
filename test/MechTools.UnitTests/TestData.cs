@@ -12,6 +12,14 @@ internal static class TestData
 			"   ");
 	}
 
+	public static TheoryData<string> NotNonNegativeNumberStrings()
+	{
+		return new(
+			" a ",
+			" -1 ",
+			" 5.0 ");
+	}
+
 	#region Armour Type
 
 	public static TheoryData<string> InvalidArmourTypes()

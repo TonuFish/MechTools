@@ -155,7 +155,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetGyro(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetGyro(chars);
-		_lines.Add(value);
+		_lines.Add(value.ToString());
 	}
 
 	public void SetHeatSinks(ReadOnlySpan<char> chars)
