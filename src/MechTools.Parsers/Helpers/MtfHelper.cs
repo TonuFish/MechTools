@@ -439,9 +439,9 @@ public static class MtfHelper
 		_ = enumerator.MoveNext();
 		var slot = ParseSimpleNumber(chars[enumerator.Current]);
 		_ = enumerator.MoveNext();
-		var weapon = chars[enumerator.Current].Trim();
+		var weapon = chars[enumerator.Current].Trim().ToString();
 
-		return new(location, name.ToString(), slot, weapon.ToString());
+		return new(location, name.ToString(), slot, weapon);
 	}
 
 	private static EquipmentData GetAnnotatedEquipmentAtLocation(
