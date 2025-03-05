@@ -151,6 +151,19 @@ internal static class MtfEnumConversions
 		};
 	}
 
+	public static Lam GetLam(ReadOnlySpan<char> chars)
+	{
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"STANDARD" => Lam.Standard,
+			"BIMODAL" => Lam.Bimodal,
+			_ => ThrowHelper.ExceptionToSpecifyLater<Lam>(),
+		};
+	}
+
 	public static Role GetRole(ReadOnlySpan<char> chars)
 	{
 		Span<char> upper = (stackalloc char[64])[..chars.Length];

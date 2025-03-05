@@ -188,10 +188,10 @@ public static class MtfHelper
 		return ParseSimpleNumber(chars);
 	}
 
-	public static string GetLam(ReadOnlySpan<char> chars)
+	public static Lam GetLam(ReadOnlySpan<char> chars)
 	{
-		// TODO: Probably an enum - Only standard in existing files.
-		return chars.Trim().ToString();
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return MtfEnumConversions.GetLam(chars.Trim());
 	}
 
 	public static string GetManufacturer(ReadOnlySpan<char> chars)

@@ -185,7 +185,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetLam(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetLam(chars);
-		_lines.Add(value);
+		_lines.Add(value.ToString());
 	}
 
 	public void SetManufacturer(ReadOnlySpan<char> chars)

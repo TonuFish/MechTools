@@ -14,7 +14,6 @@ public sealed class HelperTests
 	// TODO: GetGenerator
 	// TODO: GetHeatSinks
 	// TODO: GetImageFile
-	// TODO: GetLam
 	// TODO: GetManufacturer
 	// TODO: GetMotive
 	// TODO: GetMyomer
@@ -340,6 +339,33 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetJumpMp(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetLam_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetLam(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" standard ", Lam.Standard)]
+	public void GetLam_ValidInput_Works(string input, Lam expected)
+	{
+		// TODO: Consider if the ` gyro` suffix should be optional.
+
+		// Arrange
+		// Act
+		var result = MtfHelper.GetLam(input);
 
 		// Assert
 		result.ShouldBe(expected);
