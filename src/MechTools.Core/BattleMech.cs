@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MechTools.Core.Enums;
+using System.Collections.Generic;
 
 namespace MechTools.Core;
 

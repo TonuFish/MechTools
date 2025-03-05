@@ -1,4 +1,4 @@
-﻿using MechTools.Core;
+﻿using MechTools.Core.Enums;
 using System;
 using System.Buffers;
 using System.IO;

@@ -1,4 +1,4 @@
-﻿namespace MechTools.Core;
+﻿namespace MechTools.Core.Enums;
 
 public enum BattleMechArmourLocation
 {

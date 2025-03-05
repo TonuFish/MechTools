@@ -1,3 +1,4 @@
+﻿using MechTools.Core.Enums;
 ﻿using MechTools.Parsers.Helpers;
 
 namespace MechTools.UnitTests;

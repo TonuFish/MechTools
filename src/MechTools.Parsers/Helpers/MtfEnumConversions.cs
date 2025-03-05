@@ -1,4 +1,4 @@
-﻿using MechTools.Core;
+﻿using MechTools.Core.Enums;
 using MechTools.Parsers.BattleMech;
 using System;
 
