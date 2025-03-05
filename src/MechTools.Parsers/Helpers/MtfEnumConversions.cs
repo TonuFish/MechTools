@@ -141,12 +141,12 @@ internal static class MtfEnumConversions
 
 		return upper switch
 		{
-			"Compact Gyro" => Gyro.Compact,
-			"Heavy Duty Gyro" => Gyro.HeavyDuty,
-			"None" => Gyro.None,
-			"Standard Gyro" => Gyro.Standard,
-			"Superheavy Gyro" => Gyro.SuperHeavyDuty,
-			"XL" or "XL Gyro" => Gyro.XL,
+			"COMPACT GYRO" => Gyro.Compact,
+			"HEAVY DUTY GYRO" => Gyro.HeavyDuty,
+			"NONE" => Gyro.None,
+			"STANDARD GYRO" => Gyro.Standard,
+			"SUPERHEAVY GYRO" => Gyro.SuperHeavyDuty,
+			"XL" or "XL GYRO" => Gyro.XL,
 			_ => ThrowHelper.ExceptionToSpecifyLater<Gyro>(),
 		};
 	}

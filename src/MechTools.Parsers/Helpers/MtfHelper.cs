@@ -39,6 +39,7 @@ public static class MtfHelper
 	{
 		// TODO: Enum-ify.
 		// Brackets = origin
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return (default, default);
 	}
 
@@ -50,6 +51,7 @@ public static class MtfHelper
 
 	public static string GetCapabilities(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
@@ -170,6 +172,7 @@ public static class MtfHelper
 
 	public static string GetHistory(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
@@ -199,7 +202,12 @@ public static class MtfHelper
 	public static int GetMass(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return ParseSimpleNumber(chars);
+		var mass = ParseSimpleNumber(chars);
+		if (mass < 1)
+		{
+			ThrowHelper.ExceptionToSpecifyLater();
+		}
+		return mass;
 	}
 
 	public static string? GetModel(ReadOnlySpan<char> chars)
@@ -245,11 +253,13 @@ public static class MtfHelper
 
 	public static string GetNotes(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static string GetOverview(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
@@ -338,7 +348,12 @@ public static class MtfHelper
 	public static int GetWalkMp(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return ParseSimpleNumber(chars);
+		var walkMp = ParseSimpleNumber(chars);
+		if (walkMp < 1)
+		{
+			ThrowHelper.ExceptionToSpecifyLater();
+		}
+		return walkMp;
 	}
 
 	public static WeaponListData GetWeaponForWeaponList(ReadOnlySpan<char> chars)

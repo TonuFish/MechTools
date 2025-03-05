@@ -532,7 +532,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData(" standard ", RulesLevel.Standard)]
+	[InlineData(" 2 ", RulesLevel.Standard)]
 	public void GetRulesLevel_ValidInput_Works(string input, RulesLevel expected)
 	{
 		// Arrange
