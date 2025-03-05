@@ -43,7 +43,7 @@ public sealed class RunParserTests
 			await using var file = File.OpenRead(filePath);
 			try
 			{
-				MtfBattleMechParser<List<string>> parser = new(new RawBattleMechBuilder());
+				using MtfBattleMechParser<List<string>> parser = new(new RawBattleMechBuilder());
 				var lines = await parser.ParseAsync(file, CancellationToken.None);
 				var qqq = string.Join('\n', lines!);
 			}

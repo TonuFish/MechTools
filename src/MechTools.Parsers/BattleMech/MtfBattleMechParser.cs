@@ -445,6 +445,8 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 
 	private void Dispose(bool disposing)
 	{
+		// TODO: Don't dispose for this... It's clunkier for the user and doesn't work with the eventual STJ-style pattern.
+
 		if (!_disposed)
 		{
 			if (disposing)

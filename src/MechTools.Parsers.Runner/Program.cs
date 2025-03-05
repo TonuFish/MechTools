@@ -42,7 +42,7 @@ internal static class Program
 			await using var file = File.OpenRead(filePath);
 			try
 			{
-				MtfBattleMechParser<List<string>> parser = new(new RawBattleMechBuilder());
+				using MtfBattleMechParser<List<string>> parser = new(new RawBattleMechBuilder());
 				var lines = await parser.ParseAsync(file, CancellationToken.None).ConfigureAwait(false);
 			}
 			catch (ImExcitedException)
