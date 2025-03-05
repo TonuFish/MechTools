@@ -24,7 +24,6 @@ public sealed class HelperTests
 	// TODO: GetSystemMode
 	// TODO: GetTechBase
 	// TODO: GetWeaponForWeaponList
-	// TODO: GetWeaponListCount
 
 	[Theory]
 	[MemberData(nameof(TestData.InvalidArmourTypes), MemberType = typeof(TestData))]
@@ -617,6 +616,31 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetWalkMp(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetWeaponListCount_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetWeaponListCount(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" 4 ", 4)]
+	public void GetWeaponListCount_ValidInput_Works(string input, int expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetWeaponListCount(input);
 
 		// Assert
 		result.ShouldBe(expected);
