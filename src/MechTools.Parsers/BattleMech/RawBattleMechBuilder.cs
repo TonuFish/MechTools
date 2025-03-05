@@ -2,12 +2,13 @@
 using MechTools.Parsers.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace MechTools.Parsers.BattleMech;
 
 internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 {
-	private readonly List<string> _lines = new(50); // TODO: Better number.
+	private readonly List<string> _lines = new(capacity: 190); // TODO: Better number.
 
 	public void AddComment(ReadOnlySpan<char> chars)
 	{
@@ -18,7 +19,27 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void AddEquipmentAtLocation(ReadOnlySpan<char> chars, BattleMechEquipmentLocation location)
 	{
 		(var name, var isOmniPod, var isRear, var isTurret) = MtfHelper.GetEquipmentAtLocation(chars);
-		_lines.Add($"{name}{(isRear ? " (R)" : "")}{(isTurret ? " (T)" : "")}{(isOmniPod ? " (OMNIPOD)}" : "")}");
+
+		if (!isOmniPod && !isRear && !isTurret)
+		{
+			_lines.Add(name);
+			return;
+		}
+
+		StringBuilder sb = new(value: name, capacity: name.Length + 18);
+		if (isRear)
+		{
+			sb.Append(" (R)");
+		}
+		if (isTurret)
+		{
+			sb.Append(" (T)");
+		}
+		if (isOmniPod)
+		{
+			sb.Append(" (OMNIPOD)");
+		}
+		_lines.Add(sb.ToString());
 	}
 
 	public void AddQuirk(ReadOnlySpan<char> chars)
