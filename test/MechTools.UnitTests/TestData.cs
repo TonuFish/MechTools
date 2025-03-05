@@ -1,5 +1,5 @@
 ﻿using MechTools.Core.Enums;
-﻿using MechTools.Parsers.Helpers;
+using MechTools.Parsers.Helpers;
 
 namespace MechTools.UnitTests;
 
@@ -11,6 +11,44 @@ internal static class TestData
 			"",
 			"   ");
 	}
+
+	#region Armour Type
+
+	public static TheoryData<string> InvalidArmourTypes()
+	{
+		return new(
+			// Non-enum value
+			" OtherValue ",
+			// Unclosed brackets
+			" Hardened (IS ",
+			// Unhandled edge case - Trailing origin
+			" Reflective IS (Inner Sphere)");
+	}
+
+	public static TheoryData<string, (ArmourType Armour, Origin? Origin)> ValidArmourTypes()
+	{
+		return new()
+		{
+			// Basic case
+			{ " Standard ", (ArmourType.Standard, null) },
+			// Abbreviated case
+			{ " Ballistic-Reinforced (IS) ", (ArmourType.BallisticReinforced, Origin.InnerSphere) },
+			// Concatenated case
+			{ " Heavy Ferro-Fibrous(Inner Sphere) ", (ArmourType.HeavyFerroFibrous, Origin.InnerSphere) },
+			// Armour case
+			{ " Standard Armor (Clan)", (ArmourType.Standard, Origin.Clan) },
+			// Edge case - Malformed IS reflective
+			{ " IS Reflective(Inner Sphere) ", (ArmourType.Reflective, Origin.InnerSphere) },
+			// Hypothetical edge case - Malformed Clan FL
+			{ " Clan Ferro-Lamellor(Clan) ", (ArmourType.FerroLamellor, Origin.Clan) },
+			// Edge case - Prototype FF
+			{ " Ferro-Fibrous Prototype(Inner Sphere) ", (ArmourType.PrototypeFerroFibrous, Origin.InnerSphere) },
+			// Edge case - (Unknown Technology Base)
+			{ " Standard((Unknown Technology Base)) ", (ArmourType.Standard, Origin.Unknown) },
+		};
+	}
+
+	#endregion Armour Type
 
 	#region Weapon Quirks
 
@@ -35,7 +73,7 @@ internal static class TestData
 	{
 		return new()
 		{
-			{ " jettison_capable : RA : 4 : CLHAG30 ", new(Core.BattleMechEquipmentLocation.RightArm, "jettison_capable", 4, "CLHAG30") },
+			{ " jettison_capable : RA : 4 : CLHAG30 ", new(BattleMechEquipmentLocation.RightArm, "jettison_capable", 4, "CLHAG30") },
 		};
 	}
 

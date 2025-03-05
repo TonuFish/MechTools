@@ -61,8 +61,8 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetArmourType(ReadOnlySpan<char> chars)
 	{
-		var value = MtfHelper.GetArmourType(chars);
-		_lines.Add(value);
+		(var armour, var origin) = MtfHelper.GetArmourType(chars);
+		_lines.Add($"{armour}{(origin.HasValue ? $" ({origin})" : "")}");
 	}
 
 	public void SetBaseChassisHeatSinks(ReadOnlySpan<char> chars)

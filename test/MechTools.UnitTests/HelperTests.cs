@@ -8,7 +8,6 @@ namespace MechTools.UnitTests;
 public sealed class HelperTests
 {
 	// TODO: GetArmourAtLocation
-	// TODO: GetArmourType
 	// TODO: GetBaseChassisHeatSinks
 	// TODO: GetCapabilities
 	// TODO: GetDeployment
@@ -41,6 +40,31 @@ public sealed class HelperTests
 	// TODO: GetWalkMp
 	// TODO: GetWeaponForWeaponList
 	// TODO: GetWeaponListCount
+
+	[Theory]
+	[MemberData(nameof(TestData.InvalidArmourTypes), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetArmourType_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetArmourType(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidArmourTypes), MemberType = typeof(TestData))]
+	public void GetArmourType_ValidInput_Works(string input, (ArmourType Armour, Origin? Origin) expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetArmourType(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
 
 	[Theory]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]

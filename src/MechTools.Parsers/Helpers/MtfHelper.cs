@@ -35,11 +35,11 @@ public static class MtfHelper
 		return (name, value);
 	}
 
-	public static string GetArmourType(ReadOnlySpan<char> chars)
+	public static (ArmourType Armour, Origin? Origin) GetArmourType(ReadOnlySpan<char> chars)
 	{
 		// TODO: Enum-ify.
 		// Brackets = origin
-		return chars.Trim().ToString();
+		return (default, default);
 	}
 
 	public static int GetBaseChassisHeatSinks(ReadOnlySpan<char> chars)
