@@ -15,8 +15,6 @@ public sealed class HelperTests
 	// TODO: GetNoCrit
 	// TODO: GetPrimaryFactory
 	// TODO: GetStructure
-	// TODO: GetSystemManufacturer
-	// TODO: GetSystemMode
 	// TODO: GetWeaponForWeaponList
 
 	[Theory]
@@ -707,6 +705,56 @@ public sealed class HelperTests
 		// Assert
 		type.ShouldBe(expectedType);
 		name.ShouldBe(expectedName);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.InvalidSpecificSystemData), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetSystemManufacturer_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetSystemManufacturer(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidSpecificSystemData), MemberType = typeof(TestData))]
+	public void GetSystemManufacturer_ValidInput_Works(string input, SpecificSystemData expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetSystemManufacturer(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.InvalidSpecificSystemData), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetSystemModel_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetSystemModel(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidSpecificSystemData), MemberType = typeof(TestData))]
+	public void GetSystemModel_ValidInput_Works(string input, SpecificSystemData expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetSystemModel(input);
+
+		// Assert
+		result.ShouldBe(expected);
 	}
 
 	[Theory]

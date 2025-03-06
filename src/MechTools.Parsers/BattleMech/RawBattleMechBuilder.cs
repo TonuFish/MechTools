@@ -283,14 +283,14 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetSystemManufacturer(ReadOnlySpan<char> chars)
 	{
-		(var part, var name) = MtfHelper.GetSystemManufacturer(chars);
-		_lines.Add($"{part}:{name}");
+		(var specificSystem, var name) = MtfHelper.GetSystemManufacturer(chars);
+		_lines.Add($"{specificSystem}:{name}");
 	}
 
-	public void SetSystemMode(ReadOnlySpan<char> chars)
+	public void SetSystemModel(ReadOnlySpan<char> chars)
 	{
-		(var part, var name) = MtfHelper.GetSystemMode(chars);
-		_lines.Add($"{part}:{name}");
+		(var specificSystem, var name) = MtfHelper.GetSystemModel(chars);
+		_lines.Add($"{specificSystem}:{name}");
 	}
 
 	public void SetTechBase(ReadOnlySpan<char> chars)

@@ -45,7 +45,7 @@ public interface IBattleMechBuilder
 	public void SetSource(ReadOnlySpan<char> chars);
 	public void SetStructure(ReadOnlySpan<char> chars);
 	public void SetSystemManufacturer(ReadOnlySpan<char> chars);
-	public void SetSystemMode(ReadOnlySpan<char> chars);
+	public void SetSystemModel(ReadOnlySpan<char> chars);
 	public void SetTechBase(ReadOnlySpan<char> chars);
 	public void SetWalkMp(ReadOnlySpan<char> chars);
 	public void SetWeaponListCount(ReadOnlySpan<char> chars);

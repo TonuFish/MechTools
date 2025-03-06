@@ -332,8 +332,9 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			case MtfSections.SystemManufacturer:
 				_builder.SetSystemManufacturer(content);
 				break;
-			case MtfSections.SystemMode:
-				_builder.SetSystemMode(content);
+			case MtfSections.SystemModel:
+			case MtfSections.SystemModelTypo:
+				_builder.SetSystemModel(content);
 				break;
 			case MtfSections.TechBase:
 				_builder.SetTechBase(content);

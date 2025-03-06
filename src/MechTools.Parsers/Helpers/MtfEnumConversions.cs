@@ -233,6 +233,23 @@ internal static class MtfEnumConversions
 		};
 	}
 
+	public static SpecificSystem GetSpecificSystem(ReadOnlySpan<char> chars)
+	{
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"ARMOR" => SpecificSystem.Armour,
+			"CHASSIS" => SpecificSystem.Chassis,
+			"COMMUNICATIONS" => SpecificSystem.Communications,
+			"ENGINE" => SpecificSystem.Engine,
+			"JUMPJET" => SpecificSystem.JumpJet,
+			"TARGETING" => SpecificSystem.Targeting,
+			_ => ThrowHelper.ExceptionToSpecifyLater<SpecificSystem>(),
+		};
+	}
+
 	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
 	{
 		Span<char> upper = (stackalloc char[64])[..chars.Length];

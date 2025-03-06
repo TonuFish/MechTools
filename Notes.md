@@ -3,6 +3,7 @@
 ## Notes
 
 model:(Bounty Hunter)
+`systemmode:` should be `systemmodel:`
 
 ## Data Entry Notes
 

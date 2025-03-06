@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 namespace MechTools.Parsers.Helpers;
 
 // TODO: Still have to decide if this is throw||try.
+// TODO: Consider trimming pattern here, EG: GetWeaponQuirk
 public static class MtfHelper
 {
 	public static (string? Name, int Value) GetArmourAtLocation(ReadOnlySpan<char> chars)
@@ -315,32 +316,16 @@ public static class MtfHelper
 		return chars.Trim().ToString();
 	}
 
-	public static (string Part, string Name) GetSystemManufacturer(ReadOnlySpan<char> chars) //! TODO
+	public static SpecificSystemData GetSystemManufacturer(ReadOnlySpan<char> chars)
 	{
-		// TODO: Enum part? `^systemmanufacturer:[^:]+:[^:]+$` -- Not sure if Name is allowed to have `:`
-		var bound = chars.IndexOf(':');
-		if (bound == -1)
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		// TODO: Test bound isn't too far along in chars.
-
-		return (chars[..bound].Trim().ToString(), chars[(bound + 1)..].Trim().ToString());
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return GetSpecificSystem(chars.Trim());
 	}
 
-	public static (string Part, string Name) GetSystemMode(ReadOnlySpan<char> chars) //! TODO
+	public static SpecificSystemData GetSystemModel(ReadOnlySpan<char> chars)
 	{
-		// TODO: Needs the same investigate as SystemManufacturer - seems to have same format.
-		var bound = chars.IndexOf(':');
-		if (bound == -1)
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
-		// TODO: Test bound isn't too far along in chars.
-
-		return (chars[..bound].Trim().ToString(), chars[(bound + 1)..].Trim().ToString());
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return GetSpecificSystem(chars.Trim());
 	}
 
 	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
@@ -482,6 +467,25 @@ public static class MtfHelper
 		// TODO: Turret ` (T)`
 
 		throw new NotImplementedException();
+	}
+
+	private static SpecificSystemData GetSpecificSystem(ReadOnlySpan<char> trimmedChars)
+	{
+		const char del = ':';
+
+		var bound = trimmedChars.IndexOf(del);
+		if (bound < 1 || bound + 1 == trimmedChars.Length)
+		{
+			ThrowHelper.ExceptionToSpecifyLater();
+		}
+
+		var nameSlice = trimmedChars[(bound + 1)..].TrimStart();
+		if (nameSlice.IsWhiteSpace())
+		{
+			ThrowHelper.ExceptionToSpecifyLater();
+		}
+
+		return new(nameSlice.ToString(), MtfEnumConversions.GetSpecificSystem(trimmedChars[..bound].TrimEnd()));
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

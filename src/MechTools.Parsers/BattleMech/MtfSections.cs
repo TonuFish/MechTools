@@ -38,7 +38,8 @@ internal static class MtfSections
 	public const string Source = "SOURCE";
 	public const string Structure = "STRUCTURE";
 	public const string SystemManufacturer = "SYSTEMMANUFACTURER";
-	public const string SystemMode = "SYSTEMMODE";
+	public const string SystemModel = "SYSTEMMODEL";
+	public const string SystemModelTypo = "SYSTEMMODE";
 	public const string TechBase = "TECHBASE";
 	public const string WalkMp = "WALK MP";
 	public const string WeaponQuirk = "WEAPONQUIRK";

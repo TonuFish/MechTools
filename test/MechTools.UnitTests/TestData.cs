@@ -81,6 +81,33 @@ internal static class TestData
 
 	#endregion Myomer
 
+	#region Specific System
+
+	// Covers SystemManufacturer and SystemModel as they're effectively identical.
+
+	public static TheoryData<string> InvalidSpecificSystemData()
+	{
+		return new(
+			// No delimeter
+			" chassis Hollis Mark 1A ",
+			// Leading delimeter
+			" : chassis : Hollis Mark 1A ",
+			// Invalid specific system
+			" : crab : Hollis Mark 1A ",
+			// No name
+			" chassis :");
+	}
+
+	public static TheoryData<string, SpecificSystemData> ValidSpecificSystemData()
+	{
+		return new()
+		{
+			{ " chassis : Hollis Mark 1A ", new("Hollis Mark 1A", SpecificSystem.Chassis) },
+		};
+	}
+
+	#endregion Specific System
+
 	#region Weapon Quirks
 
 	public static TheoryData<string> InvalidWeaponQuirks()
