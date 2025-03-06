@@ -10,7 +10,6 @@ public sealed class HelperTests
 	// TODO: GetArmourAtLocation
 	// TODO: GetEngine
 	// TODO: GetEquipmentAtLocation
-	// TODO: GetGenerator
 	// TODO: GetHeatSinks
 	// TODO: GetImageFile
 	// TODO: GetManufacturer
@@ -281,6 +280,20 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetEra(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData(null, "")]
+	[InlineData("   ", "   ")]
+	[InlineData(" This is a generator signature. ", " This is a generator signature. ")]
+	public void GetGenerator_AnyInput_Works(string? input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetGenerator(input);
 
 		// Assert
 		result.ShouldBe(expected);

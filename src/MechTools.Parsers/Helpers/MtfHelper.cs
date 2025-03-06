@@ -156,7 +156,7 @@ public static class MtfHelper
 	public static string GetGenerator(ReadOnlySpan<char> chars)
 	{
 		// TODO: More parsing and better return object - Special handle the popular generators
-		return chars.Trim().ToString();
+		return chars.ToString();
 	}
 
 	public static Gyro GetGyro(ReadOnlySpan<char> chars)
