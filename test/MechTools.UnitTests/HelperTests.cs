@@ -11,7 +11,6 @@ public sealed class HelperTests
 	// TODO: GetEngine
 	// TODO: GetEquipmentAtLocation
 	// TODO: GetHeatSinks
-	// TODO: GetImageFile
 	// TODO: GetManufacturer
 	// TODO: GetNoCrit
 	// TODO: GetPrimaryFactory
@@ -171,9 +170,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData(null, "")]
-	[InlineData("   ", "   ")]
-	[InlineData(" This is a comment. ", " This is a comment. ")]
+	[MemberData(nameof(TestData.AllowAnyTextStrings), MemberType = typeof(TestData))]
 	public void GetComment_AnyInput_Works(string? input, string expected)
 	{
 		// Arrange
@@ -286,9 +283,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData(null, "")]
-	[InlineData("   ", "   ")]
-	[InlineData(" This is a generator signature. ", " This is a generator signature. ")]
+[MemberData(nameof(TestData.AllowAnyTextStrings), MemberType = typeof(TestData))]
 	public void GetGenerator_AnyInput_Works(string? input, string expected)
 	{
 		// Arrange
@@ -369,6 +364,18 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetHistory(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+[MemberData(nameof(TestData.AllowAnyTextStrings), MemberType = typeof(TestData))]
+	public void GetImageFile_AnyInput_Works(string? input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetImageFile(input);
 
 		// Assert
 		result.ShouldBe(expected);

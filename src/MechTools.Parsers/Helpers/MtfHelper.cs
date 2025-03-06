@@ -184,8 +184,7 @@ public static class MtfHelper
 
 	public static string GetImageFile(ReadOnlySpan<char> chars)
 	{
-		// TODO: Maybe some validation? Idk, doesn't feel worth.
-		return chars.Trim().ToString();
+		return chars.ToString();
 	}
 
 	public static int GetJumpMp(ReadOnlySpan<char> chars)
