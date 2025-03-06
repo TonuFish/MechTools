@@ -344,10 +344,10 @@ public static class MtfHelper
 		return (chars[..bound].Trim().ToString(), chars[(bound + 1)..].Trim().ToString());
 	}
 
-	public static string GetTechBase(ReadOnlySpan<char> chars)
+	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
 	{
-		// TODO: Enum.
-		return chars.Trim().ToString();
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return MtfEnumConversions.GetTechBase(chars.Trim());
 	}
 
 	public static int GetWalkMp(ReadOnlySpan<char> chars)

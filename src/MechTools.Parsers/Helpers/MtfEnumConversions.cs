@@ -220,6 +220,21 @@ internal static class MtfEnumConversions
 		};
 	}
 
+	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
+	{
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"CLAN" => TechBase.Clan,
+			"INNER SPHERE" => TechBase.InnerSphere,
+			"MIXED(CLAN CHASSIS)" => TechBase.MixedClanChassis,
+			"MIXED(IS CHASSIS)" => TechBase.MixedInnerSphereChassis,
+			_ => ThrowHelper.ExceptionToSpecifyLater<TechBase>(),
+		};
+	}
+
 	private static Cockpit GetShortCockpit(this ReadOnlySpan<char> upper)
 	{
 		// already uppercase.

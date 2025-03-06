@@ -296,7 +296,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetTechBase(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetTechBase(chars);
-		_lines.Add(value);
+		_lines.Add(value.ToString());
 	}
 
 	public void SetWalkMp(ReadOnlySpan<char> chars)

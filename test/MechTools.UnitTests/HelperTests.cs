@@ -20,7 +20,6 @@ public sealed class HelperTests
 	// TODO: GetStructure
 	// TODO: GetSystemManufacturer
 	// TODO: GetSystemMode
-	// TODO: GetTechBase
 	// TODO: GetWeaponForWeaponList
 
 	[Theory]
@@ -664,6 +663,31 @@ public sealed class HelperTests
 		// Assert
 		type.ShouldBe(expectedType);
 		name.ShouldBe(expectedName);
+	}
+
+	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetTechBase_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetTechBase(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Inner Sphere ", TechBase.InnerSphere)]
+	public void GetTechBase_ValidInput_Works(string input, TechBase expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetTechBase(input);
+
+		// Assert
+		result.ShouldBe(expected);
 	}
 
 	[Theory]
