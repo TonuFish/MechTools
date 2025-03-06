@@ -295,6 +295,30 @@ public sealed class HelperTests
 
 	[Theory]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetHeatSinkKit_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetHeatSinkKit(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" RISC Heat Sink Override Kit ", "RISC Heat Sink Override Kit")]
+	public void GetHeatSinkKit_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetHeatSinkKit(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetHistory_InvalidInput_Throws(string input)
 	{
 		// Arrange

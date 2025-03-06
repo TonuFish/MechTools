@@ -164,6 +164,11 @@ public static class MtfHelper
 		return MtfEnumConversions.GetGyro(chars.Trim());
 	}
 
+	public static string GetHeatSinkKit(ReadOnlySpan<char> chars)
+	{
+		return chars.Trim().ToString();
+	}
+
 	public static string GetHeatSinks(ReadOnlySpan<char> chars)
 	{
 		// TODO: Enum ([IS|Clan]? Single, [IS|Clan]? Double, Laser, Compact)

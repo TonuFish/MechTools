@@ -158,6 +158,12 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 		_lines.Add(value.ToString());
 	}
 
+	public void SetHeatSinkKit(ReadOnlySpan<char> chars)
+	{
+		var value = MtfHelper.GetHeatSinkKit(chars);
+		_lines.Add(value);
+	}
+
 	public void SetHeatSinks(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetHeatSinks(chars);

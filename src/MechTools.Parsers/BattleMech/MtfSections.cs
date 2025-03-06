@@ -16,6 +16,7 @@ internal static class MtfSections
 	public const string Era = "ERA";
 	public const string Generator = "GENERATOR";
 	public const string Gyro = "GYRO";
+	public const string HeatSinkKit = "HEAT SINK KIT";
 	public const string HeatSinks = "HEAT SINKS";
 	public const string History = "HISTORY";
 	public const string ImageFile = "IMAGEFILE";

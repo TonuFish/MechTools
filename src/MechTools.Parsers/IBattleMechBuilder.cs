@@ -24,6 +24,7 @@ public interface IBattleMechBuilder
 	public void SetEra(ReadOnlySpan<char> chars);
 	public void SetGenerator(ReadOnlySpan<char> chars);
 	public void SetGyro(ReadOnlySpan<char> chars);
+	public void SetHeatSinkKit(ReadOnlySpan<char> chars);
 	public void SetHeatSinks(ReadOnlySpan<char> chars);
 	public void SetHistory(ReadOnlySpan<char> chars);
 	public void SetImageFile(ReadOnlySpan<char> chars);

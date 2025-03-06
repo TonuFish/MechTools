@@ -266,6 +266,9 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			case MtfSections.Gyro:
 				_builder.SetGyro(content);
 				break;
+			case MtfSections.HeatSinkKit:
+				_builder.SetHeatSinkKit(content);
+				break;
 			case MtfSections.HeatSinks:
 				_builder.SetHeatSinks(content);
 				break;
