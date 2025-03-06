@@ -35,7 +35,7 @@ public static class MtfHelper
 		return (name, value);
 	}
 
-	public static (ArmourType Armour, Origin? Origin) GetArmourType(ReadOnlySpan<char> chars)
+	public static (Armour Armour, Origin? Origin) GetArmourType(ReadOnlySpan<char> chars)
 	{
 		// TODO: Enum-ify.
 		// Brackets = origin

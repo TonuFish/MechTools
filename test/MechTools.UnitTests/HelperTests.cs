@@ -34,7 +34,7 @@ public sealed class HelperTests
 
 	[Theory]
 	[MemberData(nameof(TestData.ValidArmourTypes), MemberType = typeof(TestData))]
-	public void GetArmourType_ValidInput_Works(string input, (ArmourType Armour, Origin? Origin) expected)
+	public void GetArmourType_ValidInput_Works(string input, (Armour Armour, Origin? Origin) expected)
 	{
 		// Arrange
 		// Act

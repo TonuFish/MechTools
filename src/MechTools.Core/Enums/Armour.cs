@@ -1,6 +1,6 @@
 ﻿namespace MechTools.Core.Enums;
 
-public enum ArmourType
+public enum Armour
 {
 	AntiPenetrativeAblation,
 	BallisticReinforced,

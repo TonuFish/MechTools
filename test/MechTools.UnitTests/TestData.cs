@@ -43,26 +43,26 @@ internal static class TestData
 			" Reflective IS (Inner Sphere)");
 	}
 
-	public static TheoryData<string, (ArmourType Armour, Origin? Origin)> ValidArmourTypes()
+	public static TheoryData<string, (Armour Armour, Origin? Origin)> ValidArmourTypes()
 	{
 		return new()
 		{
 			// Basic case
-			{ " Standard ", (ArmourType.Standard, null) },
+			{ " Standard ", (Armour.Standard, null) },
 			// Abbreviated case
-			{ " Ballistic-Reinforced (IS) ", (ArmourType.BallisticReinforced, Origin.InnerSphere) },
+			{ " Ballistic-Reinforced (IS) ", (Armour.BallisticReinforced, Origin.InnerSphere) },
 			// Concatenated case
-			{ " Heavy Ferro-Fibrous(Inner Sphere) ", (ArmourType.HeavyFerroFibrous, Origin.InnerSphere) },
+			{ " Heavy Ferro-Fibrous(Inner Sphere) ", (Armour.HeavyFerroFibrous, Origin.InnerSphere) },
 			// Armour case
-			{ " Standard Armor (Clan)", (ArmourType.Standard, Origin.Clan) },
+			{ " Standard Armor (Clan)", (Armour.Standard, Origin.Clan) },
 			// Edge case - Malformed IS reflective
-			{ " IS Reflective(Inner Sphere) ", (ArmourType.Reflective, Origin.InnerSphere) },
+			{ " IS Reflective(Inner Sphere) ", (Armour.Reflective, Origin.InnerSphere) },
 			// Hypothetical edge case - Malformed Clan FL
-			{ " Clan Ferro-Lamellor(Clan) ", (ArmourType.FerroLamellor, Origin.Clan) },
+			{ " Clan Ferro-Lamellor(Clan) ", (Armour.FerroLamellor, Origin.Clan) },
 			// Edge case - Prototype FF
-			{ " Ferro-Fibrous Prototype(Inner Sphere) ", (ArmourType.PrototypeFerroFibrous, Origin.InnerSphere) },
+			{ " Ferro-Fibrous Prototype(Inner Sphere) ", (Armour.PrototypeFerroFibrous, Origin.InnerSphere) },
 			// Edge case - (Unknown Technology Base)
-			{ " Standard((Unknown Technology Base)) ", (ArmourType.Standard, Origin.Unknown) },
+			{ " Standard((Unknown Technology Base)) ", (Armour.Standard, Origin.Unknown) },
 		};
 	}
 
