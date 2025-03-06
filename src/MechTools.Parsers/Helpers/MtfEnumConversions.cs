@@ -166,6 +166,19 @@ internal static class MtfEnumConversions
 		};
 	}
 
+	public static Motive GetMotive(ReadOnlySpan<char> chars)
+	{
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"TRACK" => Motive.Track,
+			"WHEEL" => Motive.Wheel,
+			_ => ThrowHelper.ExceptionToSpecifyLater<Motive>(),
+		};
+	}
+
 	public static Myomer GetMyomer(ReadOnlySpan<char> chars)
 	{
 		// TODO: Decide how to handle known invalid values.

@@ -211,14 +211,14 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 		var value = MtfHelper.GetModel(chars);
 		if (value is not null)
 		{
-		_lines.Add(value);
-	}
+			_lines.Add(value);
+		}
 	}
 
 	public void SetMotive(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetMotive(chars);
-		_lines.Add(value);
+		_lines.Add(value.ToString());
 	}
 
 	public void SetMulId(ReadOnlySpan<char> chars)

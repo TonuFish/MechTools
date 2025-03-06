@@ -14,7 +14,6 @@ public sealed class HelperTests
 	// TODO: GetHeatSinks
 	// TODO: GetImageFile
 	// TODO: GetManufacturer
-	// TODO: GetMotive
 	// TODO: GetNoCrit
 	// TODO: GetPrimaryFactory
 	// TODO: GetStructure
@@ -461,6 +460,31 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetModel(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetMotive_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetMotive(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Wheel ", Motive.Wheel)]
+	public void GetMotive_ValidInput_Works(string input, Motive expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetMotive(input);
 
 		// Assert
 		result.ShouldBe(expected);

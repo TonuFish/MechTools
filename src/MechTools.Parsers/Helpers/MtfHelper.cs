@@ -221,10 +221,10 @@ public static class MtfHelper
 		return chars.IsWhiteSpace() ? null : chars.Trim().ToString();
 	}
 
-	public static string GetMotive(ReadOnlySpan<char> chars)
+	public static Motive GetMotive(ReadOnlySpan<char> chars)
 	{
-		// TODO: enum, Track || Wheel
-		return chars.Trim().ToString();
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return MtfEnumConversions.GetMotive(chars.Trim());
 	}
 
 	public static int GetMulId(ReadOnlySpan<char> chars)
