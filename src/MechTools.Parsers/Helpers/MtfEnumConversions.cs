@@ -11,8 +11,10 @@ internal static class MtfEnumConversions
 	public static BattleMechArmourLocation GetArmourLocation(ReadOnlySpan<char> chars)
 	{
 		// TODO: May not be necessarily at all.
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
 
-		return chars switch
+		return upper switch
 		{
 			MtfSections.ArmourLocation.CentreLeg => BattleMechArmourLocation.CentreLeg,
 			MtfSections.ArmourLocation.CentreTorso => BattleMechArmourLocation.CentreTorso,
