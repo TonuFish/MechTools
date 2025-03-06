@@ -111,7 +111,7 @@ public static class MtfHelper
 
 	public static string GetEjection(ReadOnlySpan<char> chars)
 	{
-		// TODO: bool - `Full Head Ejection System` IC or not.
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
@@ -166,6 +166,7 @@ public static class MtfHelper
 
 	public static string GetHeatSinkKit(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 

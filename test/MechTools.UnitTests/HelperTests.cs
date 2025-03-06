@@ -8,7 +8,6 @@ namespace MechTools.UnitTests;
 public sealed class HelperTests
 {
 	// TODO: GetArmourAtLocation
-	// TODO: GetEjection
 	// TODO: GetEngine
 	// TODO: GetEquipmentAtLocation
 	// TODO: GetGenerator
@@ -236,6 +235,30 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetDeployment(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetEjection_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetEjection(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Full Head Ejection System ", "Full Head Ejection System")]
+	public void GetEjection_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetEjection(input);
 
 		// Assert
 		result.ShouldBe(expected);
