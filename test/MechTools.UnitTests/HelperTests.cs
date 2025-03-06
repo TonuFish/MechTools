@@ -11,9 +11,7 @@ public sealed class HelperTests
 	// TODO: GetEngine
 	// TODO: GetEquipmentAtLocation
 	// TODO: GetHeatSinks
-	// TODO: GetManufacturer
 	// TODO: GetNoCrit
-	// TODO: GetPrimaryFactory
 	// TODO: GetStructure
 	// TODO: GetWeaponForWeaponList
 
@@ -433,6 +431,30 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetManufacturer_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetManufacturer(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Cosara Weaponries ", "Cosara Weaponries")]
+	public void GetManufacturer_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetManufacturer(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
 	[InlineData(" 0 ")]
 	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
@@ -601,6 +623,30 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetOverview(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetPrimaryFactory_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetPrimaryFactory(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Northwind ", "Northwind")]
+	public void GetPrimaryFactory_ValidInput_Works(string input, string expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetPrimaryFactory(input);
 
 		// Assert
 		result.ShouldBe(expected);

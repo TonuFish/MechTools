@@ -202,6 +202,7 @@ public static class MtfHelper
 
 	public static string GetManufacturer(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
@@ -270,6 +271,7 @@ public static class MtfHelper
 
 	public static string GetPrimaryFactory(ReadOnlySpan<char> chars)
 	{
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
