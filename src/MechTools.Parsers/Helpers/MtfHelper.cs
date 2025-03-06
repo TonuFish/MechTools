@@ -233,10 +233,9 @@ public static class MtfHelper
 		return ParseSimpleNumber(chars);
 	}
 
-	public static string GetMyomer(ReadOnlySpan<char> chars)
+	public static Myomer GetMyomer(ReadOnlySpan<char> chars)
 	{
-		// TODO: Kinda enum, kinda freeform :\
-		return chars.Trim().ToString();
+		return MtfEnumConversions.GetMyomer(chars.Trim());
 	}
 
 	public static (string Name, string Value) GetNoCrit(ReadOnlySpan<char> chars) //! TODO

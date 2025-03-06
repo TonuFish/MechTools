@@ -58,6 +58,19 @@ internal static class TestData
 
 	#endregion Armour Type
 
+	#region Myomer
+
+	public static TheoryData<string> KnownLegacyMyomerStrings()
+	{
+		// Legacy values found in mtf files
+		return new(
+			"CLMASC",
+			"ISMASC",
+			"MASC");
+	}
+
+	#endregion Myomer
+
 	#region Weapon Quirks
 
 	public static TheoryData<string> InvalidWeaponQuirks()

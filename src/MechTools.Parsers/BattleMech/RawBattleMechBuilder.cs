@@ -230,7 +230,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetMyomer(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetMyomer(chars);
-		_lines.Add(value);
+		_lines.Add(value.ToString());
 	}
 
 	public void SetNoCrit(ReadOnlySpan<char> chars)

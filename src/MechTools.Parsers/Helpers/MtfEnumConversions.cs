@@ -166,6 +166,27 @@ internal static class MtfEnumConversions
 		};
 	}
 
+	public static Myomer GetMyomer(ReadOnlySpan<char> chars)
+	{
+		// TODO: Decide how to handle known invalid values.
+		//CLMASC
+		//ISMASC
+		//MASC
+
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"INDUSTRIAL TRIPLE-STRENGTH" => Myomer.IndustrialTripleStrength,
+			"PROTOTYPE TRIPLE-STRENGTH" => Myomer.PrototypeTripleStrength,
+			"STANDARD" => Myomer.Standard,
+			"SUPER-COOLED" => Myomer.SuperCooled,
+			"TRIPLE-STRENGTH" => Myomer.TripleStrength,
+			_ => ThrowHelper.ExceptionToSpecifyLater<Myomer>(),
+		};
+	}
+
 	public static Role GetRole(ReadOnlySpan<char> chars)
 	{
 		Span<char> upper = (stackalloc char[64])[..chars.Length];

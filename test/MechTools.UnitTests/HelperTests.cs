@@ -15,7 +15,6 @@ public sealed class HelperTests
 	// TODO: GetImageFile
 	// TODO: GetManufacturer
 	// TODO: GetMotive
-	// TODO: GetMyomer
 	// TODO: GetNoCrit
 	// TODO: GetPrimaryFactory
 	// TODO: GetStructure
@@ -488,6 +487,31 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetMulId(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.KnownLegacyMyomerStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetMyomer_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetMyomer(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Standard ", Myomer.Standard)]
+	public void GetMyomer_ValidInput_Works(string input, Myomer expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetMyomer(input);
 
 		// Assert
 		result.ShouldBe(expected);
