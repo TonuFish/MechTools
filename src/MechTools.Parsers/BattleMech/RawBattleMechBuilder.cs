@@ -26,18 +26,24 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 			return;
 		}
 
-		StringBuilder sb = new(value: name, capacity: name.Length + 18);
+		const string rearSuffix = " (R)";
+		const string turretSuffix = " (T)";
+		const string omnipodSuffix = " (OMNIPOD)";
+
+		StringBuilder sb = new(
+			value: name,
+			capacity: name.Length + rearSuffix.Length + turretSuffix.Length + omnipodSuffix.Length);
 		if (isRear)
 		{
-			sb.Append(" (R)");
+			sb.Append(rearSuffix);
 		}
 		if (isTurret)
 		{
-			sb.Append(" (T)");
+			sb.Append(turretSuffix);
 		}
 		if (isOmniPod)
 		{
-			sb.Append(" (OMNIPOD)");
+			sb.Append(omnipodSuffix);
 		}
 		_lines.Add(sb.ToString());
 	}
