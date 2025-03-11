@@ -45,7 +45,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		}
 
 		// TODO: Non-sequence based version
-		return ProcessSource<TMech>(chars);
+		return ProcessSource(chars);
 	}
 
 	public TMech? Parse(ReadOnlyMemory<byte> memory)
@@ -58,7 +58,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 
 		// TODO: Implement properly and remove this allocation.
 		var chars = Encoding.UTF8.GetString(memory.Span);
-		return ProcessSource<TMech>(chars);
+		return ProcessSource(chars);
 	}
 
 	public async Task<TMech?> ParseAsync(Stream stream, CancellationToken ct = default)
@@ -123,12 +123,6 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		}
 	}
 
-	[MethodImpl(MethodImplOptions.NoInlining)]
-	private void ProcessComment(ReadOnlySpan<char> line)
-	{
-		// TODO: Comment handling. Should we pass across the current mode? Effectively "comment in section".
-	}
-
 	private void ProcessLine(ReadOnlySpan<char> line)
 	{
 		if (line.IsEmpty)
@@ -139,7 +133,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		}
 		else if (line[0] == MtfSections.Comment)
 		{
-			ProcessComment(line);
+			_builder.AddComment(line);
 			return;
 		}
 
@@ -160,6 +154,9 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 				{
 					ThrowHelper.ExceptionToSpecifyLater();
 				}
+				break;
+			default:
+				// TODO: Impossible.
 				break;
 		}
 	}
@@ -401,7 +398,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		}
 	}
 
-	private TMech? ProcessSource<TMech>(ReadOnlySpan<char> chars)
+	private TMech? ProcessSource(ReadOnlySpan<char> chars)
 	{
 		// TODO: Implement - should be quick.
 		throw new NotImplementedException();
@@ -438,10 +435,8 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		//}
 		finally
 		{
-#pragma warning disable S6966 // Awaitable method should be used
 			// CompleteAsync is a direct wrap of Complete
 			reader.Complete();
-#pragma warning restore S6966 // Awaitable method should be used
 		}
 	}
 

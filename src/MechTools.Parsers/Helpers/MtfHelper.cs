@@ -256,7 +256,7 @@ public static class MtfHelper
 
 		return (
 			chars[..bound].Trim().ToString(),
-			MtfEnumConversions.GetEquipmentLocationFromAbbreviation( chars[(bound + 1)..].Trim()));
+			MtfEnumConversions.GetEquipmentLocationFromAbbreviation(chars[(bound + 1)..].Trim()));
 	}
 
 	public static string GetNotes(ReadOnlySpan<char> chars)

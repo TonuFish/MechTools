@@ -35,15 +35,15 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 			capacity: name.Length + rearSuffix.Length + turretSuffix.Length + omnipodSuffix.Length);
 		if (isRear)
 		{
-			sb.Append(rearSuffix);
+			_ = sb.Append(rearSuffix);
 		}
 		if (isTurret)
 		{
-			sb.Append(turretSuffix);
+			_ = sb.Append(turretSuffix);
 		}
 		if (isOmniPod)
 		{
-			sb.Append(omnipodSuffix);
+			_ = sb.Append(omnipodSuffix);
 		}
 		_lines.Add(sb.ToString());
 	}

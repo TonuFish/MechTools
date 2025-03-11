@@ -281,7 +281,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-[MemberData(nameof(TestData.AllowAnyTextStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.AllowAnyTextStrings), MemberType = typeof(TestData))]
 	public void GetGenerator_AnyInput_Works(string? input, string expected)
 	{
 		// Arrange
@@ -368,7 +368,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-[MemberData(nameof(TestData.AllowAnyTextStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.AllowAnyTextStrings), MemberType = typeof(TestData))]
 	public void GetImageFile_AnyInput_Works(string? input, string expected)
 	{
 		// Arrange

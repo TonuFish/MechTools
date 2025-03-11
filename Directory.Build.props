@@ -9,12 +9,14 @@
 
 	<PropertyGroup>
 		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
-		<WarningsAsErrors>CA1008;CA2016;CS4014;CS8602</WarningsAsErrors>
+		<NoWarn>IDE0210</NoWarn>
+		<WarningsAsErrors>CA1008;CA2016;CS4014;CS8602;</WarningsAsErrors>
 	</PropertyGroup>
 
 	<Choose>
 		<When Condition="$(ProjectName.Contains('Test')) == 'False'">
 			<PropertyGroup>
+				<AnalysisLevel>preview-all</AnalysisLevel>
 				<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
 			</PropertyGroup>
 

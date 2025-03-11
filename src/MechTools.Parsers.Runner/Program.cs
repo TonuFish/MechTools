@@ -13,8 +13,12 @@ internal static class Program
 	private static async Task Main()
 	{
 		Dump();
+		await EnumerateAsync(CancellationToken.None).ConfigureAwait(true);
 		return;
+	}
 
+	private static async Task EnumerateAsync(CancellationToken ct)
+	{
 		List<string> brokenList = [];
 		var excitedCount = 0;
 
@@ -43,7 +47,8 @@ internal static class Program
 			try
 			{
 				using MtfBattleMechParser<List<string>> parser = new(new RawBattleMechBuilder());
-				var lines = await parser.ParseAsync(file, CancellationToken.None).ConfigureAwait(false);
+				var lines = await parser.ParseAsync(file, ct).ConfigureAwait(false);
+				Console.WriteLine($"{filePath} ` {lines?.Count ?? 0}");
 			}
 			catch (ImExcitedException)
 			{
@@ -55,8 +60,6 @@ internal static class Program
 				brokenList.Add($"{filePath}```{ex}");
 			}
 		}
-
-		var asdf = 5;
 	}
 
 	private static void Dump()
@@ -67,7 +70,7 @@ internal static class Program
 		{
 			foreach (var line in File.ReadAllLines(filePath))
 			{
-				const string tag = "gyro:";
+				const string tag = "nocrit:";
 				var span = line.AsSpan().Trim();
 				if (span.Length > tag.Length && span.StartsWith(tag, StringComparison.OrdinalIgnoreCase))
 				{
@@ -77,6 +80,7 @@ internal static class Program
 		}
 
 		var output = string.Join('\n', armours.Order());
+		Console.WriteLine(output);
 		System.Diagnostics.Debugger.Break();
 	}
 }
