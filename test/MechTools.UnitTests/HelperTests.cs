@@ -16,12 +16,12 @@ public sealed class HelperTests
 	// TODO: GetWeaponForWeaponList
 
 	[Theory]
-	[MemberData(nameof(TestData.InvalidArmourTypes), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.InvalidArmour), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void GetArmourType_InvalidInput_Throws(string input)
+	public void GetArmour_InvalidInput_Throws(string input)
 	{
 		// Arrange
-		Action action = () => MtfHelper.GetArmourType(input);
+		Action action = () => MtfHelper.GetArmour(input);
 
 		// Act
 		// Assert
@@ -29,15 +29,17 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[MemberData(nameof(TestData.ValidArmourTypes), MemberType = typeof(TestData))]
-	public void GetArmourType_ValidInput_Works(string input, (Armour Armour, Origin? Origin) expected)
+	[MemberData(nameof(TestData.ValidArmour), MemberType = typeof(TestData))]
+	public void GetArmour_ValidInput_Works(string input, ArmourData expected)
 	{
 		// Arrange
 		// Act
-		var result = MtfHelper.GetArmourType(input);
+		var result = MtfHelper.GetArmour(input);
 
 		// Assert
-		result.ShouldBe(expected);
+		// TODO: Change this when handling equality
+		result.Armour.ShouldBe(expected.Armour);
+		result.Origin.ShouldBe(expected.Origin);
 	}
 
 	[Theory]

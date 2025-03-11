@@ -228,7 +228,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearRightTorso);
 				break;
 			case MtfSections.Armour:
-				_builder.SetArmourType(content);
+				_builder.SetArmour(content);
 				break;
 			case MtfSections.BaseChassisHeatSinks:
 				_builder.SetBaseChassisHeatSinks(content);

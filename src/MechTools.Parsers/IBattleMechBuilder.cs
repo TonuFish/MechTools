@@ -10,7 +10,7 @@ public interface IBattleMechBuilder
 	public void AddQuirk(ReadOnlySpan<char> chars);
 	public void AddWeaponQuirk(ReadOnlySpan<char> chars);
 	public void AddWeaponToWeaponList(ReadOnlySpan<char> chars);
-	public void SetArmourType(ReadOnlySpan<char> chars);
+	public void SetArmour(ReadOnlySpan<char> chars);
 	public void SetArmourAtLocation(ReadOnlySpan<char> chars, BattleMechArmourLocation location);
 	public void SetBaseChassisHeatSinks(ReadOnlySpan<char> chars);
 	public void SetCapabilities(ReadOnlySpan<char> chars);

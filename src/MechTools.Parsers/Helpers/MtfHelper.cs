@@ -10,6 +10,14 @@ namespace MechTools.Parsers.Helpers;
 // TODO: Consider trimming pattern here, EG: GetWeaponQuirk
 public static class MtfHelper
 {
+	public static ArmourData GetArmour(ReadOnlySpan<char> chars)
+	{
+		// TODO: Enum-ify.
+		// Brackets = origin
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return default;
+	}
+
 	public static (string? Name, int Value) GetArmourAtLocation(ReadOnlySpan<char> chars)
 	{
 		// TODO: Ugh. This.
@@ -34,14 +42,6 @@ public static class MtfHelper
 		}
 
 		return (name, value);
-	}
-
-	public static (Armour Armour, Origin? Origin) GetArmourType(ReadOnlySpan<char> chars)
-	{
-		// TODO: Enum-ify.
-		// Brackets = origin
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return (default, default);
 	}
 
 	public static int GetBaseChassisHeatSinks(ReadOnlySpan<char> chars)
@@ -239,7 +239,7 @@ public static class MtfHelper
 		return MtfEnumConversions.GetMyomer(chars.Trim());
 	}
 
-	public static (string Name, string Value) GetNoCrit(ReadOnlySpan<char> chars) //! TODO
+	public static (string Name, BattleMechEquipmentLocation Location) GetNoCrit(ReadOnlySpan<char> chars)
 	{
 		// TODO: Needs the same investigate as SystemManufacturer - seems to have same format.
 		// TODO: Both likely enums `nocrit:Standard:None`
@@ -254,7 +254,9 @@ public static class MtfHelper
 
 		// TODO: Test bound isn't too far along in chars.
 
-		return (chars[..bound].Trim().ToString(), chars[(bound + 1)..].Trim().ToString());
+		return (
+			chars[..bound].Trim().ToString(),
+			MtfEnumConversions.GetEquipmentLocationFromAbbreviation( chars[(bound + 1)..].Trim()));
 	}
 
 	public static string GetNotes(ReadOnlySpan<char> chars)
@@ -414,7 +416,7 @@ public static class MtfHelper
 		}
 
 		var location = MtfEnumConversions.GetEquipmentLocation(locationSlice);
-		return new(ammo, count, location, name, isRear);
+		return new(ammo, count, isRear, location, name);
 	}
 
 	public static int GetWeaponListCount(ReadOnlySpan<char> chars)

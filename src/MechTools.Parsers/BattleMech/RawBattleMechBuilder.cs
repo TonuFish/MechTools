@@ -63,7 +63,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void AddWeaponToWeaponList(ReadOnlySpan<char> chars)
 	{
-		(var ammo, var count, var location, var name, var isRear) = MtfHelper.GetWeaponForWeaponList(chars);
+		(var ammo, var count, var isRear, var location, var name) = MtfHelper.GetWeaponForWeaponList(chars);
 		if (count.HasValue)
 		{
 			_lines.Add($"{count} {name}, {location}{(isRear ? " (R)" : "")}{(ammo.HasValue ? $", ammo:{ammo}" : "")}");
@@ -80,16 +80,16 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 		return [.. _lines];
 	}
 
+	public void SetArmour(ReadOnlySpan<char> chars)
+	{
+		(var armour, var origin) = MtfHelper.GetArmour(chars);
+		_lines.Add($"{armour}{(origin.HasValue ? $" ({origin})" : "")}");
+	}
+
 	public void SetArmourAtLocation(ReadOnlySpan<char> chars, BattleMechArmourLocation location)
 	{
 		(var name, var value) = MtfHelper.GetArmourAtLocation(chars);
 		_lines.Add($"{location}{(name is not null ? $":{name}" : "")}:{value}");
-	}
-
-	public void SetArmourType(ReadOnlySpan<char> chars)
-	{
-		(var armour, var origin) = MtfHelper.GetArmourType(chars);
-		_lines.Add($"{armour}{(origin.HasValue ? $" ({origin})" : "")}");
 	}
 
 	public void SetBaseChassisHeatSinks(ReadOnlySpan<char> chars)
@@ -241,8 +241,8 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetNoCrit(ReadOnlySpan<char> chars)
 	{
-		(var name, var value) = MtfHelper.GetNoCrit(chars);
-		_lines.Add($"{name}:{value}");
+		(var name, var location) = MtfHelper.GetNoCrit(chars);
+		_lines.Add($"{name}:{location}");
 	}
 
 	public void SetNotes(ReadOnlySpan<char> chars)

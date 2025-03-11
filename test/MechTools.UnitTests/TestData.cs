@@ -5,6 +5,8 @@ namespace MechTools.UnitTests;
 
 internal static class TestData
 {
+	// TODO: Naming of these.
+
 	public static TheoryData<string?, string> AllowAnyTextStrings()
 	{
 		return new()
@@ -30,9 +32,9 @@ internal static class TestData
 			" 5.0 ");
 	}
 
-	#region Armour Type
+	#region Armour
 
-	public static TheoryData<string> InvalidArmourTypes()
+	public static TheoryData<string> InvalidArmour()
 	{
 		return new(
 			// Non-enum value
@@ -43,30 +45,30 @@ internal static class TestData
 			" Reflective IS (Inner Sphere)");
 	}
 
-	public static TheoryData<string, (Armour Armour, Origin? Origin)> ValidArmourTypes()
+	public static TheoryData<string, ArmourData> ValidArmour()
 	{
 		return new()
 		{
 			// Basic case
-			{ " Standard ", (Armour.Standard, null) },
+			{ " Standard ", new(Armour.Standard, null) },
 			// Abbreviated case
-			{ " Ballistic-Reinforced (IS) ", (Armour.BallisticReinforced, Origin.InnerSphere) },
+			{ " Ballistic-Reinforced (IS) ", new(Armour.BallisticReinforced, Origin.InnerSphere) },
 			// Concatenated case
-			{ " Heavy Ferro-Fibrous(Inner Sphere) ", (Armour.HeavyFerroFibrous, Origin.InnerSphere) },
+			{ " Heavy Ferro-Fibrous(Inner Sphere) ", new(Armour.HeavyFerroFibrous, Origin.InnerSphere) },
 			// Armour case
-			{ " Standard Armor (Clan)", (Armour.Standard, Origin.Clan) },
+			{ " Standard Armor (Clan)", new(Armour.Standard, Origin.Clan) },
 			// Edge case - Malformed IS reflective
-			{ " IS Reflective(Inner Sphere) ", (Armour.Reflective, Origin.InnerSphere) },
+			{ " IS Reflective(Inner Sphere) ", new(Armour.Reflective, Origin.InnerSphere) },
 			// Hypothetical edge case - Malformed Clan FL
-			{ " Clan Ferro-Lamellor(Clan) ", (Armour.FerroLamellor, Origin.Clan) },
+			{ " Clan Ferro-Lamellor(Clan) ", new(Armour.FerroLamellor, Origin.Clan) },
 			// Edge case - Prototype FF
-			{ " Ferro-Fibrous Prototype(Inner Sphere) ", (Armour.PrototypeFerroFibrous, Origin.InnerSphere) },
+			{ " Ferro-Fibrous Prototype(Inner Sphere) ", new(Armour.PrototypeFerroFibrous, Origin.InnerSphere) },
 			// Edge case - (Unknown Technology Base)
-			{ " Standard((Unknown Technology Base)) ", (Armour.Standard, Origin.Unknown) },
+			{ " Standard((Unknown Technology Base)) ", new(Armour.Standard, Origin.Unknown) },
 		};
 	}
 
-	#endregion Armour Type
+	#endregion Armour
 
 	#region Myomer
 
