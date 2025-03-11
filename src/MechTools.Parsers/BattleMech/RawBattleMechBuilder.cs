@@ -242,7 +242,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetNoCrit(ReadOnlySpan<char> chars)
 	{
-		(var name, var location) = MtfHelper.GetNoCrit(chars);
+		(var location, var name) = MtfHelper.GetNoCrit(chars);
 		_lines.Add($"{name}:{location}");
 	}
 

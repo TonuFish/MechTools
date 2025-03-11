@@ -97,6 +97,30 @@ internal static class TestData
 
 	#endregion Myomer
 
+	#region No Crit
+
+	public static TheoryData<string> InvalidNoCrit()
+	{
+		return new(
+			// LAM locations aren't supported
+			"ISERLargeLaser:AFT",
+			"ISERLargeLaser:NOS",
+			"ISERLargeLaser:WNG",
+			// Location-less no crit isn't supported
+			"ISERLargeLaser");
+	}
+
+	public static TheoryData<string, NoCritData> ValidNoCrit()
+	{
+		return new()
+		{
+			{ " IS Hardened : None ", new(BattleMechEquipmentLocation.None, "IS Hardened") },
+			{ " SmartRoboticControlSystem : None ", new(BattleMechEquipmentLocation.None, "SmartRoboticControlSystem") },
+		};
+	}
+
+	#endregion No Crit
+
 	#region Source
 
 	public static TheoryData<string, SourceData> ValidSource()

@@ -11,7 +11,6 @@ public sealed class HelperTests
 	// TODO: GetEngine
 	// TODO: GetEquipmentAtLocation
 	// TODO: GetHeatSinks
-	// TODO: GetNoCrit
 	// TODO: GetStructure
 	// TODO: GetWeaponForWeaponList
 
@@ -572,6 +571,31 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetMyomer(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.InvalidNoCrit), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetNoCrit_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetNoCrit(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidNoCrit), MemberType = typeof(TestData))]
+	public void GetNoCrit_ValidInput_Works(string input, NoCritData expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetNoCrit(input);
 
 		// Assert
 		result.ShouldBe(expected);

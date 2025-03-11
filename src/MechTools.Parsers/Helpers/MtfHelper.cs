@@ -8,6 +8,7 @@ namespace MechTools.Parsers.Helpers;
 
 // TODO: Still have to decide if this is throw||try.
 // TODO: Consider trimming pattern here, EG: GetWeaponQuirk
+// TODO: Throw if Bound + 1 overflows
 public static class MtfHelper
 {
 	public static ArmourData GetArmour(ReadOnlySpan<char> chars)
@@ -239,24 +240,23 @@ public static class MtfHelper
 		return MtfEnumConversions.GetMyomer(chars.Trim());
 	}
 
-	public static (string Name, BattleMechEquipmentLocation Location) GetNoCrit(ReadOnlySpan<char> chars)
+	public static NoCritData GetNoCrit(ReadOnlySpan<char> chars)
 	{
-		// TODO: Needs the same investigate as SystemManufacturer - seems to have same format.
-		// TODO: Both likely enums `nocrit:Standard:None`
-
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
-		var bound = chars.IndexOf(':');
-		if (bound == -1)
+		var trimmedChars = chars.Trim();
+
+		const char del = ':';
+
+		var bound = trimmedChars.IndexOf(del);
+		if (bound < 1 || bound + 1 == trimmedChars.Length)
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
 
-		// TODO: Test bound isn't too far along in chars.
-
-		return (
-			chars[..bound].Trim().ToString(),
-			MtfEnumConversions.GetEquipmentLocationFromAbbreviation(chars[(bound + 1)..].Trim()));
+		return new(
+			MtfEnumConversions.GetEquipmentLocationFromAbbreviation(trimmedChars[(bound + 1)..].TrimStart()),
+			trimmedChars[..bound].TrimEnd().ToString());
 	}
 
 	public static string GetNotes(ReadOnlySpan<char> chars)
@@ -486,11 +486,6 @@ public static class MtfHelper
 		}
 
 		var nameSlice = trimmedChars[(bound + 1)..].TrimStart();
-		if (nameSlice.IsWhiteSpace())
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-
 		return new(nameSlice.ToString(), MtfEnumConversions.GetSpecificSystem(trimmedChars[..bound].TrimEnd()));
 	}
 

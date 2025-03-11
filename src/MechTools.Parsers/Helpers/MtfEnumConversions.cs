@@ -116,7 +116,6 @@ internal static class MtfEnumConversions
 
 		return upper switch
 		{
-			// TODO: Check if there's an entry for none.
 			"CL" => BattleMechEquipmentLocation.CentreLeg,
 			"CT" => BattleMechEquipmentLocation.CentreTorso,
 			"FLL" => BattleMechEquipmentLocation.LeftLeg,
@@ -125,6 +124,7 @@ internal static class MtfEnumConversions
 			"LA" => BattleMechEquipmentLocation.LeftArm,
 			"LL" => BattleMechEquipmentLocation.LeftLeg,
 			"LT" => BattleMechEquipmentLocation.LeftTorso,
+			"NONE" => BattleMechEquipmentLocation.None,
 			"RLL" => BattleMechEquipmentLocation.RearLeftLeg,
 			"RRL" => BattleMechEquipmentLocation.RearRightLeg,
 			"RA" => BattleMechEquipmentLocation.RightArm,
