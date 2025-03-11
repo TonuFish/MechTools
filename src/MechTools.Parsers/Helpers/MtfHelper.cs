@@ -132,7 +132,7 @@ public static class MtfHelper
 		var trimmedChars = chars.Trim();
 		if (MtfValues.Lookup.CommonEquipmentValues.TryGetValue(trimmedChars, out var cachedValue))
 		{
-			return new(cachedValue, false, false, false);
+			return new(false, false, false, cachedValue);
 		}
 
 		const string omnipodDel = " (OMNIPOD)";
@@ -144,7 +144,7 @@ public static class MtfHelper
 		var turretBound = trimmedChars.LastIndexOf(turretDel, StringComparison.OrdinalIgnoreCase);
 
 		return rearBound == -1 || turretBound == -1 || omnipodBound == -1
-			? new(chars.ToString(), false, false, false)
+			? new(false, false, false, chars.ToString())
 			: GetAnnotatedEquipmentAtLocation(trimmedChars, omnipodBound, rearBound, turretBound);
 	}
 
@@ -294,7 +294,7 @@ public static class MtfHelper
 		return MtfEnumConversions.GetRulesLevel(ParseSimpleNumber(chars));
 	}
 
-	public static (string? Type, string Name) GetSource(ReadOnlySpan<char> chars)
+	public static SourceData GetSource(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
@@ -303,8 +303,8 @@ public static class MtfHelper
 
 		var bound = chars.IndexOf(':');
 		return bound != -1 && bound != chars.Length - 1
-			? (chars[..bound].Trim().ToString(), chars[(bound + 1)..].Trim().ToString())
-			: (null, chars.Trim().ToString());
+			? new(chars[(bound + 1)..].Trim().ToString(), chars[..bound].Trim().ToString())
+			: new(chars.Trim().ToString(), null);
 	}
 
 	public static string GetStructure(ReadOnlySpan<char> chars)

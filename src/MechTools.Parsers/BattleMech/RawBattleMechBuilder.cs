@@ -19,7 +19,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void AddEquipmentAtLocation(ReadOnlySpan<char> chars, BattleMechEquipmentLocation location)
 	{
-		(var name, var isOmniPod, var isRear, var isTurret) = MtfHelper.GetEquipmentAtLocation(chars);
+		(var isOmniPod, var isRear, var isTurret, var name) = MtfHelper.GetEquipmentAtLocation(chars);
 
 		if (!isOmniPod && !isRear && !isTurret)
 		{
@@ -278,7 +278,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetSource(ReadOnlySpan<char> chars)
 	{
-		(var type, var name) = MtfHelper.GetSource(chars);
+		(var name, var type) = MtfHelper.GetSource(chars);
 		_lines.Add((type is not null ? $"{type}:" : "") + name);
 	}
 

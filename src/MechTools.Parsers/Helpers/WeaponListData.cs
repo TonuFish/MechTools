@@ -1,10 +1,12 @@
 ﻿using MechTools.Core.Enums;
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace MechTools.Parsers.Helpers;
 
 [StructLayout(LayoutKind.Auto)]
-public readonly struct WeaponListData
+public readonly struct WeaponListData : IEquatable<WeaponListData>
 {
 	public readonly int? Ammo { get; init; }
 	public readonly int? Count { get; init; }
@@ -34,4 +36,31 @@ public readonly struct WeaponListData
 		location = Location;
 		name = Name;
 	}
+
+	#region Equality
+
+	public static bool operator ==(WeaponListData left, WeaponListData right) => left.Equals(right);
+
+	public static bool operator !=(WeaponListData left, WeaponListData right) => !(left == right);
+
+	public bool Equals(WeaponListData other)
+	{
+		return Ammo == other.Ammo
+			&& Count == other.Count
+			&& IsRear == other.IsRear
+			&& Location == other.Location
+		    && Name.Equals(other.Name, StringComparison.Ordinal);
+	}
+
+	public override bool Equals([MaybeNullWhen(false)] object? obj)
+	{
+		return obj is WeaponListData && Equals((WeaponListData)obj);
+	}
+
+	public override int GetHashCode()
+	{
+		return HashCode.Combine(Ammo, Count, IsRear, Location, Name);
+	}
+
+	#endregion Equality
 }

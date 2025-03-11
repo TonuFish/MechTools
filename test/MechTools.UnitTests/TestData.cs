@@ -70,6 +70,20 @@ internal static class TestData
 
 	#endregion Armour
 
+	#region Configuration
+
+	public static TheoryData<string, ConfigurationData> ValidConfiguration()
+	{
+		return new()
+		{
+			{ " QuadVee ", new(Configuration.QuadVee, false) },
+			{ " Biped Omnimech ", new(Configuration.Biped, true) },
+			{ " Biped Omnimek ", new(Configuration.Biped, true) },
+		};
+	}
+
+	#endregion Configuration
+
 	#region Myomer
 
 	public static TheoryData<string> KnownLegacyMyomerStrings()
@@ -82,6 +96,20 @@ internal static class TestData
 	}
 
 	#endregion Myomer
+
+	#region Source
+
+	public static TheoryData<string, SourceData> ValidSource()
+	{
+		return new()
+		{
+			{ " Rec Guide:ilClan #24 ", new("ilClan #24", "Rec Guide") },
+			{ " Battle of Tukayyid ", new("Battle of Tukayyid", null) },
+			{ " TRO : 3067 ", new("3067", "TRO") },
+		};
+	}
+
+	#endregion Source
 
 	#region Specific System
 

@@ -37,9 +37,7 @@ public sealed class HelperTests
 		var result = MtfHelper.GetArmour(input);
 
 		// Assert
-		// TODO: Change this when handling equality
-		result.Armour.ShouldBe(expected.Armour);
-		result.Origin.ShouldBe(expected.Origin);
+		result.ShouldBe(expected);
 	}
 
 	[Theory]
@@ -193,18 +191,15 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData(" QuadVee ", Configuration.QuadVee, false)]
-	[InlineData(" Biped Omnimech ", Configuration.Biped, true)]
-	[InlineData(" Biped Omnimek ", Configuration.Biped, true)]
-	public void GetConfiguration_ValidInput_Works(string input, Configuration expectedConfiguration, bool expectedIsOmniMech)
+	[MemberData(nameof(TestData.ValidConfiguration), MemberType = typeof(TestData))]
+	public void GetConfiguration_ValidInput_Works(string input, ConfigurationData expected)
 	{
 		// Arrange
 		// Act
-		(var configuration, var isOmniMech) = MtfHelper.GetConfiguration(input);
+		var result = MtfHelper.GetConfiguration(input);
 
 		// Assert
-		configuration.ShouldBe(expectedConfiguration);
-		isOmniMech.ShouldBe(expectedIsOmniMech);
+		result.ShouldBe(expected);
 	}
 
 	[Theory]
@@ -741,18 +736,15 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData(" Rec Guide:ilClan #24 ", "Rec Guide", "ilClan #24")]
-	[InlineData(" Battle of Tukayyid ", null, "Battle of Tukayyid")]
-	[InlineData(" TRO : 3067 ", "TRO", "3067")]
-	public void GetSource_ValidInput_Works(string input, string? expectedType, string expectedName)
+	[MemberData(nameof(TestData.ValidSource), MemberType = typeof(TestData))]
+	public void GetSource_ValidInput_Works(string input, SourceData expected)
 	{
 		// Arrange
 		// Act
-		(var type, var name) = MtfHelper.GetSource(input);
+		var result = MtfHelper.GetSource(input);
 
 		// Assert
-		type.ShouldBe(expectedType);
-		name.ShouldBe(expectedName);
+		result.ShouldBe(expected);
 	}
 
 	[Theory]
@@ -915,15 +907,13 @@ public sealed class HelperTests
 		const string input = " -empty- ";
 		const string cacheKey = "-Empty-";
 		_ = MtfValues.Lookup.CommonEquipmentValues.TryGetValue(cacheKey, out var cachedValue);
+		EquipmentData expected = new(false, false, false, cachedValue!);
 
 		// Act
-		(var name, var isOmniPod, var isRear, var isTurret) = MtfHelper.GetEquipmentAtLocation(input);
+		var result = MtfHelper.GetEquipmentAtLocation(input);
 
 		// Assert
-		name.ShouldBeSameAs(cachedValue);
-		isOmniPod.ShouldBeFalse();
-		isRear.ShouldBeFalse();
-		isTurret.ShouldBeFalse();
+		result.ShouldBe(expected);
 	}
 
 	#endregion Get Equipment

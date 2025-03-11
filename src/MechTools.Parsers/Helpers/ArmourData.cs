@@ -1,11 +1,12 @@
 ﻿using MechTools.Core.Enums;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace MechTools.Parsers.Helpers;
 
 [StructLayout(LayoutKind.Auto)]
-public readonly struct ArmourData
+public readonly struct ArmourData : IEquatable<ArmourData>
 {
 	public readonly required Armour Armour { get; init; }
 	public readonly required Origin? Origin { get; init; }
@@ -22,4 +23,27 @@ public readonly struct ArmourData
 		armour = Armour;
 		origin = Origin;
 	}
+
+	#region Equality
+
+	public static bool operator ==(ArmourData left, ArmourData right) => left.Equals(right);
+
+	public static bool operator !=(ArmourData left, ArmourData right) => !(left == right);
+
+	public bool Equals(ArmourData other)
+	{
+		return Armour == other.Armour && Origin == other.Origin;
+	}
+
+	public override bool Equals([MaybeNullWhen(false)] object? obj)
+	{
+		return obj is ArmourData && Equals((ArmourData)obj);
+	}
+
+	public override int GetHashCode()
+	{
+		return HashCode.Combine(Armour, Origin);
+	}
+
+	#endregion Equality
 }
