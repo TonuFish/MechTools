@@ -2,6 +2,7 @@
 using MechTools.Parsers.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace MechTools.Parsers.BattleMech;
@@ -95,7 +96,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetBaseChassisHeatSinks(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetBaseChassisHeatSinks(chars);
-		_lines.Add(value.ToString());
+		_lines.Add(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	public void SetCapabilities(ReadOnlySpan<char> chars)
@@ -149,7 +150,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetEra(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetEra(chars);
-		_lines.Add(value.ToString());
+		_lines.Add(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	public void SetGenerator(ReadOnlySpan<char> chars)
@@ -191,7 +192,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetJumpMp(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetJumpMp(chars);
-		_lines.Add(value.ToString());
+		_lines.Add(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	public void SetLam(ReadOnlySpan<char> chars)
@@ -209,7 +210,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetMass(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetMass(chars);
-		_lines.Add(value.ToString());
+		_lines.Add(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	public void SetModel(ReadOnlySpan<char> chars)
@@ -230,7 +231,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetMulId(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetMulId(chars);
-		_lines.Add(value.ToString());
+		_lines.Add(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	public void SetMyomer(ReadOnlySpan<char> chars)
@@ -308,12 +309,12 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetWalkMp(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetWalkMp(chars);
-		_lines.Add(value.ToString());
+		_lines.Add(value.ToString(CultureInfo.InvariantCulture));
 	}
 
 	public void SetWeaponListCount(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetWeaponListCount(chars);
-		_lines.Add(value.ToString());
+		_lines.Add(value.ToString(CultureInfo.InvariantCulture));
 	}
 }

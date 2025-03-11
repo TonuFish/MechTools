@@ -63,6 +63,8 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 
 	public async Task<TMech?> ParseAsync(Stream stream, CancellationToken ct = default)
 	{
+		ArgumentNullException.ThrowIfNull(stream);
+
 		if (!stream.CanRead)
 		{
 			return default;
@@ -436,7 +438,9 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		finally
 		{
 			// CompleteAsync is a direct wrap of Complete
+#pragma warning disable CA1849 // Call async methods when in an async method
 			reader.Complete();
+#pragma warning restore CA1849 // Call async methods when in an async method
 		}
 	}
 

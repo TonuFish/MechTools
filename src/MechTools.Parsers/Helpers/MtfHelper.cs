@@ -33,12 +33,12 @@ public static class MtfHelper
 		if (bound != -1)
 		{
 			name = chars[..bound].ToString();
-			value = int.Parse(chars[(bound + 1)..]);
+			value = int.Parse(chars[(bound + 1)..], CultureInfo.InvariantCulture);
 		}
 		else
 		{
 			name = null;
-			value = int.Parse(chars);
+			value = int.Parse(chars, CultureInfo.InvariantCulture);
 		}
 
 		return (name, value);
@@ -378,13 +378,15 @@ public static class MtfHelper
 		if (char.IsNumber(trimmedChars[0]))
 		{
 			var nameBound = trimmedChars.IndexOf(nameDel);
-			count = int.Parse(trimmedChars[..nameBound]);
+			count = int.Parse(trimmedChars[..nameBound], CultureInfo.InvariantCulture);
 
 			// TODO: Be more whitespace tolerant.
 			if (char.ToUpperInvariant(trimmedChars[lastBound + stdDel.Length]) == 'A')
 			{
 				//! `1 ISLBXAC10, Right Torso, Ammo:20`
-				ammo = int.Parse(trimmedChars[(lastBound + stdDel.Length + "Ammo:".Length)..]);
+				ammo = int.Parse(
+					trimmedChars[(lastBound + stdDel.Length + "Ammo:".Length)..],
+					CultureInfo.InvariantCulture);
 				var locationBound = trimmedChars[..lastBound].LastIndexOf(stdDel, StringComparison.Ordinal);
 				name = trimmedChars[(nameBound + 1)..locationBound].ToString();
 				locationSlice = trimmedChars[(locationBound + stdDel.Length)..lastBound];
