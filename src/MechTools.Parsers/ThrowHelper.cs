@@ -19,12 +19,6 @@ internal static class ThrowHelper
 		throw new InvalidOperationException();
 	}
 
-	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
-	public static void ImExcited()
-	{
-		throw new ImExcitedException();
-	}
-
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	[DebuggerHidden, StackTraceHidden]
 	public static void ThrowIfEmptyOrWhiteSpace(ReadOnlySpan<char> chars)
@@ -33,23 +27,5 @@ internal static class ThrowHelper
 		{
 			ExceptionToSpecifyLater();
 		}
-	}
-}
-
-/// <summary>
-/// A "This exception is annoying me" exception.
-/// </summary>
-public sealed class ImExcitedException : Exception
-{
-	public ImExcitedException() : base()
-	{
-	}
-
-	public ImExcitedException(string? message) : base(message)
-	{
-	}
-
-	public ImExcitedException(string? message, Exception? innerException) : base(message, innerException)
-	{
 	}
 }

@@ -50,11 +50,6 @@ internal static class Program
 				var lines = await parser.ParseAsync(file, ct).ConfigureAwait(false);
 				Console.WriteLine($"{filePath} ` {lines?.Count ?? 0}");
 			}
-			catch (ImExcitedException)
-			{
-				// I don't care right now.
-				excitedCount++;
-			}
 			catch (Exception ex)
 			{
 				brokenList.Add($"{filePath}```{ex}");
