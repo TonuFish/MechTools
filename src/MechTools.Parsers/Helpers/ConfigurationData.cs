@@ -24,23 +24,30 @@ public readonly struct ConfigurationData : IEquatable<ConfigurationData>
 		isOmniMech = IsOmniMech;
 	}
 
+#if DEBUG
+	public readonly override string ToString()
+	{
+		return $"{Configuration}```{IsOmniMech}";
+	}
+
+#endif
 	#region Equality
 
 	public static bool operator ==(ConfigurationData left, ConfigurationData right) => left.Equals(right);
 
 	public static bool operator !=(ConfigurationData left, ConfigurationData right) => !(left == right);
 
-	public bool Equals(ConfigurationData other)
+	public readonly bool Equals(ConfigurationData other)
 	{
 		return Configuration == other.Configuration && IsOmniMech == other.IsOmniMech;
 	}
 
-	public override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
 		return obj is ConfigurationData && Equals((ConfigurationData)obj);
 	}
 
-	public override int GetHashCode()
+	public readonly override int GetHashCode()
 	{
 		return HashCode.Combine(Configuration, IsOmniMech);
 	}

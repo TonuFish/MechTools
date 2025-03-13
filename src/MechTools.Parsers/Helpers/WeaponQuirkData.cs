@@ -34,13 +34,20 @@ public readonly struct WeaponQuirkData : IEquatable<WeaponQuirkData>
 		weapon = Weapon;
 	}
 
+#if DEBUG
+	public readonly override string ToString()
+	{
+		return $"{Location}```{Name}```{Slot}```{Weapon}";
+	}
+
+#endif
 	#region Equality
 
 	public static bool operator ==(WeaponQuirkData left, WeaponQuirkData right) => left.Equals(right);
 
 	public static bool operator !=(WeaponQuirkData left, WeaponQuirkData right) => !(left == right);
 
-	public bool Equals(WeaponQuirkData other)
+	public readonly bool Equals(WeaponQuirkData other)
 	{
 		return Location == other.Location
 			&& Name.Equals(other.Name, StringComparison.Ordinal)
@@ -48,12 +55,12 @@ public readonly struct WeaponQuirkData : IEquatable<WeaponQuirkData>
 			&& Weapon.Equals(other.Weapon, StringComparison.Ordinal);
 	}
 
-	public override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
 		return obj is WeaponQuirkData && Equals((WeaponQuirkData)obj);
 	}
 
-	public override int GetHashCode()
+	public readonly override int GetHashCode()
 	{
 		return HashCode.Combine(Location, Name, Slot, Weapon);
 	}

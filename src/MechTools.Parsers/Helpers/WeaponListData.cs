@@ -37,13 +37,20 @@ public readonly struct WeaponListData : IEquatable<WeaponListData>
 		name = Name;
 	}
 
+#if DEBUG
+	public readonly override string ToString()
+	{
+		return $"{Ammo}```{Count}```{IsRear}```{Location}```{Name}";
+	}
+
+#endif
 	#region Equality
 
 	public static bool operator ==(WeaponListData left, WeaponListData right) => left.Equals(right);
 
 	public static bool operator !=(WeaponListData left, WeaponListData right) => !(left == right);
 
-	public bool Equals(WeaponListData other)
+	public readonly bool Equals(WeaponListData other)
 	{
 		return Ammo == other.Ammo
 			&& Count == other.Count
@@ -52,12 +59,12 @@ public readonly struct WeaponListData : IEquatable<WeaponListData>
 		    && Name.Equals(other.Name, StringComparison.Ordinal);
 	}
 
-	public override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
 		return obj is WeaponListData && Equals((WeaponListData)obj);
 	}
 
-	public override int GetHashCode()
+	public readonly override int GetHashCode()
 	{
 		return HashCode.Combine(Ammo, Count, IsRear, Location, Name);
 	}

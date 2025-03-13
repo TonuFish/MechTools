@@ -29,13 +29,20 @@ public readonly struct EquipmentData : IEquatable<EquipmentData>
 		isTurret = IsTurret;
 	}
 
+#if DEBUG
+	public readonly override string ToString()
+	{
+		return $"{IsOmniPod}```{IsRear}```{IsTurret}```{Name}";
+	}
+
+#endif
 	#region Equality
 
 	public static bool operator ==(EquipmentData left, EquipmentData right) => left.Equals(right);
 
 	public static bool operator !=(EquipmentData left, EquipmentData right) => !(left == right);
 
-	public bool Equals(EquipmentData other)
+	public readonly bool Equals(EquipmentData other)
 	{
 		return Name.Equals(other.Name, StringComparison.Ordinal)
 			&& IsOmniPod == other.IsOmniPod
@@ -43,12 +50,12 @@ public readonly struct EquipmentData : IEquatable<EquipmentData>
 			&& IsTurret == other.IsTurret;
 	}
 
-	public override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
 		return obj is EquipmentData && Equals((EquipmentData)obj);
 	}
 
-	public override int GetHashCode()
+	public readonly override int GetHashCode()
 	{
 		return HashCode.Combine(Name, IsOmniPod, IsRear, IsTurret);
 	}

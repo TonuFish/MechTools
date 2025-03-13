@@ -23,23 +23,30 @@ public readonly struct SpecificSystemData : IEquatable<SpecificSystemData>
 		specificSystem = SpecificSystem;
 	}
 
+#if DEBUG
+	public readonly override string ToString()
+	{
+		return $"{Name}```{SpecificSystem}";
+	}
+
+#endif
 	#region Equality
 
 	public static bool operator ==(SpecificSystemData left, SpecificSystemData right) => left.Equals(right);
 
 	public static bool operator !=(SpecificSystemData left, SpecificSystemData right) => !(left == right);
 
-	public bool Equals(SpecificSystemData other)
+	public readonly bool Equals(SpecificSystemData other)
 	{
 		return Name.Equals(other.Name, StringComparison.Ordinal) && SpecificSystem == other.SpecificSystem;
 	}
 
-	public override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
 		return obj is SpecificSystemData && Equals((SpecificSystemData)obj);
 	}
 
-	public override int GetHashCode()
+	public readonly override int GetHashCode()
 	{
 		return HashCode.Combine(Name, SpecificSystem);
 	}

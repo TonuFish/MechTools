@@ -23,23 +23,30 @@ public readonly struct NoCritData : IEquatable<NoCritData>
 		name = Name;
 	}
 
+#if DEBUG
+	public readonly override string ToString()
+	{
+		return $"{Location}```{Name}";
+	}
+
+#endif
 	#region Equality
 
 	public static bool operator ==(NoCritData left, NoCritData right) => left.Equals(right);
 
 	public static bool operator !=(NoCritData left, NoCritData right) => !(left == right);
 
-	public bool Equals(NoCritData other)
+	public readonly bool Equals(NoCritData other)
 	{
 		return Location == other.Location && Name.Equals(other.Name, StringComparison.Ordinal);
 	}
 
-	public override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
 		return obj is NoCritData && Equals((NoCritData)obj);
 	}
 
-	public override int GetHashCode()
+	public readonly override int GetHashCode()
 	{
 		return HashCode.Combine(Location, Name);
 	}

@@ -24,23 +24,30 @@ public readonly struct ArmourData : IEquatable<ArmourData>
 		origin = Origin;
 	}
 
+#if DEBUG
+	public readonly override string ToString()
+	{
+		return $"{Armour}```{Origin}";
+	}
+
+#endif
 	#region Equality
 
 	public static bool operator ==(ArmourData left, ArmourData right) => left.Equals(right);
 
 	public static bool operator !=(ArmourData left, ArmourData right) => !(left == right);
 
-	public bool Equals(ArmourData other)
+	public readonly bool Equals(ArmourData other)
 	{
 		return Armour == other.Armour && Origin == other.Origin;
 	}
 
-	public override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
 		return obj is ArmourData && Equals((ArmourData)obj);
 	}
 
-	public override int GetHashCode()
+	public readonly override int GetHashCode()
 	{
 		return HashCode.Combine(Armour, Origin);
 	}
