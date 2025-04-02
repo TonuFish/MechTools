@@ -195,7 +195,7 @@ internal static class MtfEnumConversions
 			"PROTOTYPE TRIPLE-STRENGTH" => Myomer.PrototypeTripleStrength,
 			"STANDARD" => Myomer.Standard,
 			"SUPER-COOLED" => Myomer.SuperCooled,
-			"TRIPLE-STRENGTH" => Myomer.TripleStrength,
+			"TRIPLE-STRENGTH" or "TRIPLE STRENGTH MYOMER" => Myomer.TripleStrength,
 			_ => ThrowHelper.ExceptionToSpecifyLater<Myomer>(),
 		};
 	}
@@ -259,8 +259,8 @@ internal static class MtfEnumConversions
 		{
 			"CLAN" => TechBase.Clan,
 			"INNER SPHERE" => TechBase.InnerSphere,
-			"MIXED(CLAN CHASSIS)" => TechBase.MixedClanChassis,
-			"MIXED(IS CHASSIS)" => TechBase.MixedInnerSphereChassis,
+			"MIXED (CLAN CHASSIS)" => TechBase.MixedClanChassis,
+			"MIXED (IS CHASSIS)" => TechBase.MixedInnerSphereChassis,
 			_ => ThrowHelper.ExceptionToSpecifyLater<TechBase>(),
 		};
 	}

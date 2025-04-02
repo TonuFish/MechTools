@@ -422,12 +422,7 @@ public static class MtfHelper
 	public static int GetWeaponListCount(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		var weaponCount = ParseSimpleNumber(chars);
-		if (weaponCount < 1)
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
-		return weaponCount;
+		return ParseSimpleNumber(chars);
 	}
 
 	public static WeaponQuirkData GetWeaponQuirk(ReadOnlySpan<char> chars)
