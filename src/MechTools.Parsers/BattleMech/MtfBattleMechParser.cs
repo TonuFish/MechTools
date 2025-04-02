@@ -178,225 +178,268 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		Span<char> section = (stackalloc char[64])[..delimeterIndex];
 		_ = line[..delimeterIndex].ToUpperInvariant(section);
 
-		switch (section)
+		// TODO: Consider adding a call to the builder for starting each equipment section. Nop for defaults.
+		// TODO: Handle the unknown case.
+
+		switch (section.Length)
 		{
-			// TODO: Consider adding a call to the builder for starting each equipment section. Nop for defaults.
-			// TODO: Handle the unknown case.
-			case MtfSections.ArmourLocation.CentreLeg:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.CentreLeg);
-				break;
-			case MtfSections.ArmourLocation.CentreTorso:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.CentreTorso);
-				break;
-			case MtfSections.ArmourLocation.FrontLeftLeg:
-			case MtfSections.ArmourLocation.LeftLeg:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.LeftLeg);
-				break;
-			case MtfSections.ArmourLocation.FrontRightLeg:
-			case MtfSections.ArmourLocation.RightLeg:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RightLeg);
-				break;
-			case MtfSections.ArmourLocation.Head:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.Head);
-				break;
-			case MtfSections.ArmourLocation.LeftArm:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.LeftArm);
-				break;
-			case MtfSections.ArmourLocation.LeftTorso:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.LeftTorso);
-				break;
-			case MtfSections.ArmourLocation.RearLeftLeg:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearLeftLeg);
-				break;
-			case MtfSections.ArmourLocation.RearRightLeg:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearRightLeg);
-				break;
-			case MtfSections.ArmourLocation.RightArm:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RightArm);
-				break;
-			case MtfSections.ArmourLocation.RightTorso:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RightTorso);
-				break;
-			case MtfSections.ArmourLocation.RearCentreTorso:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearCentreTorso);
-				break;
-			case MtfSections.ArmourLocation.RearLeftTorso:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearLeftTorso);
-				break;
-			case MtfSections.ArmourLocation.RearRightTorso:
-				_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearRightTorso);
-				break;
-			case MtfSections.Armour:
-				_builder.SetArmour(content);
-				break;
-			case MtfSections.BaseChassisHeatSinks:
-				_builder.SetBaseChassisHeatSinks(content);
-				break;
-			case MtfSections.Capabilities:
-				_builder.SetCapabilities(content);
-				break;
-			case MtfSections.Chassis:
-				_builder.SetChassis(content);
-				break;
-			case MtfSections.ClanName:
-				_builder.SetClanName(content);
-				break;
-			case MtfSections.Cockpit:
-				_builder.SetCockpit(content);
-				break;
-			case MtfSections.Configuration:
-				_builder.SetConfiguration(content);
-				break;
-			case MtfSections.Deployment:
-				_builder.SetDeployment(content);
-				break;
-			case MtfSections.Ejection:
-				_builder.SetEjection(content);
-				break;
-			case MtfSections.Engine:
-				_builder.SetEngine(content);
-				break;
-			case MtfSections.Era:
-				_builder.SetEra(content);
-				break;
-			case MtfSections.Generator:
-				_builder.SetGenerator(content);
-				break;
-			case MtfSections.Gyro:
-				_builder.SetGyro(content);
-				break;
-			case MtfSections.HeatSinkKit:
-				_builder.SetHeatSinkKit(content);
-				break;
-			case MtfSections.HeatSinks:
-				_builder.SetHeatSinks(content);
-				break;
-			case MtfSections.History:
-				_builder.SetHistory(content);
-				break;
-			case MtfSections.ImageFile:
-				_builder.SetImageFile(content);
-				break;
-			case MtfSections.JumpMp:
-				_builder.SetJumpMp(content);
-				break;
-			case MtfSections.Lam:
-				_builder.SetLam(content);
-				break;
-			case MtfSections.Manufacturer:
-				_builder.SetManufacturer(content);
-				break;
-			case MtfSections.Mass:
-				_builder.SetMass(content);
-				break;
-			case MtfSections.Model:
-				_builder.SetModel(content);
-				break;
-			case MtfSections.Motive:
-				_builder.SetMotive(content);
-				break;
-			case MtfSections.MulId:
-				_builder.SetMulId(content);
-				break;
-			case MtfSections.Myomer:
-				_builder.SetMyomer(content);
-				break;
-			case MtfSections.NoCrit:
-				_builder.SetNoCrit(content);
-				break;
-			case MtfSections.Notes:
-				_builder.SetNotes(content);
-				break;
-			case MtfSections.Overview:
-				_builder.SetOverview(content);
-				break;
-			case MtfSections.PrimaryFactory:
-				_builder.SetPrimaryFactory(content);
-				break;
-			case MtfSections.Quirk:
-				_builder.AddQuirk(content);
-				break;
-			case MtfSections.Role:
-				_builder.SetRole(content);
-				break;
-			case MtfSections.RulesLevel:
-				_builder.SetRulesLevel(content);
-				break;
-			case MtfSections.Source:
-				_builder.SetSource(content);
-				break;
-			case MtfSections.Structure:
-				_builder.SetStructure(content);
-				break;
-			case MtfSections.SystemManufacturer:
-				_builder.SetSystemManufacturer(content);
-				break;
-			case MtfSections.SystemModel:
-			case MtfSections.SystemModelTypo:
-				_builder.SetSystemModel(content);
-				break;
-			case MtfSections.TechBase:
-				_builder.SetTechBase(content);
-				break;
-			case MtfSections.WalkMp:
-				_builder.SetWalkMp(content);
-				break;
-			case MtfSections.WeaponQuirk:
-				_builder.AddWeaponQuirk(content);
-				break;
-			case MtfSections.Weapons:
-				_builder.SetWeaponListCount(content);
-				_mode = Mode.Weapons;
-				break;
-			case MtfSections.EquipmentLocation.CentreLeg:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.CentreLeg;
-				break;
-			case MtfSections.EquipmentLocation.CentreTorso:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.CentreTorso;
-				break;
-			case MtfSections.EquipmentLocation.FrontLeftLeg:
-			case MtfSections.EquipmentLocation.LeftLeg:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.LeftLeg;
-				break;
-			case MtfSections.EquipmentLocation.FrontRightLeg:
-			case MtfSections.EquipmentLocation.RightLeg:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.RightLeg;
-				break;
-			case MtfSections.EquipmentLocation.Head:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.Head;
-				break;
-			case MtfSections.EquipmentLocation.LeftArm:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.LeftArm;
-				break;
-			case MtfSections.EquipmentLocation.LeftTorso:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.LeftTorso;
-				break;
-			case MtfSections.EquipmentLocation.RearLeftLeg:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.RearLeftLeg;
-				break;
-			case MtfSections.EquipmentLocation.RearRightLeg:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.RearRightLeg;
-				break;
-			case MtfSections.EquipmentLocation.RightArm:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.RightArm;
-				break;
-			case MtfSections.EquipmentLocation.RightTorso:
-				_mode = Mode.EquipmentAtLocation;
-				_equipmentLocation = BattleMechEquipmentLocation.RightTorso;
-				break;
-			default:
-				ThrowHelper.ExceptionToSpecifyLater();
-				break;
+			case <= 7:
+				ProcessShortLengthTags(section, content);
+				break;
+			case >= 10:
+				ProcessLongLengthTags(section, content);
+				break;
+			default: // 8,9
+				ProcessMediumLengthTags(section, content);
+				break;
+		}
+
+		void ProcessShortLengthTags(ReadOnlySpan<char> section, ReadOnlySpan<char> content)
+		{
+			switch (section)
+			{
+				case MtfSections.Armour:
+					_builder.SetArmour(content);
+					break;
+				case MtfSections.Chassis:
+					_builder.SetChassis(content);
+					break;
+				case MtfSections.Cockpit:
+					_builder.SetCockpit(content);
+					break;
+				case MtfSections.Configuration:
+					_builder.SetConfiguration(content);
+					break;
+				case MtfSections.Engine:
+					_builder.SetEngine(content);
+					break;
+				case MtfSections.Era:
+					_builder.SetEra(content);
+					break;
+				case MtfSections.Gyro:
+					_builder.SetGyro(content);
+					break;
+				case MtfSections.History:
+					_builder.SetHistory(content);
+					break;
+				case MtfSections.JumpMp:
+					_builder.SetJumpMp(content);
+					break;
+				case MtfSections.Lam:
+					_builder.SetLam(content);
+					break;
+				case MtfSections.Mass:
+					_builder.SetMass(content);
+					break;
+				case MtfSections.Model:
+					_builder.SetModel(content);
+					break;
+				case MtfSections.Motive:
+					_builder.SetMotive(content);
+					break;
+				case MtfSections.MulId:
+					_builder.SetMulId(content);
+					break;
+				case MtfSections.Myomer:
+					_builder.SetMyomer(content);
+					break;
+				case MtfSections.NoCrit:
+					_builder.SetNoCrit(content);
+					break;
+				case MtfSections.Notes:
+					_builder.SetNotes(content);
+					break;
+				case MtfSections.Quirk:
+					_builder.AddQuirk(content);
+					break;
+				case MtfSections.Role:
+					_builder.SetRole(content);
+					break;
+				case MtfSections.Source:
+					_builder.SetSource(content);
+					break;
+				case MtfSections.WalkMp:
+					_builder.SetWalkMp(content);
+					break;
+				case MtfSections.Weapons:
+					_builder.SetWeaponListCount(content);
+					_mode = Mode.Weapons;
+					break;
+				case MtfSections.EquipmentLocation.Head:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.Head;
+					break;
+				default:
+					ThrowHelper.ExceptionToSpecifyLater();
+					break;
+			}
+		}
+
+		void ProcessMediumLengthTags(ReadOnlySpan<char> section, ReadOnlySpan<char> content)
+		{
+			switch (section)
+			{
+				case MtfSections.ArmourLocation.CentreLeg:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.CentreLeg);
+					break;
+				case MtfSections.ArmourLocation.CentreTorso:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.CentreTorso);
+					break;
+				case MtfSections.ArmourLocation.FrontLeftLeg:
+				case MtfSections.ArmourLocation.LeftLeg:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.LeftLeg);
+					break;
+				case MtfSections.ArmourLocation.FrontRightLeg:
+				case MtfSections.ArmourLocation.RightLeg:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RightLeg);
+					break;
+				case MtfSections.ArmourLocation.Head:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.Head);
+					break;
+				case MtfSections.ArmourLocation.LeftArm:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.LeftArm);
+					break;
+				case MtfSections.ArmourLocation.LeftTorso:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.LeftTorso);
+					break;
+				case MtfSections.ArmourLocation.RearLeftLeg:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearLeftLeg);
+					break;
+				case MtfSections.ArmourLocation.RearRightLeg:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearRightLeg);
+					break;
+				case MtfSections.ArmourLocation.RightArm:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RightArm);
+					break;
+				case MtfSections.ArmourLocation.RightTorso:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RightTorso);
+					break;
+				case MtfSections.ArmourLocation.RearCentreTorso:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearCentreTorso);
+					break;
+				case MtfSections.ArmourLocation.RearLeftTorso:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearLeftTorso);
+					break;
+				case MtfSections.ArmourLocation.RearRightTorso:
+					_builder.SetArmourAtLocation(content, BattleMechArmourLocation.RearRightTorso);
+					break;
+				case MtfSections.ClanName:
+					_builder.SetClanName(content);
+					break;
+				case MtfSections.Ejection:
+					_builder.SetEjection(content);
+					break;
+				case MtfSections.Generator:
+					_builder.SetGenerator(content);
+					break;
+				case MtfSections.ImageFile:
+					_builder.SetImageFile(content);
+					break;
+				case MtfSections.Overview:
+					_builder.SetOverview(content);
+					break;
+				case MtfSections.Structure:
+					_builder.SetStructure(content);
+					break;
+				case MtfSections.TechBase:
+					_builder.SetTechBase(content);
+					break;
+				case MtfSections.EquipmentLocation.LeftLeg:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.LeftLeg;
+					break;
+				case MtfSections.EquipmentLocation.RightLeg:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.RightLeg;
+					break;
+				case MtfSections.EquipmentLocation.LeftArm:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.LeftArm;
+					break;
+				case MtfSections.EquipmentLocation.RightArm:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.RightArm;
+					break;
+				default:
+					ThrowHelper.ExceptionToSpecifyLater();
+					break;
+			}
+		}
+
+		void ProcessLongLengthTags(ReadOnlySpan<char> section, ReadOnlySpan<char> content)
+		{
+			switch (section)
+			{
+				case MtfSections.BaseChassisHeatSinks:
+					_builder.SetBaseChassisHeatSinks(content);
+					break;
+				case MtfSections.Capabilities:
+					_builder.SetCapabilities(content);
+					break;
+				case MtfSections.Deployment:
+					_builder.SetDeployment(content);
+					break;
+				case MtfSections.HeatSinkKit:
+					_builder.SetHeatSinkKit(content);
+					break;
+				case MtfSections.HeatSinks:
+					_builder.SetHeatSinks(content);
+					break;
+				case MtfSections.Manufacturer:
+					_builder.SetManufacturer(content);
+					break;
+				case MtfSections.PrimaryFactory:
+					_builder.SetPrimaryFactory(content);
+					break;
+				case MtfSections.RulesLevel:
+					_builder.SetRulesLevel(content);
+					break;
+				case MtfSections.SystemManufacturer:
+					_builder.SetSystemManufacturer(content);
+					break;
+				case MtfSections.SystemModel:
+				case MtfSections.SystemModelTypo:
+					_builder.SetSystemModel(content);
+					break;
+				case MtfSections.WeaponQuirk:
+					_builder.AddWeaponQuirk(content);
+					break;
+				case MtfSections.EquipmentLocation.CentreLeg:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.CentreLeg;
+					break;
+				case MtfSections.EquipmentLocation.CentreTorso:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.CentreTorso;
+					break;
+				case MtfSections.EquipmentLocation.FrontLeftLeg:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.LeftLeg;
+					break;
+				case MtfSections.EquipmentLocation.FrontRightLeg:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.RightLeg;
+					break;
+				case MtfSections.EquipmentLocation.LeftTorso:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.LeftTorso;
+					break;
+				case MtfSections.EquipmentLocation.RearLeftLeg:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.RearLeftLeg;
+					break;
+				case MtfSections.EquipmentLocation.RearRightLeg:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.RearRightLeg;
+					break;
+				case MtfSections.EquipmentLocation.RightTorso:
+					_mode = Mode.EquipmentAtLocation;
+					_equipmentLocation = BattleMechEquipmentLocation.RightTorso;
+					break;
+				default:
+					ThrowHelper.ExceptionToSpecifyLater();
+					break;
+			}
 		}
 	}
 
