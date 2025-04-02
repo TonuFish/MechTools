@@ -20,14 +20,14 @@
 				<IsAotCompatible>true</IsAotCompatible>
 			</PropertyGroup>
 
-			<PropertyGroup Label="TEMPORARY">
-				<!--TODO: Playing around/testing only - remove later.-->
+			<!--<PropertyGroup Label="TEMPORARY">
+				--><!--TODO: Playing around/testing only - remove later.--><!--
 				<PublishTrimmed>true</PublishTrimmed>
 				<TrimMode>full</TrimMode>
 				<TrimmerSingleWarn>false</TrimmerSingleWarn>
 				<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
 
-				<!--https://github.com/dotnet/runtime/blob/main/docs/workflow/trimming/feature-switches.md-->
+				--><!--https://github.com/dotnet/runtime/blob/main/docs/workflow/trimming/feature-switches.md--><!--
 				<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
 				<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
 				<EventSourceSupport>false</EventSourceSupport>
@@ -47,8 +47,8 @@
 				<_DataSetXmlSerializationSupport>false</_DataSetXmlSerializationSupport>
 				<_EnableConsumingManagedCodeFromNativeHosting>false</_EnableConsumingManagedCodeFromNativeHosting>
 
-				<!--https://github.com/dotnet/corert/blob/master/Documentation/using-corert/optimizing-corert.md-->
-				<!--<GenerateAssemblyInfo>false</GenerateAssemblyInfo> - Breaks InternalsVisibleTo, makes sense.-->
+				--><!--https://github.com/dotnet/corert/blob/master/Documentation/using-corert/optimizing-corert.md--><!--
+				--><!--<GenerateAssemblyInfo>false</GenerateAssemblyInfo> - Breaks InternalsVisibleTo, makes sense.--><!--
 				<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
 				<RootAllApplicationAssemblies>false</RootAllApplicationAssemblies>
 				<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
@@ -61,7 +61,7 @@
 				<ErrorReport>none</ErrorReport>
 				<IlcDisableUnhandledExceptionExperience>true</IlcDisableUnhandledExceptionExperience>
 				<RootAllApplicationAssemblies>false</RootAllApplicationAssemblies>
-			</PropertyGroup>
+			</PropertyGroup>-->
 
 			<ItemGroup>
 				<Compile Include="$(SolutionDir)\ModuleSettings.cs" Visible="false" />

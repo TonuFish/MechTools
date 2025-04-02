@@ -1,5 +1,9 @@
 # Notes
 
+## Programming Notes
+
+No `ValueTuple`: https://github.com/dotnet/runtime/pull/87120.
+
 ## Notes
 
 model:(Bounty Hunter)
