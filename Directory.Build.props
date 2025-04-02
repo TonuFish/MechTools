@@ -20,6 +20,49 @@
 				<IsAotCompatible>true</IsAotCompatible>
 			</PropertyGroup>
 
+			<PropertyGroup Label="TEMPORARY">
+				<!--TODO: Playing around/testing only - remove later.-->
+				<PublishTrimmed>true</PublishTrimmed>
+				<TrimMode>full</TrimMode>
+				<TrimmerSingleWarn>false</TrimmerSingleWarn>
+				<SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
+
+				<!--https://github.com/dotnet/runtime/blob/main/docs/workflow/trimming/feature-switches.md-->
+				<EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
+				<EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+				<EventSourceSupport>false</EventSourceSupport>
+				<HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+				<MetadataUpdaterSupport>false</MetadataUpdaterSupport>
+				<MetricsSupport>false</MetricsSupport>
+				<XmlResolverIsNetworkingEnabledByDefault>false</XmlResolverIsNetworkingEnabledByDefault>
+
+				<UseSystemResourceKeys>true</UseSystemResourceKeys>
+
+				<TrimmerRemoveSymbols>true</TrimmerRemoveSymbols>
+				<DebuggerSupport>false</DebuggerSupport>
+				<StackTraceSupport>false</StackTraceSupport>
+
+				<DynamicCodeSupport>false</DynamicCodeSupport>
+				<VerifyDependencyInjectionOpenGenericServiceTrimmability>true</VerifyDependencyInjectionOpenGenericServiceTrimmability>
+				<_DataSetXmlSerializationSupport>false</_DataSetXmlSerializationSupport>
+				<_EnableConsumingManagedCodeFromNativeHosting>false</_EnableConsumingManagedCodeFromNativeHosting>
+
+				<!--https://github.com/dotnet/corert/blob/master/Documentation/using-corert/optimizing-corert.md-->
+				<!--<GenerateAssemblyInfo>false</GenerateAssemblyInfo> - Breaks InternalsVisibleTo, makes sense.-->
+				<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+				<RootAllApplicationAssemblies>false</RootAllApplicationAssemblies>
+				<IlcFoldIdenticalMethodBodies>true</IlcFoldIdenticalMethodBodies>
+				<InvariantGlobalization>true</InvariantGlobalization>
+				<StripSymbols>true</StripSymbols>
+				<IlcOptimizationPreference>Speed</IlcOptimizationPreference>
+				<IlcGenerateCompleteTypeMetadata>false</IlcGenerateCompleteTypeMetadata>
+				<IlcGenerateStackTraceData>false</IlcGenerateStackTraceData>
+				<IlcDisableReflection>true</IlcDisableReflection>
+				<ErrorReport>none</ErrorReport>
+				<IlcDisableUnhandledExceptionExperience>true</IlcDisableUnhandledExceptionExperience>
+				<RootAllApplicationAssemblies>false</RootAllApplicationAssemblies>
+			</PropertyGroup>
+
 			<ItemGroup>
 				<Compile Include="$(SolutionDir)\ModuleSettings.cs" Visible="false" />
 			</ItemGroup>

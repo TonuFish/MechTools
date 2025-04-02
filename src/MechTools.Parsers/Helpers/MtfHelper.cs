@@ -351,8 +351,6 @@ public static class MtfHelper
 
 	public static WeaponListData GetWeaponForWeaponList(ReadOnlySpan<char> chars)
 	{
-		// TODO: This needs a proper return object at this point, whether you're dropping ValueTuple or not.
-
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();

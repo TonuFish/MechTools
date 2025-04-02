@@ -18,7 +18,7 @@ public readonly struct ArmourData : IEquatable<ArmourData>
 		Origin = origin;
 	}
 
-	public void Deconstruct(out Armour armour, out Origin? origin)
+	public readonly void Deconstruct(out Armour armour, out Origin? origin)
 	{
 		armour = Armour;
 		origin = Origin;

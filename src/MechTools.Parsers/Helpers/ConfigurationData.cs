@@ -18,7 +18,7 @@ public readonly struct ConfigurationData : IEquatable<ConfigurationData>
 		IsOmniMech = isOmniMech;
 	}
 
-	public void Deconstruct(out Configuration configuration, out bool isOmniMech)
+	public readonly void Deconstruct(out Configuration configuration, out bool isOmniMech)
 	{
 		configuration = Configuration;
 		isOmniMech = IsOmniMech;
