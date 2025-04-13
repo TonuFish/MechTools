@@ -126,8 +126,6 @@ public static class MtfHelper
 
 	public static EquipmentData GetEquipmentAtLocation(ReadOnlySpan<char> chars)
 	{
-		// TODO: Real return object.
-
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();

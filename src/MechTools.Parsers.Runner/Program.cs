@@ -35,9 +35,10 @@ internal static class Program
 				|| filePath.EndsWith("Anubis ABS-4C.mtf", StringComparison.Ordinal)
 				|| filePath.EndsWith("Poseidon PSD-V2.mtf", StringComparison.Ordinal)
 				|| filePath.EndsWith("Spartan SPT-N3.mtf", StringComparison.Ordinal)
-
 				// Bad cockpit
-				|| filePath.EndsWith("Arbiter ARB-001.mtf", StringComparison.Ordinal))
+				|| filePath.EndsWith("Arbiter ARB-001.mtf", StringComparison.Ordinal)
+				// Empty deployment
+				|| filePath.EndsWith("Seraph C-SRP-O Caelestis.mtf", StringComparison.Ordinal))
 			{
 				// Skip the malformed text blob mechs for now.
 				continue;
