@@ -108,6 +108,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			var sequence = buffer.Slice(buffer.Start, position.Value);
 
 			ReadOnlySpan<char> line;
+			// TODO: Make and use a local here instead, but still assign to _scratchBuffer for disposal
 			if (sequence.Length <= _scratchBuffer.Length)
 			{
 				var charCount = Encoding.UTF8.GetChars(in sequence, _scratchBuffer);
