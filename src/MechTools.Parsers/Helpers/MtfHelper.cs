@@ -132,6 +132,10 @@ public static class MtfHelper
 		{
 			return new(Engine.None, false, false, 0);
 		}
+		else if (!trimmedChars.Contains(" ENGINE", StringComparison.OrdinalIgnoreCase))
+		{
+			ThrowHelper.ExceptionToSpecifyLater();
+		}
 
 		var sizeBound = trimmedChars.IndexOf(' ');
 		if (sizeBound == -1 || !int.TryParse(trimmedChars[..sizeBound], NumberStyles.None, null, out var size))

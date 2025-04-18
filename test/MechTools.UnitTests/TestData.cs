@@ -91,9 +91,10 @@ internal static class TestData
 		return new(
 			// No size
 			" Fusion Engine ",
+			// No engine text
+			" 250 Fusion ",
 			// No engine type
-			" 410 Large Engine "
-			);
+			" 410 Large Engine ");
 	}
 
 	public static TheoryData<string, EngineData> ValidEngine()
