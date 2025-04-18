@@ -20,7 +20,6 @@ internal static class Program
 	private static async Task EnumerateAsync(CancellationToken ct)
 	{
 		List<string> brokenList = [];
-		var excitedCount = 0;
 
 		foreach (var filePath in Directory.EnumerateFiles(@"..\..\..\..\..\scratch"))
 		{
@@ -60,23 +59,28 @@ internal static class Program
 
 	private static void Dump()
 	{
-		HashSet<string> armours = new(capacity: 16);
+		HashSet<string> hits = new(capacity: 16);
 
 		foreach (var filePath in Directory.EnumerateFiles(@"..\..\..\..\..\scratch"))
 		{
 			foreach (var line in File.ReadAllLines(filePath))
 			{
-				const string tag = "nocrit:";
+				const string tag = "engine:";
 				var span = line.AsSpan().Trim();
 				if (span.Length > tag.Length && span.StartsWith(tag, StringComparison.OrdinalIgnoreCase))
 				{
-					_ = armours.Add(line.AsSpan(start: tag.Length).Trim().ToString());
+					_ = hits.Add(line.AsSpan(start: tag.Length).Trim().ToString());
 				}
 			}
 		}
 
-		var output = string.Join('\n', armours.Order());
-		Console.WriteLine(output);
+		// var output = string.Join('\n', hits.Order());
+		var sizelessEngines = hits
+			.Select(x => x[(x.IndexOf(' ', StringComparison.Ordinal) + 1)..])
+			.Distinct(StringComparer.OrdinalIgnoreCase)
+			.Order(StringComparer.OrdinalIgnoreCase)
+			.ToArray();
+		Console.WriteLine(string.Join('\n', sizelessEngines.Order()));
 		System.Diagnostics.Debugger.Break();
 	}
 }

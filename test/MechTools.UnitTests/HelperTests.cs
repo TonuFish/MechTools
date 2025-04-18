@@ -8,7 +8,6 @@ namespace MechTools.UnitTests;
 public sealed class HelperTests
 {
 	// TODO: GetArmourAtLocation
-	// TODO: GetEngine
 	// TODO: GetEquipmentAtLocation
 	// TODO: GetHeatSinks
 	// TODO: GetStructure
@@ -250,6 +249,31 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[MemberData(nameof(TestData.InvalidEngine), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetEngine_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetEngine(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidEngine), MemberType = typeof(TestData))]
+	public void GetEngine_ValidInput_Works(string input, EngineData expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetEngine(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
 	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetEra_InvalidInput_Throws(string input)
@@ -416,8 +440,6 @@ public sealed class HelperTests
 	[InlineData(" standard ", Lam.Standard)]
 	public void GetLam_ValidInput_Works(string input, Lam expected)
 	{
-		// TODO: Consider if the ` gyro` suffix should be optional.
-
 		// Arrange
 		// Act
 		var result = MtfHelper.GetLam(input);

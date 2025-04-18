@@ -1,6 +1,7 @@
 ﻿using MechTools.Core.Enums;
 using MechTools.Parsers.BattleMech;
 using System;
+using System.Buffers;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 
@@ -11,6 +12,11 @@ namespace MechTools.Parsers.Helpers;
 // TODO: Throw if Bound + 1 overflows
 public static class MtfHelper
 {
+	private static readonly SearchValues<string> _engineDelimeterSearchValues =
+		SearchValues.Create(["(", "ENGINE"], StringComparison.OrdinalIgnoreCase);
+	private static readonly SearchValues<string> _engineInnerSphereMarkerSearchValues =
+		SearchValues.Create(["(IS)", "(INNER SPHERE)"], StringComparison.OrdinalIgnoreCase);
+
 	public static ArmourData GetArmour(ReadOnlySpan<char> chars)
 	{
 		// TODO: Enum-ify.
@@ -117,11 +123,34 @@ public static class MtfHelper
 		return chars.Trim().ToString();
 	}
 
-	public static string GetEngine(ReadOnlySpan<char> chars)
+	public static EngineData GetEngine(ReadOnlySpan<char> chars)
 	{
-		// TODO: Further parsing
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return chars.Trim().ToString();
+
+		var trimmedChars = chars.Trim();
+		if (trimmedChars.Equals("(NONE)", StringComparison.OrdinalIgnoreCase))
+		{
+			return new(Engine.None, false, false, 0);
+		}
+
+		var sizeBound = trimmedChars.IndexOf(' ');
+		if (sizeBound == -1 || !int.TryParse(trimmedChars[..sizeBound], NumberStyles.None, null, out var size))
+		{
+			return ThrowHelper.ExceptionToSpecifyLater<EngineData>();
+		}
+
+		// TODO: Consider none handling... (none)
+		var engineBound = trimmedChars.IndexOfAny(_engineDelimeterSearchValues);
+		if (engineBound == -1)
+		{
+			engineBound = trimmedChars.Length;
+		}
+		var engine = MtfEnumConversions.GetEngine(trimmedChars[(sizeBound + 1)..engineBound].Trim());
+
+		var hasClanFlag = trimmedChars.Contains("(CLAN)", StringComparison.OrdinalIgnoreCase);
+		var hasInnerSphereFlag = trimmedChars.ContainsAny(_engineInnerSphereMarkerSearchValues);
+
+		return new(engine, hasClanFlag, hasInnerSphereFlag, size);
 	}
 
 	public static EquipmentData GetEquipmentAtLocation(ReadOnlySpan<char> chars)
@@ -134,13 +163,9 @@ public static class MtfHelper
 			return new(false, false, false, cachedValue);
 		}
 
-		const string omnipodDel = " (OMNIPOD)";
-		const string rearDel = " (R)";
-		const string turretDel = " (T)";
-
-		var omnipodBound = trimmedChars.LastIndexOf(omnipodDel, StringComparison.OrdinalIgnoreCase);
-		var rearBound = trimmedChars.LastIndexOf(rearDel, StringComparison.OrdinalIgnoreCase);
-		var turretBound = trimmedChars.LastIndexOf(turretDel, StringComparison.OrdinalIgnoreCase);
+		var omnipodBound = trimmedChars.LastIndexOf(" (OMNIPOD)", StringComparison.OrdinalIgnoreCase);
+		var rearBound = trimmedChars.LastIndexOf(" (R)", StringComparison.OrdinalIgnoreCase);
+		var turretBound = trimmedChars.LastIndexOf(" (T)", StringComparison.OrdinalIgnoreCase);
 
 		return rearBound == -1 || turretBound == -1 || omnipodBound == -1
 			? new(false, false, false, chars.ToString())

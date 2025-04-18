@@ -84,6 +84,59 @@ internal static class MtfEnumConversions
 		};
 	}
 
+	public static Engine GetEngine(ReadOnlySpan<char> chars)
+	{
+		if (chars.Equals("(NONE)", StringComparison.OrdinalIgnoreCase))
+		{
+			return Engine.None;
+		}
+
+		const string largeEngineMarker = "LARGE ";
+		const string primitiveEngineMarker = "PRIMITIVE ";
+		const string fusionEngineMarker = " FUSION";
+
+		var cleanChars = chars;
+		if (cleanChars.StartsWith(largeEngineMarker, StringComparison.OrdinalIgnoreCase))
+		{
+			cleanChars = cleanChars[largeEngineMarker.Length..].TrimStart();
+		}
+		if (cleanChars.StartsWith(primitiveEngineMarker, StringComparison.OrdinalIgnoreCase))
+		{
+			cleanChars = cleanChars[primitiveEngineMarker.Length..].TrimStart();
+		}
+
+		if (cleanChars.Equals("FUSION", StringComparison.OrdinalIgnoreCase))
+		{
+			return Engine.Fusion;
+		}
+		else if (cleanChars.EndsWith(" FUSION", StringComparison.OrdinalIgnoreCase))
+		{
+			cleanChars = cleanChars[..^fusionEngineMarker.Length].TrimEnd();
+		}
+
+		Span<char> upper = (stackalloc char[64])[..cleanChars.Length];
+		_ = cleanChars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"BATTERY" => Engine.Battery,
+			"I.C.E." or "ICE" => Engine.Combustion,
+			"COMPACT" => Engine.Compact,
+			"EXTERNAL" => Engine.External,
+			"FISSION" => Engine.Fission,
+			"FUEL CELL" or "FUEL-CELL" => Engine.FuelCell,
+			// "FUSION" would imply a {} FUSION FUSION engine.
+			"LIGHT" => Engine.Light,
+			"MAGLEV" => Engine.Maglev,
+			// "(NONE)" explicitly handled earlier.
+			"SOLAR" => Engine.Solar,
+			"STEAM" => Engine.Steam,
+			"XL" => Engine.Xl,
+			"XXL" => Engine.Xxl,
+			_ => ThrowHelper.ExceptionToSpecifyLater<Engine>(),
+		};
+	}
+
 	public static BattleMechEquipmentLocation GetEquipmentLocation(ReadOnlySpan<char> chars)
 	{
 		Span<char> upper = (stackalloc char[64])[..chars.Length];
@@ -108,6 +161,7 @@ internal static class MtfEnumConversions
 			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
 		};
 	}
+
 	public static BattleMechEquipmentLocation GetEquipmentLocationFromAbbreviation(ReadOnlySpan<char> chars)
 	{
 		// TODO: Cleanup later, yick.
@@ -195,7 +249,7 @@ internal static class MtfEnumConversions
 			"PROTOTYPE TRIPLE-STRENGTH" => Myomer.PrototypeTripleStrength,
 			"STANDARD" => Myomer.Standard,
 			"SUPER-COOLED" => Myomer.SuperCooled,
-			"TRIPLE-STRENGTH" or "TRIPLE STRENGTH MYOMER" => Myomer.TripleStrength,
+			"TRIPLE STRENGTH MYOMER" or "TRIPLE-STRENGTH" => Myomer.TripleStrength,
 			_ => ThrowHelper.ExceptionToSpecifyLater<Myomer>(),
 		};
 	}

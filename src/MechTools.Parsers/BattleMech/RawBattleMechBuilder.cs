@@ -142,8 +142,8 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetEngine(ReadOnlySpan<char> chars)
 	{
-		var value = MtfHelper.GetEngine(chars);
-		_lines.Add(value);
+		(var engine, var hasClanFlag, var hasInnerSphereFlag, var size) = MtfHelper.GetEngine(chars);
+		_lines.Add($"{size} {engine} {(hasClanFlag ? "(Clan)" : "")} {(hasInnerSphereFlag ? "(IS)" : "")}");
 	}
 
 	public void SetEra(ReadOnlySpan<char> chars)

@@ -84,6 +84,31 @@ internal static class TestData
 
 	#endregion Configuration
 
+	#region Engine
+
+	public static TheoryData<string> InvalidEngine()
+	{
+		return new(
+			// No size
+			" Fusion Engine ",
+			// No engine type
+			" 410 Large Engine "
+			);
+	}
+
+	public static TheoryData<string, EngineData> ValidEngine()
+	{
+		return new()
+		{
+			{ " 250 Fusion Engine ", new(Engine.Fusion, false, false, 250) },
+			{ " 350 XXL Engine(IS) ", new(Engine.Xxl, false, true, 350) },
+			{ " 420 Large XXL (Clan) Engine ", new(Engine.Xxl, true, false, 420) },
+			{ " 400 XXL (Clan) Engine(IS) ", new(Engine.Xxl, true, true, 400) },
+		};
+	}
+
+	#endregion Engine
+
 	#region Myomer
 
 	public static TheoryData<string> KnownLegacyMyomerStrings()
