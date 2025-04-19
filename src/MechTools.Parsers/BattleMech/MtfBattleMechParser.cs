@@ -1,6 +1,7 @@
 ﻿using MechTools.Core.Enums;
 using System;
 using System.Buffers;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Pipelines;
 using System.Runtime.CompilerServices;
@@ -23,13 +24,13 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 	private const int LongScratchBufferLength = ScratchBufferLength * 2;
 
 	private readonly IBattleMechBuilder _builder;
-	private readonly char[] _scratchBuffer = ArrayPool<char>.Shared.Rent(ScratchBufferLength); // TODO: Allocate later.
 
 	private bool _disposed;
 	private BattleMechEquipmentLocation? _equipmentLocation;
 	private int _lineCount = 1;
 	private char[]? _longScratchBuffer;
 	private Mode _mode;
+	private char[]? _scratchBuffer;
 
 	public MtfBattleMechParser(IBattleMechBuilder<TMech> builder)
 	{
@@ -96,6 +97,8 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 
 	private void ProcessBuffer(ref ReadOnlySequence<byte> buffer)
 	{
+		var scratchBuffer = _scratchBuffer!;
+
 		while (true)
 		{
 			const byte newLine = (byte)'\n';
@@ -108,11 +111,10 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			var sequence = buffer.Slice(buffer.Start, position.Value);
 
 			ReadOnlySpan<char> line;
-			// TODO: Make and use a local here instead, but still assign to _scratchBuffer for disposal
-			if (sequence.Length <= _scratchBuffer.Length)
+			if (sequence.Length <= scratchBuffer.Length)
 			{
-				var charCount = Encoding.UTF8.GetChars(in sequence, _scratchBuffer);
-				line = _scratchBuffer.AsSpan(start: 0, length: charCount).Trim();
+				var charCount = Encoding.UTF8.GetChars(in sequence, scratchBuffer);
+				line = scratchBuffer.AsSpan(start: 0, length: charCount).Trim();
 			}
 			else
 			{
@@ -444,14 +446,19 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		}
 	}
 
+	[MemberNotNull(nameof(_scratchBuffer))]
 	private TMech? ProcessSource(ReadOnlySpan<char> chars)
 	{
 		// TODO: Implement - should be quick.
+		_scratchBuffer = ArrayPool<char>.Shared.Rent(ScratchBufferLength);
 		throw new NotImplementedException();
 	}
 
+	[MemberNotNull(nameof(_scratchBuffer))]
 	private async Task ProcessSourceAsync(PipeReader reader, CancellationToken ct)
 	{
+		_scratchBuffer = ArrayPool<char>.Shared.Rent(ScratchBufferLength);
+
 		try
 		{
 			while (true)
@@ -482,9 +489,9 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		finally
 		{
 			// CompleteAsync is a direct wrap of Complete
-#pragma warning disable CA1849 // Call async methods when in an async method
+#pragma warning disable CA1849, S6966 // Call async methods when in an async method
 			reader.Complete();
-#pragma warning restore CA1849 // Call async methods when in an async method
+#pragma warning restore CA1849, S6966 // Call async methods when in an async method
 		}
 	}
 
@@ -496,9 +503,10 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 
 		if (!_disposed)
 		{
-			if (disposing)
+			if (disposing && _scratchBuffer is not null)
 			{
 				ArrayPool<char>.Shared.Return(_scratchBuffer, clearArray: false);
+
 				if (_longScratchBuffer is not null)
 				{
 					ArrayPool<char>.Shared.Return(_longScratchBuffer, clearArray: false);
