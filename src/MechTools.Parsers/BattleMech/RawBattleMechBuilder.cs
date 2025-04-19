@@ -284,7 +284,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetStructure(ReadOnlySpan<char> chars)
 	{
 		var value = MtfHelper.GetStructure(chars);
-		_lines.Add(value);
+		_lines.Add(value.ToString());
 	}
 
 	public void SetSystemManufacturer(ReadOnlySpan<char> chars)

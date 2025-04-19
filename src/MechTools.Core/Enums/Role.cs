@@ -2,7 +2,6 @@
 
 public enum Role
 {
-	Unknown,
 	None,
 	Ambusher,
 	Brawler,

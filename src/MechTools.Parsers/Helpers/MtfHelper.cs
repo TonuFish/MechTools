@@ -334,17 +334,24 @@ public static class MtfHelper
 			: new(chars.Trim().ToString(), null);
 	}
 
-	public static string GetStructure(ReadOnlySpan<char> chars)
+	public static Structure GetStructure(ReadOnlySpan<char> chars)
 	{
-		// TODO: Further parsing? Maybe below.
-		//"Standard",
-		//"Industrial",
-		//"Endo Steel",
-		//"Endo Steel Prototype",
-		//"Reinforced",
-		//"Composite",
-		//"Endo-Composite"
-		return chars.Trim().ToString();
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+
+		const string clanDel = "CLAN ";
+		const string innerSphereDel = "IS ";
+
+		var trimmedChars = chars.Trim();
+		if (trimmedChars.StartsWith(clanDel, StringComparison.OrdinalIgnoreCase))
+		{
+			trimmedChars = trimmedChars[clanDel.Length..].TrimStart();
+		}
+		else if (trimmedChars.StartsWith(innerSphereDel, StringComparison.OrdinalIgnoreCase))
+		{
+			trimmedChars = trimmedChars[innerSphereDel.Length..].TrimStart();
+		}
+
+		return MtfEnumConversions.GetStructure(trimmedChars);
 	}
 
 	public static SpecificSystemData GetSystemManufacturer(ReadOnlySpan<char> chars)

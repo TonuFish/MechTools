@@ -304,6 +304,24 @@ internal static class MtfEnumConversions
 		};
 	}
 
+	public static Structure GetStructure(ReadOnlySpan<char> chars)
+	{
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"STANDARD" => Structure.Standard,
+			"COMPOSITE" => Structure.Composite,
+			"ENDO-COMPOSITE" => Structure.EndoComposite,
+			"ENDO STEEL" or "ENDO-STEEL" => Structure.EndoSteel,
+			"ENDO STEEL PROTOTYPE" or "ENDO-STEEL PROTOTYPE" => Structure.EndoSteelPrototype,
+			"INDUSTRIAL" => Structure.Industrial,
+			"REINFORCED" => Structure.Reinforced,
+			_ => ThrowHelper.ExceptionToSpecifyLater<Structure>(),
+		};
+	}
+
 	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
 	{
 		Span<char> upper = (stackalloc char[64])[..chars.Length];

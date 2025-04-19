@@ -10,7 +10,6 @@ public sealed class HelperTests
 	// TODO: GetArmourAtLocation
 	// TODO: GetEquipmentAtLocation
 	// TODO: GetHeatSinks
-	// TODO: GetStructure
 	// TODO: GetWeaponForWeaponList
 
 	[Theory]
@@ -788,6 +787,33 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetSource(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetStructure_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetStructure(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[InlineData(" Standard ", Structure.Standard)]
+	[InlineData(" IS Composite ", Structure.Composite)]
+	[InlineData(" Clan Endo Steel ", Structure.EndoSteel)]
+	public void GetStructure_ValidInput_Works(string input, Structure expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetStructure(input);
 
 		// Assert
 		result.ShouldBe(expected);
