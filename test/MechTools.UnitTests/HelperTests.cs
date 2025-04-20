@@ -9,7 +9,6 @@ public sealed class HelperTests
 {
 	// TODO: GetArmourAtLocation
 	// TODO: GetEquipmentAtLocation
-	// TODO: GetHeatSinks
 	// TODO: GetWeaponForWeaponList
 
 	[Theory]
@@ -355,6 +354,31 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetHeatSinkKit(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.InvalidHeatSinks), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetHeatSinks_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetHeatSinks(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidHeatSinks), MemberType = typeof(TestData))]
+	public void GetHeatSinks_ValidInput_Works(string input, HeatSinkData expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetHeatSinks(input);
 
 		// Assert
 		result.ShouldBe(expected);

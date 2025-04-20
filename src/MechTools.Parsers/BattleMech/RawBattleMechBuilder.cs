@@ -172,8 +172,8 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetHeatSinks(ReadOnlySpan<char> chars)
 	{
-		var value = MtfHelper.GetHeatSinks(chars);
-		_lines.Add(value);
+		(var count, var heatSink, var origin) = MtfHelper.GetHeatSinks(chars);
+		_lines.Add($"{count} {origin} {heatSink}");
 	}
 
 	public void SetHistory(ReadOnlySpan<char> chars)

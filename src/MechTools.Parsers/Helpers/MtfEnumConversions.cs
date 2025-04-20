@@ -207,6 +207,21 @@ internal static class MtfEnumConversions
 		};
 	}
 
+	public static HeatSink GetHeatSinks(ReadOnlySpan<char> chars)
+	{
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"SINGLE" => HeatSink.Single,
+			"COMPACT" => HeatSink.Compact,
+			"DOUBLE" => HeatSink.Double,
+			"LASER" => HeatSink.Laser,
+			_ => ThrowHelper.ExceptionToSpecifyLater<HeatSink>(),
+		};
+	}
+
 	public static Lam GetLam(ReadOnlySpan<char> chars)
 	{
 		Span<char> upper = (stackalloc char[64])[..chars.Length];

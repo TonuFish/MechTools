@@ -14,7 +14,7 @@ public static class MtfHelper
 {
 	private static readonly SearchValues<string> _engineDelimeterSearchValues =
 		SearchValues.Create(["(", "ENGINE"], StringComparison.OrdinalIgnoreCase);
-	private static readonly SearchValues<string> _engineInnerSphereMarkerSearchValues =
+	private static readonly SearchValues<string> _innerSphereMarkerSearchValues =
 		SearchValues.Create(["(IS)", "(INNER SPHERE)"], StringComparison.OrdinalIgnoreCase);
 
 	public static ArmourData GetArmour(ReadOnlySpan<char> chars)
@@ -152,7 +152,7 @@ public static class MtfHelper
 		var engine = MtfEnumConversions.GetEngine(trimmedChars[(sizeBound + 1)..engineBound].Trim());
 
 		var hasClanFlag = trimmedChars.Contains("(CLAN)", StringComparison.OrdinalIgnoreCase);
-		var hasInnerSphereFlag = trimmedChars.ContainsAny(_engineInnerSphereMarkerSearchValues);
+		var hasInnerSphereFlag = trimmedChars.ContainsAny(_innerSphereMarkerSearchValues);
 
 		return new(engine, hasClanFlag, hasInnerSphereFlag, size);
 	}
@@ -199,10 +199,68 @@ public static class MtfHelper
 		return chars.Trim().ToString();
 	}
 
-	public static string GetHeatSinks(ReadOnlySpan<char> chars)
+	public static HeatSinkData GetHeatSinks(ReadOnlySpan<char> chars)
 	{
-		// TODO: Enum ([IS|Clan]? Single, [IS|Clan]? Double, Laser, Compact)
-		return chars.Trim().ToString();
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+
+		var trimmedChars = chars.Trim();
+
+		var countBound = trimmedChars.IndexOf(' ');
+		if (countBound == -1 || !int.TryParse(trimmedChars[..countBound], NumberStyles.None, null, out var count))
+		{
+			return ThrowHelper.ExceptionToSpecifyLater<HeatSinkData>();
+		}
+
+		Origin origin;
+		HeatSink heatSink;
+
+		var workingChars = trimmedChars[(countBound + 1)..].TrimStart();
+
+		var legacyBound = workingChars.IndexOf('(');
+		if (legacyBound != -1)
+		{
+			// Legacy format `Double \(((Clan)|(Inner Sphere))\)`
+			var originChars = workingChars[(legacyBound + 1)..];
+			if (originChars.Equals("CLAN)", StringComparison.OrdinalIgnoreCase))
+			{
+				origin = Origin.Clan;
+			}
+			else if (originChars.Equals("INNER SPHERE)", StringComparison.OrdinalIgnoreCase))
+			{
+				origin = Origin.InnerSphere;
+			}
+			else
+			{
+				origin = Origin.Unknown;
+			}
+
+			heatSink = MtfEnumConversions.GetHeatSinks(workingChars[..legacyBound].TrimEnd());
+		}
+		else
+		{
+			// Modern format `((Clan )|(IS ))?Double`
+			const string clanDel = "CLAN ";
+			const string innerSphereDel = "IS ";
+
+			if (workingChars.StartsWith(clanDel, StringComparison.OrdinalIgnoreCase))
+			{
+				origin = Origin.Clan;
+				workingChars = workingChars[clanDel.Length..].TrimStart();
+			}
+			else if (workingChars.StartsWith(innerSphereDel, StringComparison.OrdinalIgnoreCase))
+			{
+				origin = Origin.InnerSphere;
+				workingChars = workingChars[innerSphereDel.Length..].TrimStart();
+			}
+			else
+			{
+				origin = Origin.Unknown;
+			}
+
+			heatSink = MtfEnumConversions.GetHeatSinks(workingChars);
+		}
+
+		return new(count, heatSink, origin);
 	}
 
 	public static string GetHistory(ReadOnlySpan<char> chars)

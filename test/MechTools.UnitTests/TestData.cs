@@ -110,6 +110,30 @@ internal static class TestData
 
 	#endregion Engine
 
+	#region Heat Sinks
+
+	public static TheoryData<string> InvalidHeatSinks()
+	{
+		return new(
+			// No count
+			" Double ",
+			// No heat sink type
+			" 25 "
+			);
+	}
+
+	public static TheoryData<string, HeatSinkData> ValidHeatSinks()
+	{
+		return new()
+		{
+			{ " 16 Double ", new(16, HeatSink.Double, Origin.Unknown) },
+			{ " 10 Clan Double ", new(10, HeatSink.Double, Origin.Clan) },
+			{ " 8 Single (Inner Sphere) ", new(8, HeatSink.Single, Origin.InnerSphere) },
+		};
+	}
+
+	#endregion Heat Sinks
+
 	#region Myomer
 
 	public static TheoryData<string> KnownLegacyMyomerStrings()
