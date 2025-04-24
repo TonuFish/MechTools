@@ -9,16 +9,16 @@ namespace MechTools.Parsers.Helpers;
 public readonly struct ArmourData : IEquatable<ArmourData>
 {
 	public readonly required Armour Armour { get; init; }
-	public readonly required Origin? Origin { get; init; }
+	public readonly required Origin Origin { get; init; }
 
 	[SetsRequiredMembers]
-	public ArmourData(Armour armour, Origin? origin)
+	public ArmourData(Armour armour, Origin origin)
 	{
 		Armour = armour;
 		Origin = origin;
 	}
 
-	public readonly void Deconstruct(out Armour armour, out Origin? origin)
+	public readonly void Deconstruct(out Armour armour, out Origin origin)
 	{
 		armour = Armour;
 		origin = Origin;

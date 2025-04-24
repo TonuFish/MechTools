@@ -50,7 +50,7 @@ internal static class TestData
 		return new()
 		{
 			// Basic case
-			{ " Standard ", new(Armour.Standard, null) },
+			{ " Standard ", new(Armour.Standard, Origin.Unknown) },
 			// Abbreviated case
 			{ " Ballistic-Reinforced (IS) ", new(Armour.BallisticReinforced, Origin.InnerSphere) },
 			// Concatenated case

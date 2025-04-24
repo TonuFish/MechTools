@@ -83,7 +83,7 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 	public void SetArmour(ReadOnlySpan<char> chars)
 	{
 		(var armour, var origin) = MtfHelper.GetArmour(chars);
-		_lines.Add($"{armour}{(origin.HasValue ? $" ({origin})" : "")}");
+		_lines.Add($"{armour}{(origin != Origin.Unknown ? $" ({origin})" : "")}");
 	}
 
 	public void SetArmourAtLocation(ReadOnlySpan<char> chars, BattleMechArmourLocation location)
