@@ -3,7 +3,6 @@ using MechTools.Parsers.BattleMech;
 using System;
 using System.Buffers;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace MechTools.Parsers.Helpers;
 
@@ -22,10 +21,10 @@ public static class MtfHelper
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
-		var originBound = trimmedChars.IndexOf('(');
 
 		ReadOnlySpan<char> armourSlice;
 		Origin origin;
+		var originBound = trimmedChars.IndexOf('(');
 		if (originBound == -1)
 		{
 			armourSlice = trimmedChars;
@@ -66,28 +65,20 @@ public static class MtfHelper
 		return new(MtfEnumConversions.GetArmour(armourSlice), origin);
 	}
 
-	public static (string? Name, int Value) GetArmourAtLocation(ReadOnlySpan<char> chars)
+	public static LocationArmourData GetArmourAtLocation(ReadOnlySpan<char> chars)
 	{
-		// TODO: Ugh. This.
-		// TODO: This will fail on weirder values - See ` armor:[^\d]`
-		// Mix armour mech things.
-		// IS Hardened(Inner Sphere):12
+		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return chars.Contains(':')
+			? GetPatchworkArmourAtLocation(chars)
+			: new(ParseSimpleNumber(chars), null, null);
 
-		string? name;
-		int value;
-		var bound = chars.LastIndexOf(':');
-		if (bound != -1)
+		static LocationArmourData GetPatchworkArmourAtLocation(ReadOnlySpan<char> chars)
 		{
-			name = chars[..bound].ToString();
-			value = int.Parse(chars[(bound + 1)..], CultureInfo.InvariantCulture);
+			var trimmedChars = chars.Trim();
+			var valueBound = trimmedChars.LastIndexOf(':');
+			(var armour, var origin) = GetArmour(trimmedChars[..valueBound]);
+			return new(ParseSimpleNumber(trimmedChars[(valueBound + 1)..].TrimStart()), armour, origin);
 		}
-		else
-		{
-			name = null;
-			value = int.Parse(chars, CultureInfo.InvariantCulture);
-		}
-
-		return (name, value);
 	}
 
 	public static int GetBaseChassisHeatSinks(ReadOnlySpan<char> chars)
@@ -613,7 +604,6 @@ public static class MtfHelper
 		return new(nameSlice.ToString(), MtfEnumConversions.GetSpecificSystem(trimmedChars[..bound].TrimEnd()));
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	private static int ParseSimpleNumber(ReadOnlySpan<char> chars)
 	{
 		if (!int.TryParse(chars.Trim(), NumberStyles.None, null, out var number))

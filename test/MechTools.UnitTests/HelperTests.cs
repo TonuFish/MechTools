@@ -7,7 +7,6 @@ namespace MechTools.UnitTests;
 
 public sealed class HelperTests
 {
-	// TODO: GetArmourAtLocation
 	// TODO: GetEquipmentAtLocation
 	// TODO: GetWeaponForWeaponList
 
@@ -31,6 +30,31 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetArmour(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.InvalidArmourAtLocation), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetArmourAtLocation_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetArmourAtLocation(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidArmourAtLocation), MemberType = typeof(TestData))]
+	public void GetArmourAtLocation_ValidInput_Works(string input, LocationArmourData expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetArmourAtLocation(input);
 
 		// Assert
 		result.ShouldBe(expected);

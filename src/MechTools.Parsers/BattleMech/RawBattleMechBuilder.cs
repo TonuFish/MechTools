@@ -88,8 +88,15 @@ internal sealed class RawBattleMechBuilder : IBattleMechBuilder<List<string>>
 
 	public void SetArmourAtLocation(ReadOnlySpan<char> chars, BattleMechArmourLocation location)
 	{
-		(var name, var value) = MtfHelper.GetArmourAtLocation(chars);
-		_lines.Add($"{location}{(name is not null ? $":{name}" : "")}:{value}");
+		(var value, var armour, var origin) = MtfHelper.GetArmourAtLocation(chars);
+		if (armour is not null)
+		{
+			_lines.Add($"{armour.Value}({origin!.Value}):{value}");
+		}
+		else
+		{
+			_lines.Add(value.ToString(CultureInfo.InvariantCulture));
+		}
 	}
 
 	public void SetBaseChassisHeatSinks(ReadOnlySpan<char> chars)

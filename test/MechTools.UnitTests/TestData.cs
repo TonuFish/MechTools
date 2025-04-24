@@ -39,7 +39,7 @@ internal static class TestData
 		return new(
 			// Non-enum value
 			" OtherValue ",
-			// Unhandled edge case - Trailing origin
+			// Unhandled edge case - Unbracketed trailing origin
 			" Reflective IS (Inner Sphere)");
 	}
 
@@ -52,7 +52,7 @@ internal static class TestData
 			// Concatenated case
 			{ " Heavy Ferro-Fibrous(Inner Sphere) ", new(Armour.HeavyFerroFibrous, Origin.InnerSphere) },
 			// Armour case
-			{ " Standard Armor (Clan)", new(Armour.Standard, Origin.Clan) },
+			{ " Standard Armor (Clan) ", new(Armour.Standard, Origin.Clan) },
 			// Edge case - Malformed IS reflective
 			{ " IS Reflective(Inner Sphere) ", new(Armour.Reflective, Origin.InnerSphere) },
 			// Hypothetical edge case - Malformed Clan FL
@@ -63,12 +63,35 @@ internal static class TestData
 			{ " Ferro-Fibrous Prototype(Inner Sphere) ", new(Armour.PrototypeFerroFibrous, Origin.InnerSphere) },
 			// Edge case - (Unknown Technology Base)
 			{ " Standard((Unknown Technology Base)) ", new(Armour.Standard, Origin.Unknown) },
-			// Edge case - Malformed origin
+			// Edge case - Malformed bracketed origin
 			{ " Hardened (IS ", new(Armour.Hardened, Origin.Unknown) },
 		};
 	}
 
 	#endregion Armour
+
+	#region Armour at Location
+
+	public static TheoryData<string> InvalidArmourAtLocation()
+	{
+		return new(
+			" OtherValue ",
+			" -20 ",
+			" 34:Reactive(Inner Sphere) ");
+	}
+
+	public static TheoryData<string, LocationArmourData> ValidArmourAtLocation()
+	{
+		return new()
+		{
+			{ " 20 ", new(20, null, null) },
+			{ " 90 ", new(90, null, null) },
+			{ " Standard(IS/Clan):26 ", new(26, Armour.Standard, Origin.Unknown) },
+			{ " Reactive(Inner Sphere):34 ", new(34, Armour.Reactive, Origin.InnerSphere) },
+		};
+	}
+
+	#endregion Armour at Location
 
 	#region Configuration
 
