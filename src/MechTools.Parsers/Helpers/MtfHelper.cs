@@ -476,13 +476,8 @@ public static class MtfHelper
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
-		if (trimmedChars.Length < 4)
-		{
-			ThrowHelper.ExceptionToSpecifyLater();
-		}
 
 		const string stdDel = ", ";
-		const char nameDel = ' ';
 
 		var lastBound = trimmedChars.LastIndexOf(stdDel, StringComparison.Ordinal);
 		if (lastBound == -1 || lastBound == trimmedChars.Length - stdDel.Length)
@@ -491,41 +486,56 @@ public static class MtfHelper
 		}
 
 		int? count;
-		string name;
+		ReadOnlySpan<char> nameSlice;
 		ReadOnlySpan<char> locationSlice;
 		int? ammo;
 
 		if (char.IsNumber(trimmedChars[0]))
 		{
-			var nameBound = trimmedChars.IndexOf(nameDel);
-			count = int.Parse(trimmedChars[..nameBound], CultureInfo.InvariantCulture);
+			var nameBound = trimmedChars.IndexOf(' ');
+			count = int.Parse(trimmedChars[..nameBound].TrimEnd(), NumberStyles.None, CultureInfo.InvariantCulture);
+			if (count < 1)
+			{
+				return ThrowHelper.ExceptionToSpecifyLater<WeaponListData>();
+			}
 
-			// TODO: Be more whitespace tolerant.
-			if (char.ToUpperInvariant(trimmedChars[lastBound + stdDel.Length]) == 'A')
+			const string ammoDel = "Ammo:";
+
+			if (trimmedChars[(lastBound + stdDel.Length)..].TrimStart().StartsWith(ammoDel, StringComparison.OrdinalIgnoreCase))
 			{
 				//! `1 ISLBXAC10, Right Torso, Ammo:20`
 				ammo = int.Parse(
-					trimmedChars[(lastBound + stdDel.Length + "Ammo:".Length)..],
+					trimmedChars[(lastBound + stdDel.Length + ammoDel.Length)..].TrimStart(), // TODO: Clean up
+					NumberStyles.None,
 					CultureInfo.InvariantCulture);
 				var locationBound = trimmedChars[..lastBound].LastIndexOf(stdDel, StringComparison.Ordinal);
-				name = trimmedChars[(nameBound + 1)..locationBound].ToString();
-				locationSlice = trimmedChars[(locationBound + stdDel.Length)..lastBound];
+				nameSlice = trimmedChars[(nameBound + 1)..locationBound].Trim();
+				locationSlice = trimmedChars[(locationBound + stdDel.Length)..lastBound].Trim();
 			}
 			else
 			{
 				//! `1 ISC3SlaveUnit, Center Torso`
 				ammo = null;
-				name = trimmedChars[(nameBound + 1)..lastBound].ToString();
-				locationSlice = trimmedChars[(lastBound + stdDel.Length)..];
+				nameSlice = trimmedChars[(nameBound + 1)..lastBound].Trim();
+				locationSlice = trimmedChars[(lastBound + stdDel.Length)..].TrimStart();
 			}
+		}
+		else if (trimmedChars[0] == '-')
+		{
+			return ThrowHelper.ExceptionToSpecifyLater<WeaponListData>();
 		}
 		else
 		{
 			//! `Medium Pulse Laser, Center Torso`
 			count = null;
-			name = trimmedChars[..lastBound].ToString();
-			locationSlice = trimmedChars[(lastBound + stdDel.Length)..];
 			ammo = null;
+			nameSlice = trimmedChars[..lastBound];
+			locationSlice = trimmedChars[(lastBound + stdDel.Length)..];
+		}
+
+		if (nameSlice.IsWhiteSpace())
+		{
+			return ThrowHelper.ExceptionToSpecifyLater<WeaponListData>();
 		}
 
 		var isRear = false;
@@ -537,8 +547,13 @@ public static class MtfHelper
 			locationSlice = locationSlice[..^rearDel.Length];
 		}
 
+		if (nameSlice.EndsWith(rearDel, StringComparison.OrdinalIgnoreCase))
+		{
+			nameSlice = nameSlice[..^rearDel.Length];
+		}
+
 		var location = MtfEnumConversions.GetEquipmentLocation(locationSlice);
-		return new(ammo, count, isRear, location, name);
+		return new(ammo, count, isRear, location, nameSlice.ToString());
 	}
 
 	public static int GetWeaponListCount(ReadOnlySpan<char> chars)
@@ -606,7 +621,7 @@ public static class MtfHelper
 
 	private static int ParseSimpleNumber(ReadOnlySpan<char> chars)
 	{
-		if (!int.TryParse(chars.Trim(), NumberStyles.None, null, out var number))
+		if (!int.TryParse(chars.Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out var number))
 		{
 			ThrowHelper.ExceptionToSpecifyLater();
 		}

@@ -8,7 +8,6 @@ namespace MechTools.UnitTests;
 public sealed class HelperTests
 {
 	// TODO: GetEquipmentAtLocation
-	// TODO: GetWeaponForWeaponList
 
 	[Theory]
 	[MemberData(nameof(TestData.InvalidArmour), MemberType = typeof(TestData))]
@@ -963,6 +962,31 @@ public sealed class HelperTests
 		// Arrange
 		// Act
 		var result = MtfHelper.GetWalkMp(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.InvalidWeaponForWeaponList), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetWeaponForWeaponList_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetWeaponForWeaponList(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidWeaponForWeaponList), MemberType = typeof(TestData))]
+	public void GetWeaponForWeaponList_ValidInput_Works(string input, WeaponListData expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetWeaponForWeaponList(input);
 
 		// Assert
 		result.ShouldBe(expected);

@@ -235,6 +235,41 @@ internal static class TestData
 
 	#endregion Specific System
 
+	#region Weapon For Weapon List
+
+	public static TheoryData<string> InvalidWeaponForWeaponList()
+	{
+		return new(
+			// No name
+			", Right Arm ",
+			// No location
+			" ER Large Laser, ",
+			" 1 ER Large Laser, ",
+			// No ammo
+			" ISAC10, RightTorso, Ammo: ",
+			// Non-positive quantity
+			" 0 Small Laser, Head ",
+			" -1 Small Laser, Head ",
+			//
+			" ISAC10, RightTorso, ",
+			"1 ISAC10, RightTorso, ");
+	}
+
+	public static TheoryData<string, WeaponListData> ValidWeaponForWeaponList()
+	{
+		return new()
+		{
+			{ " ER Large Laser, Left Arm ", new(null, null, false, BattleMechEquipmentLocation.LeftArm, "ER Large Laser") },
+			{ " 1 ISC3SlaveUnit, Center Torso ", new(null, 1, false, BattleMechEquipmentLocation.CentreTorso, "ISC3SlaveUnit") },
+			{ " 2 ISMediumPulseLaser, Center Torso (R) ", new(null, 2, true, BattleMechEquipmentLocation.CentreTorso, "ISMediumPulseLaser") },
+			{ " 1 ISAC10, Right Arm, Ammo:40 ", new(40, 1, false, BattleMechEquipmentLocation.RightArm, "ISAC10") },
+			{ " 2 ISStreakSRM2, Left Torso (R), Ammo:50 ", new(50, 2, true, BattleMechEquipmentLocation.LeftTorso, "ISStreakSRM2") },
+			{ " 1 ISERSmallLaser (R), Right Torso (R) ", new(null, 1, true, BattleMechEquipmentLocation.RightTorso, "ISERSmallLaser") },
+		};
+	}
+
+	#endregion Weapon For Weapon List
+
 	#region Weapon Quirks
 
 	public static TheoryData<string> InvalidWeaponQuirks()
