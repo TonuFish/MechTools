@@ -39,8 +39,6 @@ internal static class TestData
 		return new(
 			// Non-enum value
 			" OtherValue ",
-			// Unclosed brackets
-			" Hardened (IS ",
 			// Unhandled edge case - Trailing origin
 			" Reflective IS (Inner Sphere)");
 	}
@@ -51,8 +49,6 @@ internal static class TestData
 		{
 			// Basic case
 			{ " Standard ", new(Armour.Standard, Origin.Unknown) },
-			// Abbreviated case
-			{ " Ballistic-Reinforced (IS) ", new(Armour.BallisticReinforced, Origin.InnerSphere) },
 			// Concatenated case
 			{ " Heavy Ferro-Fibrous(Inner Sphere) ", new(Armour.HeavyFerroFibrous, Origin.InnerSphere) },
 			// Armour case
@@ -61,10 +57,14 @@ internal static class TestData
 			{ " IS Reflective(Inner Sphere) ", new(Armour.Reflective, Origin.InnerSphere) },
 			// Hypothetical edge case - Malformed Clan FL
 			{ " Clan Ferro-Lamellor(Clan) ", new(Armour.FerroLamellor, Origin.Clan) },
+			// Legacy abbreviated case
+			{ " Ballistic-Reinforced (IS) ", new(Armour.BallisticReinforced, Origin.InnerSphere) },
 			// Edge case - Prototype FF
 			{ " Ferro-Fibrous Prototype(Inner Sphere) ", new(Armour.PrototypeFerroFibrous, Origin.InnerSphere) },
 			// Edge case - (Unknown Technology Base)
 			{ " Standard((Unknown Technology Base)) ", new(Armour.Standard, Origin.Unknown) },
+			// Edge case - Malformed origin
+			{ " Hardened (IS ", new(Armour.Hardened, Origin.Unknown) },
 		};
 	}
 

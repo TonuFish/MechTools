@@ -8,6 +8,36 @@ internal static class MtfEnumConversions
 {
 	// TODO: Naming.
 
+	public static Armour GetArmour(ReadOnlySpan<char> chars)
+	{
+		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		_ = chars.ToUpperInvariant(upper);
+
+		return upper switch
+		{
+			"ANTI-PENETRATIVE ABLATION" => Armour.AntiPenetrativeAblation,
+			"BALLISTIC-REINFORCED" => Armour.BallisticReinforced,
+			"COMMERCIAL" => Armour.Commercial,
+			"FERRO-FIBROUS" => Armour.FerroFibrous,
+			"FERRO-FIBROUS PROTOTYPE" => Armour.PrototypeFerroFibrous,
+			"FERRO-LAMELLOR" => Armour.FerroLamellor,
+			"HARDENED" => Armour.Hardened,
+			"HEAT-DISSIPATING" => Armour.HeatDissipating,
+			"HEAVY FERRO-FIBROUS" => Armour.HeavyFerroFibrous,
+			"HEAVY INDUSTRIAL" => Armour.HeavyIndustrial,
+			"IMPACT-RESISTANT" => Armour.ImpactResistant,
+			"INDUSTRIAL" => Armour.Industrial,
+			"LIGHT FERRO-FIBROUS" => Armour.LightFerroFibrous,
+			"PATCHWORK" => Armour.Patchwork,
+			"PRIMITIVE" => Armour.Primitive,
+			"REACTIVE" => Armour.Reactive,
+			"REFLECTIVE" => Armour.Reflective,
+			"STANDARD" => Armour.Standard,
+			"STEALTH" => Armour.Stealth,
+			_ => ThrowHelper.ExceptionToSpecifyLater<Armour>(),
+		};
+	}
+
 	public static BattleMechArmourLocation GetArmourLocation(ReadOnlySpan<char> chars)
 	{
 		// TODO: May not be necessarily at all.

@@ -65,7 +65,7 @@ internal static class Program
 		{
 			foreach (var line in File.ReadAllLines(filePath))
 			{
-				const string tag = "heat sinks:";
+				const string tag = "armor:";
 				var span = line.AsSpan().Trim();
 				if (span.Length > tag.Length && span.StartsWith(tag, StringComparison.OrdinalIgnoreCase))
 				{
@@ -76,13 +76,13 @@ internal static class Program
 
 		var output = string.Join('\n', hits.Order());
 		Console.WriteLine(output);
-		Console.WriteLine();
-		var sizelessHits = hits
-			.Select(x => x[(x.IndexOf(' ', StringComparison.Ordinal) + 1)..])
-			.Distinct(StringComparer.OrdinalIgnoreCase)
-			.Order(StringComparer.OrdinalIgnoreCase)
-			.ToArray();
-		Console.WriteLine(string.Join('\n', sizelessHits.Order()));
+		//Console.WriteLine();
+		//var sizelessHits = hits
+		//	.Select(x => x[(x.IndexOf(' ', StringComparison.Ordinal) + 1)..])
+		//	.Distinct(StringComparer.OrdinalIgnoreCase)
+		//	.Order(StringComparer.OrdinalIgnoreCase)
+		//	.ToArray();
+		//Console.WriteLine(string.Join('\n', sizelessHits.Order()));
 		System.Diagnostics.Debugger.Break();
 	}
 }

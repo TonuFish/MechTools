@@ -2,6 +2,7 @@
 
 public enum Armour
 {
+	Standard,
 	AntiPenetrativeAblation,
 	BallisticReinforced,
 	Commercial,
@@ -18,7 +19,6 @@ public enum Armour
 	Primitive,
 	PrototypeFerroFibrous,
 	Reactive,
-	Reflective, // TODO: `IS Reflective(Inner Sphere)
-	Standard, // TODO: `Standard Armor`
+	Reflective,
 	Stealth,
 }

@@ -19,10 +19,51 @@ public static class MtfHelper
 
 	public static ArmourData GetArmour(ReadOnlySpan<char> chars)
 	{
-		// TODO: Enum-ify.
-		// Brackets = origin
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return default;
+
+		var trimmedChars = chars.Trim();
+		var originBound = trimmedChars.IndexOf('(');
+
+		ReadOnlySpan<char> armourSlice;
+		Origin origin;
+		if (originBound == -1)
+		{
+			armourSlice = trimmedChars;
+			origin = Origin.Unknown;
+		}
+		else
+		{
+			armourSlice = trimmedChars[..originBound].TrimEnd();
+			var originSlice = trimmedChars[originBound..];
+
+			if (originSlice.ContainsAny(_innerSphereMarkerSearchValues))
+			{
+				origin = Origin.InnerSphere;
+			}
+			else if (originSlice.Equals("(CLAN)", StringComparison.OrdinalIgnoreCase))
+			{
+				origin = Origin.Clan;
+			}
+			else
+			{
+				// Should be either "IS/Clan" or "(Unknown Technology Base)" - but all non-standard values are unknown.
+				origin = Origin.Unknown;
+			}
+		}
+
+		if (armourSlice.StartsWith("IS ", StringComparison.OrdinalIgnoreCase)
+			|| armourSlice.StartsWith("CLAN ", StringComparison.OrdinalIgnoreCase))
+		{
+			armourSlice = armourSlice[(armourSlice.IndexOf(' ') + 1)..].TrimStart();
+		}
+
+		const string armourDel = " ARMOR";
+		if (armourSlice.EndsWith(armourDel, StringComparison.OrdinalIgnoreCase))
+		{
+			armourSlice = armourSlice[..^armourDel.Length].TrimEnd();
+		}
+
+		return new(MtfEnumConversions.GetArmour(armourSlice), origin);
 	}
 
 	public static (string? Name, int Value) GetArmourAtLocation(ReadOnlySpan<char> chars)
@@ -32,11 +73,9 @@ public static class MtfHelper
 		// Mix armour mech things.
 		// IS Hardened(Inner Sphere):12
 
-		const char del = ':';
-
 		string? name;
 		int value;
-		var bound = chars.LastIndexOf(del);
+		var bound = chars.LastIndexOf(':');
 		if (bound != -1)
 		{
 			name = chars[..bound].ToString();
