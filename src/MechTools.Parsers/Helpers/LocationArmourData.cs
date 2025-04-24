@@ -1,9 +1,11 @@
 ﻿using MechTools.Core.Enums;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace MechTools.Parsers.Helpers;
 
+[StructLayout(LayoutKind.Sequential)] // 0-offset Value as Armour/Origin are rarely used.
 public readonly struct LocationArmourData : IEquatable<LocationArmourData>
 {
 	public readonly required int Value { get; init; }
