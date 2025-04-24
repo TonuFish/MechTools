@@ -61,7 +61,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.NotSimplePositiveNumberStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetBaseChassisHeatSinks_InvalidInput_Throws(string input)
 	{
@@ -296,7 +296,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.NotSimplePositiveNumberStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetEra_InvalidInput_Throws(string input)
 	{
@@ -445,7 +445,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.NotSimplePositiveNumberStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetJumpMp_InvalidInput_Throws(string input)
 	{
@@ -521,7 +521,7 @@ public sealed class HelperTests
 
 	[Theory]
 	[InlineData(" 0 ")]
-	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.NotSimplePositiveNumberStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetMass_InvalidInput_Throws(string input)
 	{
@@ -596,7 +596,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.NotSimplePositiveNumberStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetMulId_InvalidInput_Throws(string input)
 	{
@@ -944,7 +944,7 @@ public sealed class HelperTests
 
 	[Theory]
 	[InlineData(" 0 ")]
-	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.NotSimplePositiveNumberStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetWalkMp_InvalidInput_Throws(string input)
 	{
@@ -969,7 +969,7 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[MemberData(nameof(TestData.NotNonNegativeNumberStrings), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.NotSimplePositiveNumberStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetWeaponListCount_InvalidInput_Throws(string input)
 	{

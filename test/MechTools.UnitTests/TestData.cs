@@ -24,12 +24,12 @@ internal static class TestData
 			"   ");
 	}
 
-	public static TheoryData<string> NotNonNegativeNumberStrings()
+	public static TheoryData<string> NotSimplePositiveNumberStrings()
 	{
 		return new(
-			" a ",
 			" -1 ",
-			" 5.0 ");
+			" 5.0 ",
+			" 2e10 ");
 	}
 
 	#region Armour
