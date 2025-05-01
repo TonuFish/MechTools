@@ -295,6 +295,31 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[MemberData(nameof(TestData.InvalidEquipmentAtLocation), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetEquipmentAtLocation_InvalidInput_Throws(string input)
+	{
+		// Arrange
+		Action action = () => MtfHelper.GetEquipmentAtLocation(input);
+
+		// Act
+		// Assert
+		_ = action.ShouldThrow<Exception>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidEquipmentAtLocation), MemberType = typeof(TestData))]
+	public void GetEquipmentAtLocation_ValidInput_Works(string input, EquipmentData expected)
+	{
+		// Arrange
+		// Act
+		var result = MtfHelper.GetEquipmentAtLocation(input);
+
+		// Assert
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
 	[MemberData(nameof(TestData.NotSimplePositiveNumberStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetEra_InvalidInput_Throws(string input)
@@ -1042,7 +1067,7 @@ public sealed class HelperTests
 		result.ShouldBe(expected);
 	}
 
-	#region Get Equipment
+	#region Caching
 
 	[Fact]
 	public void GetEquipmentAtLocation_CachedInput_ReturnsCachedValue()
@@ -1060,5 +1085,5 @@ public sealed class HelperTests
 		result.ShouldBe(expected);
 	}
 
-	#endregion Get Equipment
+	#endregion Caching
 }

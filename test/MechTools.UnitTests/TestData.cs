@@ -133,6 +133,32 @@ internal static class TestData
 
 	#endregion Engine
 
+	#region Equipment at Location
+
+	public static TheoryData<string> InvalidEquipmentAtLocation()
+	{
+		return new("(T)");
+	}
+
+	public static TheoryData<string, EquipmentData> ValidEquipmentAtLocation()
+	{
+		return new()
+		{
+			{ " medium laser ", new(false, false, false, "medium laser") },
+			// Values in CommonEquipmentValues cache should be returned with standardised casing
+			{ " -EMPTY- ", new(false, false, false, "-Empty-") },
+			{ " upper arm actuator ", new(false, false, false, "Upper Arm Actuator") },
+			// Modifiers
+			{ " Clan Machine Gun Ammo - Full (omnipod) ", new(true, false, false, "Clan Machine Gun Ammo - Full") },
+			{ " Heavy PPC (T) (omnipod) ", new(true, false, true, "Heavy PPC") },
+			{ " CLERMediumLaser (R) (omnipod) ", new(true, true, false, "CLERMediumLaser") },
+			// Values after modifers are ignored
+			{ " ISPPC (T) someText", new(false, false, true, "ISPPC") },
+		};
+	}
+
+	#endregion Equipment at Location
+
 	#region Heat Sinks
 
 	public static TheoryData<string> InvalidHeatSinks()

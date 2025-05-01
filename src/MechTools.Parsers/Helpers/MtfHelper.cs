@@ -3,6 +3,8 @@ using MechTools.Parsers.BattleMech;
 using System;
 using System.Buffers;
 using System.Globalization;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace MechTools.Parsers.Helpers;
 
@@ -12,7 +14,7 @@ namespace MechTools.Parsers.Helpers;
 public static class MtfHelper
 {
 	private static readonly SearchValues<string> _engineDelimeterSearchValues =
-		SearchValues.Create(["(", "ENGINE"], StringComparison.OrdinalIgnoreCase);
+		SearchValues.Create(["(", " ENGINE"], StringComparison.OrdinalIgnoreCase);
 	private static readonly SearchValues<string> _innerSphereMarkerSearchValues =
 		SearchValues.Create(["(IS)", "(INNER SPHERE)"], StringComparison.OrdinalIgnoreCase);
 
@@ -192,18 +194,56 @@ public static class MtfHelper
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
+
 		if (MtfValues.Lookup.CommonEquipmentValues.TryGetValue(trimmedChars, out var cachedValue))
 		{
 			return new(false, false, false, cachedValue);
 		}
 
-		var omnipodBound = trimmedChars.LastIndexOf(" (OMNIPOD)", StringComparison.OrdinalIgnoreCase);
-		var rearBound = trimmedChars.LastIndexOf(" (R)", StringComparison.OrdinalIgnoreCase);
-		var turretBound = trimmedChars.LastIndexOf(" (T)", StringComparison.OrdinalIgnoreCase);
+		var bound = trimmedChars.IndexOf('(');
+		if (bound < 0)
+		{
+			return new(false, false, false, trimmedChars.ToString());
+		}
+		else if (bound == 0)
+		{
+			return ThrowHelper.ExceptionToSpecifyLater<EquipmentData>();
+		}
 
-		return rearBound == -1 || turretBound == -1 || omnipodBound == -1
-			? new(false, false, false, chars.ToString())
-			: GetAnnotatedEquipmentAtLocation(trimmedChars, omnipodBound, rearBound, turretBound);
+		return GetAnnotatedEquipmentAtLocation(trimmedChars);
+
+		static EquipmentData GetAnnotatedEquipmentAtLocation(ReadOnlySpan<char> trimmedChars)
+		{
+			var nameBound = (uint)trimmedChars.Length;
+			var isOmniPod = ProcessFlag(
+				trimmedChars.LastIndexOf(" (OMNIPOD)", StringComparison.OrdinalIgnoreCase),
+				ref nameBound);
+			var isRear = ProcessFlag(
+				trimmedChars.LastIndexOf(" (R)", StringComparison.OrdinalIgnoreCase),
+				ref nameBound);
+			var isTurret = ProcessFlag(
+				trimmedChars.LastIndexOf(" (T)", StringComparison.OrdinalIgnoreCase),
+				ref nameBound);
+
+			//! Convincing the JIT to elide bounds check.
+			var name = MemoryMarshal.CreateReadOnlySpan(ref MemoryMarshal.GetReference(trimmedChars), (int)nameBound)
+				.TrimEnd()
+				.ToString();
+
+			return new(isOmniPod, isRear, isTurret, name);
+
+			[MethodImpl(MethodImplOptions.AggressiveInlining)]
+			static bool ProcessFlag(int target, ref uint minBound)
+			{
+				if (target < 0)
+				{
+					return false;
+				}
+
+				minBound = uint.Min(minBound, (uint)target);
+				return true;
+			}
+		}
 	}
 
 	public static int GetEra(ReadOnlySpan<char> chars)
@@ -586,23 +626,6 @@ public static class MtfHelper
 		var weapon = chars[enumerator.Current].Trim().ToString();
 
 		return new(location, name.ToString(), slot, weapon);
-	}
-
-	private static EquipmentData GetAnnotatedEquipmentAtLocation(
-		ReadOnlySpan<char> trimmedChars,
-		int omnipodBound,
-		int rearBound,
-		int turretBound)
-	{
-		// TODO: Come back to this when you feel like it.
-
-		// Let's be order independent.
-		// R ; T ; omni ; R omni ; T omni
-		// TODO: Omnipod ` (omnipod)`
-		// TODO: Rear location ` (R)`
-		// TODO: Turret ` (T)`
-
-		throw new NotImplementedException();
 	}
 
 	private static SpecificSystemData GetSpecificSystem(ReadOnlySpan<char> trimmedChars)

@@ -14,7 +14,6 @@ internal static class Program
 	{
 		Dump();
 		await EnumerateAsync(CancellationToken.None).ConfigureAwait(true);
-		return;
 	}
 
 	private static async Task EnumerateAsync(CancellationToken ct)
