@@ -643,7 +643,6 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[MemberData(nameof(TestData.KnownLegacyMyomerStrings), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetMyomer_InvalidInput_Throws(string input)
 	{
@@ -657,6 +656,7 @@ public sealed class HelperTests
 
 	[Theory]
 	[InlineData(" Standard ", Myomer.Standard)]
+	[MemberData(nameof(TestData.KnownLegacyMyomerStrings), MemberType = typeof(TestData))]
 	public void GetMyomer_ValidInput_Works(string input, Myomer expected)
 	{
 		// Arrange

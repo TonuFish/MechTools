@@ -183,13 +183,15 @@ internal static class TestData
 
 	#region Myomer
 
-	public static TheoryData<string> KnownLegacyMyomerStrings()
+	public static TheoryData<string, Myomer> KnownLegacyMyomerStrings()
 	{
 		// Legacy values found in mtf files
-		return new(
-			"CLMASC",
-			"ISMASC",
-			"MASC");
+		return new()
+		{
+			{ "CLMASC", Myomer.Standard },
+			{ "ISMASC", Myomer.Standard },
+			{ "MASC", Myomer.Standard },
+		};
 	}
 
 	#endregion Myomer

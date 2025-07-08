@@ -280,16 +280,14 @@ internal static class MtfEnumConversions
 
 	public static Myomer GetMyomer(ReadOnlySpan<char> chars)
 	{
-		// TODO: Decide how to handle known invalid values.
-		//CLMASC
-		//ISMASC
-		//MASC
-
 		Span<char> upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
 		{
+			// TODO: Consider handling of these legacy values... For now just default to standard.
+			"CLMASC" or "ISMASC" or "MASC" => Myomer.Standard,
+
 			"INDUSTRIAL TRIPLE-STRENGTH" => Myomer.IndustrialTripleStrength,
 			"PROTOTYPE TRIPLE-STRENGTH" => Myomer.PrototypeTripleStrength,
 			"STANDARD" => Myomer.Standard,
