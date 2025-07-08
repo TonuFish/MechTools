@@ -9,7 +9,7 @@
 
 	<PropertyGroup>
 		<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
-		<NoWarn>IDE0210</NoWarn>
+		<NoWarn>CA1002;IDE0210</NoWarn>
 		<WarningsAsErrors>CA1008;CA2016;CS4014;CS8602;</WarningsAsErrors>
 	</PropertyGroup>
 

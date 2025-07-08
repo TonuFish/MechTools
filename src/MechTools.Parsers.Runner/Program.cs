@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,11 +11,10 @@ internal static class Program
 {
 	private static async Task Main()
 	{
-		// Dump();
-		await EnumerateAsync(CancellationToken.None).ConfigureAwait(true);
+		await EnumerateScratchAsync(CancellationToken.None).ConfigureAwait(true);
 	}
 
-	private static async Task EnumerateAsync(CancellationToken ct)
+	private static async Task EnumerateScratchAsync(CancellationToken ct)
 	{
 		List<string> brokenList = [];
 
@@ -38,50 +36,28 @@ internal static class Program
 				// Empty deployment
 				|| filePath.EndsWith("Seraph C-SRP-O Caelestis.mtf", StringComparison.Ordinal))
 			{
-				// Skip the malformed text blob mechs for now.
+				// Skip these malformed mechs for now.
 				continue;
 			}
 
 			await using var file = File.OpenRead(filePath);
 			try
 			{
-				using MtfBattleMechParser<List<string>> parser = new(new RawBattleMechBuilder());
-				var lines = await parser.ParseAsync(file, ct).ConfigureAwait(false);
-				Console.WriteLine($"{filePath} ` {lines?.Count ?? 0}");
+				using MtfBattleMechParser<DefaultBattleMech> parser = new(new DefaultBattleMechBuilder());
+				var mech = await parser.ParseAsync(file, ct).ConfigureAwait(false);
+				if (mech is not null)
+				{
+					Console.WriteLine($"{mech.Chassis} ({mech.Model}) done.");
+				}
+				else
+				{
+					Console.WriteLine($"{filePath} failed.");
+				}
 			}
 			catch (Exception ex)
 			{
 				brokenList.Add($"{filePath}```{ex}");
 			}
 		}
-	}
-
-	private static void Dump()
-	{
-		HashSet<string> hits = new(capacity: 16);
-
-		foreach (var filePath in Directory.EnumerateFiles(@"..\..\..\..\..\scratch"))
-		{
-			foreach (var line in File.ReadAllLines(filePath))
-			{
-				const string tag = "armor:";
-				var span = line.AsSpan().Trim();
-				if (span.Length > tag.Length && span.StartsWith(tag, StringComparison.OrdinalIgnoreCase))
-				{
-					_ = hits.Add(line.AsSpan(start: tag.Length).Trim().ToString());
-				}
-			}
-		}
-
-		var output = string.Join('\n', hits.Order());
-		Console.WriteLine(output);
-		//Console.WriteLine();
-		//var sizelessHits = hits
-		//	.Select(x => x[(x.IndexOf(' ', StringComparison.Ordinal) + 1)..])
-		//	.Distinct(StringComparer.OrdinalIgnoreCase)
-		//	.Order(StringComparer.OrdinalIgnoreCase)
-		//	.ToArray();
-		//Console.WriteLine(string.Join('\n', sizelessHits.Order()));
-		System.Diagnostics.Debugger.Break();
 	}
 }
