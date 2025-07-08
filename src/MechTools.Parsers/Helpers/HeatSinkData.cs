@@ -1,4 +1,4 @@
-﻿using MechTools.Core.Enums;
+﻿using MechTools.Parsers.Enums;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;

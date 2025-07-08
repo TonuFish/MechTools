@@ -4,10 +4,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\MechTools.Core\MechTools.Core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<InternalsVisibleTo Include="MechTools.Parsers.Runner" />
 		<InternalsVisibleTo Include="MechTools.UnitTests" />
 	</ItemGroup>

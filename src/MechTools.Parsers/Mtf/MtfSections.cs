@@ -1,4 +1,4 @@
-﻿namespace MechTools.Parsers.BattleMech;
+﻿namespace MechTools.Parsers.Mtf;
 
 internal static class MtfSections
 {

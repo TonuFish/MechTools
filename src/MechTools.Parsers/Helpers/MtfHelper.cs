@@ -1,5 +1,5 @@
-﻿using MechTools.Core.Enums;
-using MechTools.Parsers.BattleMech;
+﻿using MechTools.Parsers.Enums;
+using MechTools.Parsers.Mtf;
 using System;
 using System.Buffers;
 using System.Globalization;

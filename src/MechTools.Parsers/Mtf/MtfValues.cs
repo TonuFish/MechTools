@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Frozen;
 
-namespace MechTools.Parsers.BattleMech;
+namespace MechTools.Parsers.Mtf;
 
 internal static class MtfValues
 {

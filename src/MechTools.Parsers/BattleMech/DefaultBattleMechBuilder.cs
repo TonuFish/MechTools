@@ -1,4 +1,4 @@
-﻿using MechTools.Core.Enums;
+﻿using MechTools.Parsers.Enums;
 using MechTools.Parsers.Helpers;
 using System;
 

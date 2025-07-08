@@ -1,4 +1,4 @@
-﻿using MechTools.Core.Enums;
+﻿using MechTools.Parsers.Enums;
 using System;
 using System.Buffers;
 using System.Diagnostics.CodeAnalysis;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MechTools.Parsers.BattleMech;
+namespace MechTools.Parsers.Mtf;
 
 public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 {
