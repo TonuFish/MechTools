@@ -27,7 +27,6 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 
 	private bool _disposed;
 	private BattleMechEquipmentLocation? _equipmentLocation;
-	private int _lineCount = 1;
 	private char[]? _longScratchBuffer;
 	private Mode _mode;
 	private char[]? _scratchBuffer;
@@ -45,8 +44,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			return default;
 		}
 
-		// TODO: Non-sequence based version
-		return ProcessSource(chars);
+		return ProcessSource(chars) ? ((IBattleMechBuilder<TMech>)_builder).Build() : default;
 	}
 
 	public TMech? Parse(ReadOnlyMemory<byte> memory)
@@ -59,7 +57,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 
 		// TODO: Implement properly and remove this allocation.
 		var chars = Encoding.UTF8.GetString(memory.Span);
-		return ProcessSource(chars);
+		return ProcessSource(chars) ? ((IBattleMechBuilder<TMech>)_builder).Build() : default;
 	}
 
 	public async Task<TMech?> ParseAsync(Stream stream, CancellationToken ct = default)
@@ -71,9 +69,10 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			return default;
 		}
 
-		await ProcessSourceAsync(PipeReader.Create(stream), ct).ConfigureAwait(false);
-		// TODO: Implement properly instead of hacking around
-		return ((IBattleMechBuilder<TMech>)_builder).Build();
+		// TODO: Implement all these builds properly instead of hacking around the silly setup
+		return (await ProcessSourceAsync(PipeReader.Create(stream), ct).ConfigureAwait(false))
+			? ((IBattleMechBuilder<TMech>)_builder).Build()
+			: default;
 	}
 
 	[MethodImpl(MethodImplOptions.NoInlining)]
@@ -92,7 +91,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		}
 
 		var charCount = Encoding.UTF8.GetChars(in sequence, scratchBuffer);
-		return _longScratchBuffer.AsSpan(start: 0, length: charCount).Trim();
+		return _longScratchBuffer.AsSpan(start: 0, length: charCount);
 	}
 
 	private void ProcessBuffer(ref ReadOnlySequence<byte> buffer)
@@ -118,12 +117,11 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			}
 			else
 			{
-				line = GetCharsRare(in sequence);
+				line = GetCharsRare(in sequence).Trim();
 			}
 
 			ProcessLine(line);
 
-			_lineCount++;
 			buffer = buffer.Slice(buffer.GetPosition(1, position.Value));
 		}
 	}
@@ -446,16 +444,27 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		}
 	}
 
-	[MemberNotNull(nameof(_scratchBuffer))]
-	private TMech? ProcessSource(ReadOnlySpan<char> chars)
+	private bool ProcessSource(ReadOnlySpan<char> chars)
 	{
-		// TODO: Implement - should be quick.
-		_scratchBuffer = ArrayPool<char>.Shared.Rent(ScratchBufferLength);
-		throw new NotImplementedException();
+		const char newLine = '\n';
+
+		try
+		{
+			foreach (var bound in chars.Split(newLine))
+			{
+				ProcessLine(chars[bound].Trim());
+			}
+		}
+		catch
+		{
+			return false;
+		}
+
+		return true;
 	}
 
 	[MemberNotNull(nameof(_scratchBuffer))]
-	private async Task ProcessSourceAsync(PipeReader reader, CancellationToken ct)
+	private async Task<bool> ProcessSourceAsync(PipeReader reader, CancellationToken ct)
 	{
 		_scratchBuffer = ArrayPool<char>.Shared.Rent(ScratchBufferLength);
 
@@ -482,10 +491,11 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 				reader.AdvanceTo(buffer.Start, buffer.End);
 			}
 		}
-		// TODO: Error handling.
-		//catch (Exception ex)
-		//{
-		//}
+		catch
+		{
+			// TODO: Error handling.
+			return false;
+		}
 		finally
 		{
 			// CompleteAsync is a direct wrap of Complete
@@ -493,6 +503,8 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 			reader.Complete();
 #pragma warning restore CA1849, S6966 // Call async methods when in an async method
 		}
+
+		return true;
 	}
 
 	#region IDisposable

@@ -41,7 +41,22 @@ internal static class Program
 				continue;
 			}
 
-			await using var file = File.OpenRead(filePath);
+#if true
+			var file = await File.ReadAllTextAsync(filePath, ct).ConfigureAwait(false);
+			try
+			{
+				using MtfBattleMechParser<DefaultBattleMech> parser = new(new DefaultBattleMechBuilder());
+				var mech = parser.Parse(file);
+				if (mech is not null)
+				{
+					Console.WriteLine($"{mech.Chassis} ({mech.Model}) done.");
+				}
+				else
+				{
+					Console.WriteLine($"{filePath} failed.");
+				}
+			}
+#else
 			try
 			{
 				using MtfBattleMechParser<DefaultBattleMech> parser = new(new DefaultBattleMechBuilder());
@@ -55,6 +70,7 @@ internal static class Program
 					Console.WriteLine($"{filePath} failed.");
 				}
 			}
+#endif
 			catch (Exception ex)
 			{
 				brokenList.Add($"{filePath}```{ex}");
