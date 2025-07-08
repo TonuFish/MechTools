@@ -28,4 +28,11 @@ internal static class ThrowHelper
 			ExceptionToSpecifyLater();
 		}
 	}
+
+	[Conditional("DEBUG")]
+	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
+	public static void ThrowImpossibleException()
+	{
+		throw new InvalidOperationException();
+	}
 }

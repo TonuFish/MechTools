@@ -159,7 +159,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 				}
 				break;
 			default:
-				// TODO: Impossible.
+				ThrowHelper.ThrowImpossibleException();
 				break;
 		}
 	}
