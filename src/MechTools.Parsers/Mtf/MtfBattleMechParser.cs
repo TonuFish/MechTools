@@ -60,7 +60,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		return ProcessSource(chars) ? ((IBattleMechBuilder<TMech>)_builder).Build() : default;
 	}
 
-	public async Task<TMech?> ParseAsync(Stream stream, CancellationToken ct = default)
+	public async Task<TMech?> ParseAsync(Stream stream, CancellationToken ct)
 	{
 		ArgumentNullException.ThrowIfNull(stream);
 

@@ -9,5 +9,5 @@ public interface IBattleMechParser<TMech> : IDisposable
 {
 	public TMech? Parse(ReadOnlySpan<char> chars);
 	public TMech? Parse(ReadOnlyMemory<byte> memory);
-	public Task<TMech?> ParseAsync(Stream stream, CancellationToken ct = default);
+	public Task<TMech?> ParseAsync(Stream stream, CancellationToken ct);
 }
