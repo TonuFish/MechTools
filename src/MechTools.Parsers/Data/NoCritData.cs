@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
-namespace MechTools.Parsers.Helpers;
+namespace MechTools.Parsers.Data;
 
 [StructLayout(LayoutKind.Auto)]
 public readonly struct NoCritData : IEquatable<NoCritData>

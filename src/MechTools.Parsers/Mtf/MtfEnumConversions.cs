@@ -1,8 +1,7 @@
 ﻿using MechTools.Parsers.Enums;
-using MechTools.Parsers.Mtf;
 using System;
 
-namespace MechTools.Parsers.Helpers;
+namespace MechTools.Parsers.Mtf;
 
 internal static class MtfEnumConversions
 {

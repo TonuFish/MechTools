@@ -1,5 +1,5 @@
-﻿using MechTools.Parsers.Enums;
-using MechTools.Parsers.Helpers;
+﻿using MechTools.Parsers.Data;
+using MechTools.Parsers.Enums;
 using System.Collections.Generic;
 
 namespace MechTools.Parsers.BattleMech;

@@ -1,12 +1,12 @@
-﻿using MechTools.Parsers.Enums;
-using MechTools.Parsers.Mtf;
+﻿using MechTools.Parsers.Data;
+using MechTools.Parsers.Enums;
 using System;
 using System.Buffers;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace MechTools.Parsers.Helpers;
+namespace MechTools.Parsers.Mtf;
 
 // TODO: Still have to decide if this is throw||try.
 // TODO: Consider trimming pattern here, EG: GetWeaponQuirk
