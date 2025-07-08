@@ -168,18 +168,18 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 
 	private void ProcessDefaultLine(ReadOnlySpan<char> line)
 	{
-		var delimeterIndex = line.IndexOf(':');
-		if ((uint)delimeterIndex > 64)
+		var delimiterIndex = line.IndexOf(':');
+		if ((uint)delimiterIndex > 64)
 		{
 			// TODO: `Antlion LK-3D` - Why on earth do we randomly have markup here?
 			ThrowHelper.ExceptionToSpecifyLater();
 		}
 
 		// TODO: Think harder about cutting whitespace off here - it might hurt text blobs, but it's very convenient...
-		var content = line.Length != delimeterIndex ? line[(delimeterIndex + 1)..].Trim() : [];
+		var content = line.Length != delimiterIndex ? line[(delimiterIndex + 1)..].Trim() : [];
 
-		Span<char> section = (stackalloc char[64])[..delimeterIndex];
-		_ = line[..delimeterIndex].ToUpperInvariant(section);
+		Span<char> section = (stackalloc char[64])[..delimiterIndex];
+		_ = line[..delimiterIndex].ToUpperInvariant(section);
 
 		// TODO: Consider adding a call to the builder for starting each equipment section. Nop for defaults.
 		// TODO: Handle the unknown case.

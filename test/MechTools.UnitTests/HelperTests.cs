@@ -7,8 +7,6 @@ namespace MechTools.UnitTests;
 
 public sealed class HelperTests
 {
-	// TODO: GetEquipmentAtLocation
-
 	[Theory]
 	[MemberData(nameof(TestData.InvalidArmour), MemberType = typeof(TestData))]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]

@@ -5,8 +5,6 @@ namespace MechTools.UnitTests;
 
 internal static class TestData
 {
-	// TODO: Naming of these.
-
 	public static TheoryData<string?, string> AllowAnyTextStrings()
 	{
 		return new()
@@ -241,9 +239,9 @@ internal static class TestData
 	public static TheoryData<string> InvalidSpecificSystemData()
 	{
 		return new(
-			// No delimeter
+			// No delimiter
 			" chassis Hollis Mark 1A ",
-			// Leading delimeter
+			// Leading delimiter
 			" : chassis : Hollis Mark 1A ",
 			// Invalid specific system
 			" : crab : Hollis Mark 1A ",
@@ -301,13 +299,13 @@ internal static class TestData
 	public static TheoryData<string> InvalidWeaponQuirks()
 	{
 		return new(
-			// Leading delimeter
+			// Leading delimiter
 			":jettison_capable:RA:4:CLHAG30",
-			// Trailing delimeter
+			// Trailing delimiter
 			"jettison_capable:RA:4:CLHAG30:",
 			// Empty section
 			"jettison_capable:RA::4CLHAG30",
-			// Not enough delimeters
+			// Not enough delimiters
 			"jettison_capable:RA:4",
 			// Invalid location
 			"jettison_capable:QQ:4:CLHAG30",

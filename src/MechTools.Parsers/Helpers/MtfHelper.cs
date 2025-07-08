@@ -13,7 +13,7 @@ namespace MechTools.Parsers.Helpers;
 // TODO: Throw if Bound + 1 overflows
 public static class MtfHelper
 {
-	private static readonly SearchValues<string> _engineDelimeterSearchValues =
+	private static readonly SearchValues<string> _engineDelimiterSearchValues =
 		SearchValues.Create(["(", " ENGINE"], StringComparison.OrdinalIgnoreCase);
 	private static readonly SearchValues<string> _innerSphereMarkerSearchValues =
 		SearchValues.Create(["(IS)", "(INNER SPHERE)"], StringComparison.OrdinalIgnoreCase);
@@ -176,7 +176,7 @@ public static class MtfHelper
 		}
 
 		// TODO: Consider none handling... (none)
-		var engineBound = trimmedChars.IndexOfAny(_engineDelimeterSearchValues);
+		var engineBound = trimmedChars.IndexOfAny(_engineDelimiterSearchValues);
 		if (engineBound == -1)
 		{
 			engineBound = trimmedChars.Length;
@@ -453,7 +453,7 @@ public static class MtfHelper
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
-		// First ':' is type delimeter, remaining text assumed to be name.
+		// First ':' is type delimiter, remaining text assumed to be name.
 		// If a typeless name contains a colon... It shouldn't.
 
 		var bound = chars.IndexOf(':');

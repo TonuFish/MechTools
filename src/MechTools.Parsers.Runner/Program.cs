@@ -12,7 +12,7 @@ internal static class Program
 {
 	private static async Task Main()
 	{
-		Dump();
+		// Dump();
 		await EnumerateAsync(CancellationToken.None).ConfigureAwait(true);
 	}
 
