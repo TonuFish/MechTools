@@ -1,0 +1,10 @@
+name: Feature Request
+description: Request new functionality.
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: Please describe the new functionality.
+      placeholder: Details...
+    validations:
+      required: true
