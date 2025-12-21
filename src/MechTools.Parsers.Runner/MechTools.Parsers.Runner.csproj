@@ -1,12 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<OutputType>exe</OutputType>
 		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\MechTools.Parsers\MechTools.Parsers.csproj" />
+		<ProjectReference Include="..\MechTools.Parsers\MechTools.Parsers.csproj" />
 	</ItemGroup>
-
 </Project>

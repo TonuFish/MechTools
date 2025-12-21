@@ -1,10 +1,9 @@
 <Project>
 	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -16,10 +15,15 @@
 	<Choose>
 		<When Condition="$(ProjectName.Contains('Test')) == 'False'">
 			<PropertyGroup>
+				<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 				<AnalysisLevel>latest-all</AnalysisLevel>
 				<IsAotCompatible>true</IsAotCompatible>
 			</PropertyGroup>
 
+			<ItemGroup>
+				<Compile Include="$(SolutionDir)\ModuleSettings.cs" Visible="false" />
+			</ItemGroup>
+			
 			<!--<PropertyGroup Label="TEMPORARY">
 				--><!--TODO: Playing around/testing only - remove later.--><!--
 				<PublishTrimmed>true</PublishTrimmed>
@@ -62,10 +66,6 @@
 				<IlcDisableUnhandledExceptionExperience>true</IlcDisableUnhandledExceptionExperience>
 				<RootAllApplicationAssemblies>false</RootAllApplicationAssemblies>
 			</PropertyGroup>-->
-
-			<ItemGroup>
-				<Compile Include="$(SolutionDir)\ModuleSettings.cs" Visible="false" />
-			</ItemGroup>
 		</When>
 	</Choose>
 
