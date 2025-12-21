@@ -8,12 +8,13 @@ namespace MechTools.Parsers.Data;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct WeaponListData : IEquatable<WeaponListData>
 {
-	public readonly int? Ammo { get; init; }
-	public readonly int? Count { get; init; }
-	public readonly bool IsRear { get; init; }
-	public readonly BattleMechEquipmentLocation Location { get; init; }
-	public readonly string Name { get; init; }
+	public readonly required int? Ammo { get; init; }
+	public readonly required int? Count { get; init; }
+	public readonly required bool IsRear { get; init; }
+	public readonly required BattleMechEquipmentLocation Location { get; init; }
+	public readonly required string Name { get; init; }
 
+	[SetsRequiredMembers]
 	public WeaponListData(int? ammo, int? count, bool isRear, BattleMechEquipmentLocation location, string name)
 	{
 		Ammo = ammo;
@@ -61,7 +62,7 @@ public readonly struct WeaponListData : IEquatable<WeaponListData>
 
 	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
-		return obj is WeaponListData && Equals((WeaponListData)obj);
+		return obj is WeaponListData weaponListData && Equals(weaponListData);
 	}
 
 	public readonly override int GetHashCode()

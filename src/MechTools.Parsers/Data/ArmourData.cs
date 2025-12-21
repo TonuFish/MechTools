@@ -44,7 +44,7 @@ public readonly struct ArmourData : IEquatable<ArmourData>
 
 	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
-		return obj is ArmourData && Equals((ArmourData)obj);
+		return obj is ArmourData armourData && Equals(armourData);
 	}
 
 	public readonly override int GetHashCode()

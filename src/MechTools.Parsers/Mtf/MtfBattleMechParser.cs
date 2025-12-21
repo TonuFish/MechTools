@@ -64,6 +64,8 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 	{
 		ArgumentNullException.ThrowIfNull(stream);
 
+		// TODO: Don't return default
+
 		if (!stream.CanRead)
 		{
 			return default;
@@ -176,7 +178,7 @@ public sealed class MtfBattleMechParser<TMech> : IBattleMechParser<TMech>
 		// TODO: Think harder about cutting whitespace off here - it might hurt text blobs, but it's very convenient...
 		var content = line.Length != delimiterIndex ? line[(delimiterIndex + 1)..].Trim() : [];
 
-		Span<char> section = (stackalloc char[64])[..delimiterIndex];
+		var section = (stackalloc char[64])[..delimiterIndex];
 		_ = line[..delimiterIndex].ToUpperInvariant(section);
 
 		// TODO: Consider adding a call to the builder for starting each equipment section. Nop for defaults.

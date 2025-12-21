@@ -57,7 +57,7 @@ public readonly struct WeaponQuirkData : IEquatable<WeaponQuirkData>
 
 	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
-		return obj is WeaponQuirkData && Equals((WeaponQuirkData)obj);
+		return obj is WeaponQuirkData weaponQuirkData && Equals(weaponQuirkData);
 	}
 
 	public readonly override int GetHashCode()

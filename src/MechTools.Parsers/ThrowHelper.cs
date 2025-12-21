@@ -23,7 +23,7 @@ internal static class ThrowHelper
 	[DebuggerHidden, StackTraceHidden]
 	public static void ThrowIfEmptyOrWhiteSpace(ReadOnlySpan<char> chars)
 	{
-		if (chars.IsEmpty || chars.IsWhiteSpace())
+		if (chars.IsWhiteSpace())
 		{
 			ExceptionToSpecifyLater();
 		}

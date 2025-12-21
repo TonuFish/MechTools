@@ -9,7 +9,7 @@ internal static class MtfEnumConversions
 
 	public static Armour GetArmour(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -40,7 +40,7 @@ internal static class MtfEnumConversions
 	public static BattleMechArmourLocation GetArmourLocation(ReadOnlySpan<char> chars)
 	{
 		// TODO: May not be necessarily at all.
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -68,7 +68,7 @@ internal static class MtfEnumConversions
 	public static Cockpit GetCockpit(ReadOnlySpan<char> chars)
 	{
 		// TODO: String cleanup.
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -99,7 +99,7 @@ internal static class MtfEnumConversions
 	public static Configuration GetConfiguration(ReadOnlySpan<char> chars)
 	{
 		// TODO: String cleanup.
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -143,7 +143,7 @@ internal static class MtfEnumConversions
 			cleanChars = cleanChars[..^fusionEngineMarker.Length].TrimEnd();
 		}
 
-		Span<char> upper = (stackalloc char[64])[..cleanChars.Length];
+		var upper = (stackalloc char[64])[..cleanChars.Length];
 		_ = cleanChars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -168,7 +168,7 @@ internal static class MtfEnumConversions
 
 	public static BattleMechEquipmentLocation GetEquipmentLocation(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -194,7 +194,7 @@ internal static class MtfEnumConversions
 	public static BattleMechEquipmentLocation GetEquipmentLocationFromAbbreviation(ReadOnlySpan<char> chars)
 	{
 		// TODO: Cleanup later, yick.
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -219,7 +219,7 @@ internal static class MtfEnumConversions
 
 	public static Gyro GetGyro(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		// TODO: There's exactly one entry of a gyro without " Gyro" suffix... Sigh.
@@ -238,7 +238,7 @@ internal static class MtfEnumConversions
 
 	public static HeatSink GetHeatSinks(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -253,7 +253,7 @@ internal static class MtfEnumConversions
 
 	public static Lam GetLam(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -266,7 +266,7 @@ internal static class MtfEnumConversions
 
 	public static Motive GetMotive(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -279,7 +279,7 @@ internal static class MtfEnumConversions
 
 	public static Myomer GetMyomer(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -298,7 +298,7 @@ internal static class MtfEnumConversions
 
 	public static Role GetRole(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -331,7 +331,7 @@ internal static class MtfEnumConversions
 
 	public static SpecificSystem GetSpecificSystem(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -348,7 +348,7 @@ internal static class MtfEnumConversions
 
 	public static Structure GetStructure(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -366,7 +366,7 @@ internal static class MtfEnumConversions
 
 	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
 	{
-		Span<char> upper = (stackalloc char[64])[..chars.Length];
+		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch

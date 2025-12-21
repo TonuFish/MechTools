@@ -8,9 +8,10 @@ namespace MechTools.Parsers.Data;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct NoCritData : IEquatable<NoCritData>
 {
-	public readonly BattleMechEquipmentLocation Location { get; init; }
-	public readonly string Name { get; init; }
+	public readonly required BattleMechEquipmentLocation Location { get; init; }
+	public readonly required string Name { get; init; }
 
+	[SetsRequiredMembers]
 	public NoCritData(BattleMechEquipmentLocation location, string name)
 	{
 		Location = location;
@@ -43,7 +44,7 @@ public readonly struct NoCritData : IEquatable<NoCritData>
 
 	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
-		return obj is NoCritData && Equals((NoCritData)obj);
+		return obj is NoCritData noCritData && Equals(noCritData);
 	}
 
 	public readonly override int GetHashCode()

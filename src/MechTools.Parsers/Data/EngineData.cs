@@ -53,7 +53,7 @@ public readonly struct EngineData : IEquatable<EngineData>
 
 	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
-		return obj is EngineData && Equals((EngineData)obj);
+		return obj is EngineData engineData && Equals(engineData);
 	}
 
 	public readonly override int GetHashCode()

@@ -194,7 +194,6 @@ public static class MtfHelper
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
-
 		if (MtfValues.Lookup.CommonEquipmentValues.TryGetValue(trimmedChars, out var cachedValue))
 		{
 			return new(false, false, false, cachedValue);

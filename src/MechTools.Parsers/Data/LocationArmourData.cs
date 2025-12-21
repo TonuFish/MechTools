@@ -21,9 +21,7 @@ public readonly struct LocationArmourData : IEquatable<LocationArmourData>
 	}
 
 	public readonly void Deconstruct(
-		out int value,
-		[NotNullIfNotNull(nameof(origin))] out Armour? armour,
-		[NotNullIfNotNull(nameof(armour))] out Origin? origin)
+		out int value, out Armour? armour, out Origin? origin)
 	{
 		value = Value;
 		armour = Armour;
@@ -50,7 +48,7 @@ public readonly struct LocationArmourData : IEquatable<LocationArmourData>
 
 	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
-		return obj is LocationArmourData && Equals((LocationArmourData)obj);
+		return obj is LocationArmourData locationArmourData && Equals(locationArmourData);
 	}
 
 	public readonly override int GetHashCode()

@@ -44,7 +44,7 @@ public readonly struct ConfigurationData : IEquatable<ConfigurationData>
 
 	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
-		return obj is ConfigurationData && Equals((ConfigurationData)obj);
+		return obj is ConfigurationData configurationData && Equals(configurationData);
 	}
 
 	public readonly override int GetHashCode()

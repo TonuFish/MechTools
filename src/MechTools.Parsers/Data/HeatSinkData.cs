@@ -8,10 +8,11 @@ namespace MechTools.Parsers.Data;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct HeatSinkData : IEquatable<HeatSinkData>
 {
-	public readonly int Count { get; init; }
-	public readonly HeatSink HeatSink { get; init; }
-	public readonly Origin Origin { get; init; }
+	public readonly required int Count { get; init; }
+	public readonly required HeatSink HeatSink { get; init; }
+	public readonly required Origin Origin { get; init; }
 
+	[SetsRequiredMembers]
 	public HeatSinkData(int count, HeatSink heatSink, Origin name)
 	{
 		Count = count;
@@ -46,7 +47,7 @@ public readonly struct HeatSinkData : IEquatable<HeatSinkData>
 
 	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
-		return obj is HeatSinkData && Equals((HeatSinkData)obj);
+		return obj is HeatSinkData heatSinkData && Equals(heatSinkData);
 	}
 
 	public readonly override int GetHashCode()

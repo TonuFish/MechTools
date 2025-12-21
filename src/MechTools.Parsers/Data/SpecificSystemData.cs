@@ -8,9 +8,10 @@ namespace MechTools.Parsers.Data;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct SpecificSystemData : IEquatable<SpecificSystemData>
 {
-	public readonly string Name { get; init; }
-	public readonly SpecificSystem SpecificSystem { get; init; }
+	public readonly required string Name { get; init; }
+	public readonly required SpecificSystem SpecificSystem { get; init; }
 
+	[SetsRequiredMembers]
 	public SpecificSystemData(string name, SpecificSystem system)
 	{
 		Name = name;
@@ -43,7 +44,7 @@ public readonly struct SpecificSystemData : IEquatable<SpecificSystemData>
 
 	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
-		return obj is SpecificSystemData && Equals((SpecificSystemData)obj);
+		return obj is SpecificSystemData specificSystemData && Equals(specificSystemData);
 	}
 
 	public readonly override int GetHashCode()

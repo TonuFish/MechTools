@@ -7,9 +7,10 @@ namespace MechTools.Parsers.Data;
 [StructLayout(LayoutKind.Auto)]
 public readonly struct SourceData : IEquatable<SourceData>
 {
-	public readonly string Name { get; init; }
-	public readonly string? Type { get; init; }
+	public readonly required string Name { get; init; }
+	public readonly required string? Type { get; init; }
 
+	[SetsRequiredMembers]
 	public SourceData(string name, string? type)
 	{
 		Name = name;
@@ -43,7 +44,7 @@ public readonly struct SourceData : IEquatable<SourceData>
 
 	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
 	{
-		return obj is SourceData && Equals((SourceData)obj);
+		return obj is SourceData sourceData && Equals(sourceData);
 	}
 
 	public readonly override int GetHashCode()
