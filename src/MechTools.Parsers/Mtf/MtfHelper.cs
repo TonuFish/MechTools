@@ -225,7 +225,7 @@ public static class MtfHelper
 				ref nameBound);
 
 			//! Convincing the JIT to elide bounds check.
-			var name = MemoryMarshal.CreateReadOnlySpan(ref MemoryMarshal.GetReference(trimmedChars), (int)nameBound)
+			var name = MemoryMarshal.CreateReadOnlySpan(in MemoryMarshal.GetReference(trimmedChars), (int)nameBound)
 				.TrimEnd()
 				.ToString();
 
