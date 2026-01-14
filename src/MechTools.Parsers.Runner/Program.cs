@@ -1,6 +1,5 @@
 ﻿#define SYNC
 
-using MechTools.Parsers.BattleMech;
 using MechTools.Parsers.Mtf;
 using System;
 using System.Collections.Generic;
@@ -65,8 +64,7 @@ internal static class Program
 			var file = await File.ReadAllTextAsync(filePath, ct).ConfigureAwait(false);
 			try
 			{
-				using MtfBattleMechParser<DefaultBattleMech> parser = new(new DefaultBattleMechBuilder());
-				var mech = parser.Parse(file);
+				var mech = MtfBattleMechParser.Parse(file);
 				if (mech is not null)
 				{
 					Console.WriteLine($"{mech.Chassis} ({mech.Model}) done.");
@@ -79,8 +77,8 @@ internal static class Program
 #else
 			try
 			{
-				using MtfBattleMechParser<DefaultBattleMech> parser = new(new DefaultBattleMechBuilder());
-				var mech = await parser.ParseAsync(file, ct).ConfigureAwait(false);
+				await using FileStream stream = new(filePath, FileMode.Open, FileAccess.Read);
+				var mech = await MtfBattleMechParser.ParseAsync(stream, ct).ConfigureAwait(false);
 				if (mech is not null)
 				{
 					Console.WriteLine($"{mech.Chassis} ({mech.Model}) done.");

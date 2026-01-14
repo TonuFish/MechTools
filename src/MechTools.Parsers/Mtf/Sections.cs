@@ -1,6 +1,6 @@
 ﻿namespace MechTools.Parsers.Mtf;
 
-internal static class MtfSections
+internal static class Sections
 {
 	public const char Comment = '#';
 	public const string Armour = "ARMOR";

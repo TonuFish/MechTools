@@ -3,7 +3,7 @@ using System;
 
 namespace MechTools.Parsers.Mtf;
 
-internal static class MtfEnumConversions
+internal static class EnumConversions
 {
 	// TODO: Naming.
 
@@ -45,22 +45,22 @@ internal static class MtfEnumConversions
 
 		return upper switch
 		{
-			MtfSections.ArmourLocation.CentreLeg => BattleMechArmourLocation.CentreLeg,
-			MtfSections.ArmourLocation.CentreTorso => BattleMechArmourLocation.CentreTorso,
-			MtfSections.ArmourLocation.FrontLeftLeg => BattleMechArmourLocation.LeftLeg,
-			MtfSections.ArmourLocation.FrontRightLeg => BattleMechArmourLocation.RightLeg,
-			MtfSections.ArmourLocation.Head => BattleMechArmourLocation.Head,
-			MtfSections.ArmourLocation.LeftArm => BattleMechArmourLocation.LeftArm,
-			MtfSections.ArmourLocation.LeftLeg => BattleMechArmourLocation.LeftLeg,
-			MtfSections.ArmourLocation.LeftTorso => BattleMechArmourLocation.LeftTorso,
-			MtfSections.ArmourLocation.RearCentreTorso => BattleMechArmourLocation.RearCentreTorso,
-			MtfSections.ArmourLocation.RearLeftLeg => BattleMechArmourLocation.RearLeftLeg,
-			MtfSections.ArmourLocation.RearLeftTorso => BattleMechArmourLocation.RearLeftTorso,
-			MtfSections.ArmourLocation.RearRightLeg => BattleMechArmourLocation.RearRightLeg,
-			MtfSections.ArmourLocation.RearRightTorso => BattleMechArmourLocation.RearRightTorso,
-			MtfSections.ArmourLocation.RightArm => BattleMechArmourLocation.RightArm,
-			MtfSections.ArmourLocation.RightLeg => BattleMechArmourLocation.RightLeg,
-			MtfSections.ArmourLocation.RightTorso => BattleMechArmourLocation.RightTorso,
+			Sections.ArmourLocation.CentreLeg => BattleMechArmourLocation.CentreLeg,
+			Sections.ArmourLocation.CentreTorso => BattleMechArmourLocation.CentreTorso,
+			Sections.ArmourLocation.FrontLeftLeg => BattleMechArmourLocation.LeftLeg,
+			Sections.ArmourLocation.FrontRightLeg => BattleMechArmourLocation.RightLeg,
+			Sections.ArmourLocation.Head => BattleMechArmourLocation.Head,
+			Sections.ArmourLocation.LeftArm => BattleMechArmourLocation.LeftArm,
+			Sections.ArmourLocation.LeftLeg => BattleMechArmourLocation.LeftLeg,
+			Sections.ArmourLocation.LeftTorso => BattleMechArmourLocation.LeftTorso,
+			Sections.ArmourLocation.RearCentreTorso => BattleMechArmourLocation.RearCentreTorso,
+			Sections.ArmourLocation.RearLeftLeg => BattleMechArmourLocation.RearLeftLeg,
+			Sections.ArmourLocation.RearLeftTorso => BattleMechArmourLocation.RearLeftTorso,
+			Sections.ArmourLocation.RearRightLeg => BattleMechArmourLocation.RearRightLeg,
+			Sections.ArmourLocation.RearRightTorso => BattleMechArmourLocation.RearRightTorso,
+			Sections.ArmourLocation.RightArm => BattleMechArmourLocation.RightArm,
+			Sections.ArmourLocation.RightLeg => BattleMechArmourLocation.RightLeg,
+			Sections.ArmourLocation.RightTorso => BattleMechArmourLocation.RightTorso,
 			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechArmourLocation>(),
 		};
 	}
@@ -173,20 +173,20 @@ internal static class MtfEnumConversions
 
 		return upper switch
 		{
-			MtfSections.EquipmentLocation.CentreLeg => BattleMechEquipmentLocation.CentreLeg,
-			MtfSections.EquipmentLocation.CentreTorso => BattleMechEquipmentLocation.CentreTorso,
-			MtfSections.EquipmentLocation.FrontLeftLeg => BattleMechEquipmentLocation.LeftLeg,
-			MtfSections.EquipmentLocation.FrontRightLeg => BattleMechEquipmentLocation.RightLeg,
-			MtfSections.EquipmentLocation.Head => BattleMechEquipmentLocation.Head,
-			MtfSections.EquipmentLocation.LeftArm => BattleMechEquipmentLocation.LeftArm,
-			MtfSections.EquipmentLocation.LeftLeg => BattleMechEquipmentLocation.LeftLeg,
-			MtfSections.EquipmentLocation.LeftTorso => BattleMechEquipmentLocation.LeftTorso,
-			MtfSections.EquipmentLocation.None => BattleMechEquipmentLocation.None, // TODO: ATAE-70 - Thonk.
-			MtfSections.EquipmentLocation.RearLeftLeg => BattleMechEquipmentLocation.RearLeftLeg,
-			MtfSections.EquipmentLocation.RearRightLeg => BattleMechEquipmentLocation.RearRightLeg,
-			MtfSections.EquipmentLocation.RightArm => BattleMechEquipmentLocation.RightArm,
-			MtfSections.EquipmentLocation.RightLeg => BattleMechEquipmentLocation.RightLeg,
-			MtfSections.EquipmentLocation.RightTorso => BattleMechEquipmentLocation.RightTorso,
+			Sections.EquipmentLocation.CentreLeg => BattleMechEquipmentLocation.CentreLeg,
+			Sections.EquipmentLocation.CentreTorso => BattleMechEquipmentLocation.CentreTorso,
+			Sections.EquipmentLocation.FrontLeftLeg => BattleMechEquipmentLocation.LeftLeg,
+			Sections.EquipmentLocation.FrontRightLeg => BattleMechEquipmentLocation.RightLeg,
+			Sections.EquipmentLocation.Head => BattleMechEquipmentLocation.Head,
+			Sections.EquipmentLocation.LeftArm => BattleMechEquipmentLocation.LeftArm,
+			Sections.EquipmentLocation.LeftLeg => BattleMechEquipmentLocation.LeftLeg,
+			Sections.EquipmentLocation.LeftTorso => BattleMechEquipmentLocation.LeftTorso,
+			Sections.EquipmentLocation.None => BattleMechEquipmentLocation.None, // TODO: ATAE-70 - Thonk.
+			Sections.EquipmentLocation.RearLeftLeg => BattleMechEquipmentLocation.RearLeftLeg,
+			Sections.EquipmentLocation.RearRightLeg => BattleMechEquipmentLocation.RearRightLeg,
+			Sections.EquipmentLocation.RightArm => BattleMechEquipmentLocation.RightArm,
+			Sections.EquipmentLocation.RightLeg => BattleMechEquipmentLocation.RightLeg,
+			Sections.EquipmentLocation.RightTorso => BattleMechEquipmentLocation.RightTorso,
 			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
 		};
 	}

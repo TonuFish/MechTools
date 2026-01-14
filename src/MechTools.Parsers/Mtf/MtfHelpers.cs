@@ -11,7 +11,7 @@ namespace MechTools.Parsers.Mtf;
 // TODO: Still have to decide if this is throw||try.
 // TODO: Consider trimming pattern here, EG: GetWeaponQuirk
 // TODO: Throw if Bound + 1 overflows
-public static class MtfHelper
+public static class MtfHelpers
 {
 	private static readonly SearchValues<string> _engineDelimiterSearchValues =
 		SearchValues.Create(["(", " ENGINE"], StringComparison.OrdinalIgnoreCase);
@@ -64,7 +64,7 @@ public static class MtfHelper
 			armourSlice = armourSlice[..^armourDel.Length].TrimEnd();
 		}
 
-		return new(MtfEnumConversions.GetArmour(armourSlice), origin);
+		return new(EnumConversions.GetArmour(armourSlice), origin);
 	}
 
 	public static LocationArmourData GetArmourAtLocation(ReadOnlySpan<char> chars)
@@ -110,7 +110,7 @@ public static class MtfHelper
 	public static Cockpit GetCockpit(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return MtfEnumConversions.GetCockpit(chars.Trim());
+		return EnumConversions.GetCockpit(chars.Trim());
 	}
 	public static string GetComment(ReadOnlySpan<char> chars)
 	{
@@ -139,7 +139,7 @@ public static class MtfHelper
 			configurationSlice = trimmedChars[..^omniMekDel.Length].TrimEnd();
 		}
 
-		var configuration = MtfEnumConversions.GetConfiguration(configurationSlice);
+		var configuration = EnumConversions.GetConfiguration(configurationSlice);
 		return new(configuration, isOmniMech);
 	}
 
@@ -181,7 +181,7 @@ public static class MtfHelper
 		{
 			engineBound = trimmedChars.Length;
 		}
-		var engine = MtfEnumConversions.GetEngine(trimmedChars[(sizeBound + 1)..engineBound].Trim());
+		var engine = EnumConversions.GetEngine(trimmedChars[(sizeBound + 1)..engineBound].Trim());
 
 		var hasClanFlag = trimmedChars.Contains("(CLAN)", StringComparison.OrdinalIgnoreCase);
 		var hasInnerSphereFlag = trimmedChars.ContainsAny(_innerSphereMarkerSearchValues);
@@ -194,7 +194,7 @@ public static class MtfHelper
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
-		if (MtfValues.Lookup.CommonEquipmentValues.TryGetValue(trimmedChars, out var cachedValue))
+		if (CommonValues.EquipmentLookup.TryGetValue(trimmedChars, out var cachedValue))
 		{
 			return new(false, false, false, cachedValue);
 		}
@@ -259,7 +259,7 @@ public static class MtfHelper
 
 	public static Gyro GetGyro(ReadOnlySpan<char> chars)
 	{
-		return MtfEnumConversions.GetGyro(chars.Trim());
+		return EnumConversions.GetGyro(chars.Trim());
 	}
 
 	public static string GetHeatSinkKit(ReadOnlySpan<char> chars)
@@ -303,7 +303,7 @@ public static class MtfHelper
 				origin = Origin.Unknown;
 			}
 
-			heatSink = MtfEnumConversions.GetHeatSinks(workingChars[..legacyBound].TrimEnd());
+			heatSink = EnumConversions.GetHeatSinks(workingChars[..legacyBound].TrimEnd());
 		}
 		else
 		{
@@ -326,7 +326,7 @@ public static class MtfHelper
 				origin = Origin.Unknown;
 			}
 
-			heatSink = MtfEnumConversions.GetHeatSinks(workingChars);
+			heatSink = EnumConversions.GetHeatSinks(workingChars);
 		}
 
 		return new(count, heatSink, origin);
@@ -352,7 +352,7 @@ public static class MtfHelper
 	public static Lam GetLam(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return MtfEnumConversions.GetLam(chars.Trim());
+		return EnumConversions.GetLam(chars.Trim());
 	}
 
 	public static string GetManufacturer(ReadOnlySpan<char> chars)
@@ -380,7 +380,7 @@ public static class MtfHelper
 	public static Motive GetMotive(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return MtfEnumConversions.GetMotive(chars.Trim());
+		return EnumConversions.GetMotive(chars.Trim());
 	}
 
 	public static int GetMulId(ReadOnlySpan<char> chars)
@@ -391,7 +391,7 @@ public static class MtfHelper
 
 	public static Myomer GetMyomer(ReadOnlySpan<char> chars)
 	{
-		return MtfEnumConversions.GetMyomer(chars.Trim());
+		return EnumConversions.GetMyomer(chars.Trim());
 	}
 
 	public static NoCritData GetNoCrit(ReadOnlySpan<char> chars)
@@ -409,7 +409,7 @@ public static class MtfHelper
 		}
 
 		return new(
-			MtfEnumConversions.GetEquipmentLocationFromAbbreviation(trimmedChars[(bound + 1)..].TrimStart()),
+			EnumConversions.GetEquipmentLocationFromAbbreviation(trimmedChars[(bound + 1)..].TrimStart()),
 			trimmedChars[..bound].TrimEnd().ToString());
 	}
 
@@ -439,13 +439,13 @@ public static class MtfHelper
 
 	public static Role GetRole(ReadOnlySpan<char> chars)
 	{
-		return MtfEnumConversions.GetRole(chars.Trim());
+		return EnumConversions.GetRole(chars.Trim());
 	}
 
 	public static RulesLevel GetRulesLevel(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return MtfEnumConversions.GetRulesLevel(ParseSimpleNumber(chars));
+		return EnumConversions.GetRulesLevel(ParseSimpleNumber(chars));
 	}
 
 	public static SourceData GetSource(ReadOnlySpan<char> chars)
@@ -478,7 +478,7 @@ public static class MtfHelper
 			trimmedChars = trimmedChars[innerSphereDel.Length..].TrimStart();
 		}
 
-		return MtfEnumConversions.GetStructure(trimmedChars);
+		return EnumConversions.GetStructure(trimmedChars);
 	}
 
 	public static SpecificSystemData GetSystemManufacturer(ReadOnlySpan<char> chars)
@@ -496,7 +496,7 @@ public static class MtfHelper
 	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
 	{
 		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return MtfEnumConversions.GetTechBase(chars.Trim());
+		return EnumConversions.GetTechBase(chars.Trim());
 	}
 
 	public static int GetWalkMp(ReadOnlySpan<char> chars)
@@ -591,7 +591,7 @@ public static class MtfHelper
 			nameSlice = nameSlice[..^rearDel.Length];
 		}
 
-		var location = MtfEnumConversions.GetEquipmentLocation(locationSlice);
+		var location = EnumConversions.GetEquipmentLocation(locationSlice);
 		return new(ammo, count, isRear, location, nameSlice.ToString());
 	}
 
@@ -618,7 +618,7 @@ public static class MtfHelper
 		_ = enumerator.MoveNext();
 		var name = chars[enumerator.Current].Trim();
 		_ = enumerator.MoveNext();
-		var location = MtfEnumConversions.GetEquipmentLocationFromAbbreviation(chars[enumerator.Current].Trim());
+		var location = EnumConversions.GetEquipmentLocationFromAbbreviation(chars[enumerator.Current].Trim());
 		_ = enumerator.MoveNext();
 		var slot = ParseSimpleNumber(chars[enumerator.Current]);
 		_ = enumerator.MoveNext();
@@ -638,7 +638,7 @@ public static class MtfHelper
 		}
 
 		var nameSlice = trimmedChars[(bound + 1)..].TrimStart();
-		return new(nameSlice.ToString(), MtfEnumConversions.GetSpecificSystem(trimmedChars[..bound].TrimEnd()));
+		return new(nameSlice.ToString(), EnumConversions.GetSpecificSystem(trimmedChars[..bound].TrimEnd()));
 	}
 
 	private static int ParseSimpleNumber(ReadOnlySpan<char> chars)
