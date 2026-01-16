@@ -9,6 +9,8 @@ namespace MechTools.Parsers.Mtf;
 
 public static class MtfBattleMechParser
 {
+	private static readonly StreamPipeReaderOptions _pipeReaderOptions = new(leaveOpen: true);
+
 	public static DefaultBattleMech Parse(ReadOnlySpan<char> source)
 	{
 		if (source.IsEmpty)
@@ -18,7 +20,7 @@ public static class MtfBattleMechParser
 
 		DefaultBattleMechBuilder builder = new();
 		using BattleMechParser parser = new(builder);
-		_ = parser.ProcessSource(source);
+		parser.Parse(source);
 		return builder.Build();
 	}
 
@@ -31,12 +33,14 @@ public static class MtfBattleMechParser
 		}
 
 		using BattleMechParser parser = new(builder);
-		_ = parser.ProcessSource(source);
+		parser.Parse(source);
 		return builder.Build();
 	}
 
 	public static async Task<DefaultBattleMech> ParseAsync(Stream stream, CancellationToken ct)
 	{
+		// TODO: Docomment about consuming the stream
+
 		ArgumentNullException.ThrowIfNull(stream);
 		if (!stream.CanRead)
 		{
@@ -45,7 +49,7 @@ public static class MtfBattleMechParser
 
 		DefaultBattleMechBuilder builder = new();
 		using BattleMechParser parser = new(builder);
-		await parser.ProcessSourceAsync(PipeReader.Create(stream), ct).ConfigureAwait(false);
+		await parser.ParseAsync(PipeReader.Create(stream, _pipeReaderOptions), ct).ConfigureAwait(false);
 		return builder.Build();
 	}
 
@@ -59,7 +63,7 @@ public static class MtfBattleMechParser
 		}
 
 		using BattleMechParser parser = new(builder);
-		await parser.ProcessSourceAsync(PipeReader.Create(stream), ct).ConfigureAwait(false);
+		await parser.ParseAsync(PipeReader.Create(stream, _pipeReaderOptions), ct).ConfigureAwait(false);
 		return builder.Build();
 	}
 }

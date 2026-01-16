@@ -35,22 +35,16 @@ internal sealed class BattleMechParser : IDisposable
 		_builder = builder;
 	}
 
-	internal bool ProcessSource(ReadOnlySpan<char> chars)
+	internal void Parse(ReadOnlySpan<char> chars)
 	{
-		const char newLine = '\n';
-
-		// TODO: Consider error handling again
-
-		foreach (var bound in chars.Split(newLine))
+		foreach (var bound in chars.Split('\n'))
 		{
-			ProcessLine(chars[bound].Trim());
+			ProcessLine(chars[bound]);
 		}
-
-		return true;
 	}
 
 	[MemberNotNull(nameof(_scratchBuffer))]
-	internal async Task<bool> ProcessSourceAsync(PipeReader reader, CancellationToken ct)
+	internal async Task ParseAsync(PipeReader reader, CancellationToken ct)
 	{
 		_scratchBuffer = ArrayPool<char>.Shared.Rent(ScratchBufferLength);
 
@@ -64,7 +58,6 @@ internal sealed class BattleMechParser : IDisposable
 					break;
 				}
 
-				// Parse the buffer.
 				var buffer = result.Buffer;
 				ProcessBuffer(ref buffer);
 
@@ -77,20 +70,14 @@ internal sealed class BattleMechParser : IDisposable
 				reader.AdvanceTo(buffer.Start, buffer.End);
 			}
 		}
-		catch
+		catch (Exception ex)
 		{
 			// TODO: Error handling.
-			return false;
 		}
 		finally
 		{
-			// CompleteAsync is a direct wrap of Complete
-#pragma warning disable CA1849, S6966 // Call async methods when in an async method
-			reader.Complete();
-#pragma warning restore CA1849, S6966 // Call async methods when in an async method
+			await reader.CompleteAsync().ConfigureAwait(false);
 		}
-
-		return true;
 	}
 
 	[MethodImpl(MethodImplOptions.NoInlining)]
@@ -131,11 +118,11 @@ internal sealed class BattleMechParser : IDisposable
 			if (sequence.Length <= scratchBuffer.Length)
 			{
 				var charCount = Encoding.UTF8.GetChars(in sequence, scratchBuffer);
-				line = scratchBuffer.AsSpan(start: 0, length: charCount).Trim();
+				line = scratchBuffer.AsSpan(start: 0, length: charCount);
 			}
 			else
 			{
-				line = GetCharsRare(in sequence).Trim();
+				line = GetCharsRare(in sequence);
 			}
 
 			ProcessLine(line);
@@ -146,30 +133,31 @@ internal sealed class BattleMechParser : IDisposable
 
 	private void ProcessLine(ReadOnlySpan<char> line)
 	{
-		if (line.IsEmpty)
+		var trimmedLine = line.Trim();
+		if (trimmedLine.IsEmpty)
 		{
 			_mode = Mode.Default;
 			_equipmentLocation = null;
 			return;
 		}
-		else if (line[0] == Sections.Comment)
+		else if (trimmedLine[0] == Sections.Comment)
 		{
-			_builder.AddComment(line);
+			_builder.AddComment(trimmedLine);
 			return;
 		}
 
 		switch (_mode)
 		{
 			case Mode.Default:
-				ProcessDefaultLine(line);
+				ProcessDefaultLine(trimmedLine);
 				break;
 			case Mode.Weapons:
-				_builder.AddWeaponToWeaponList(line);
+				_builder.AddWeaponToWeaponList(trimmedLine);
 				break;
 			case Mode.EquipmentAtLocation:
 				if (_equipmentLocation.HasValue)
 				{
-					_builder.AddEquipmentAtLocation(line, _equipmentLocation.Value);
+					_builder.AddEquipmentAtLocation(trimmedLine, _equipmentLocation.Value);
 				}
 				else
 				{
@@ -464,27 +452,26 @@ internal sealed class BattleMechParser : IDisposable
 
 	#region IDisposable
 
-	private void Dispose(bool disposing)
-	{
-		if (!_disposed)
-		{
-			if (disposing && _scratchBuffer is not null)
-			{
-				ArrayPool<char>.Shared.Return(_scratchBuffer, clearArray: false);
-
-				if (_longScratchBuffer is not null)
-				{
-					ArrayPool<char>.Shared.Return(_longScratchBuffer, clearArray: false);
-				}
-			}
-
-			_disposed = true;
-		}
-	}
-
 	public void Dispose()
 	{
-		Dispose(disposing: true);
+		if (_disposed)
+		{
+			return;
+		}
+
+		if (_scratchBuffer is not null)
+		{
+			ArrayPool<char>.Shared.Return(_scratchBuffer, clearArray: false);
+
+			// _longScratchBuffer may only be allocated via the ParseAsync entry point, which always
+			// allocates _scratchBuffer.
+			if (_longScratchBuffer is not null)
+			{
+				ArrayPool<char>.Shared.Return(_longScratchBuffer, clearArray: false);
+			}
+		}
+
+		_disposed = true;
 		GC.SuppressFinalize(this);
 	}
 
