@@ -1,38 +1,56 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MechTools.Parsers;
 
 internal static class ThrowHelper
 {
-	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
-	public static void ExceptionToSpecifyLater()
+	[DebuggerStepThrough, DoesNotReturn]
+	public static void ThrowUnspecifiedException()
 	{
 		throw new InvalidOperationException();
 	}
 
-	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
-	public static T ExceptionToSpecifyLater<T>()
+	[DebuggerStepThrough, DoesNotReturn]
+	[return: MaybeNull]
+	public static T ThrowUnspecifiedException<T>()
 	{
 		throw new InvalidOperationException();
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	[DebuggerHidden, StackTraceHidden]
-	public static void ThrowIfEmptyOrWhiteSpace(ReadOnlySpan<char> chars)
-	{
-		if (chars.IsWhiteSpace())
-		{
-			ExceptionToSpecifyLater();
-		}
-	}
+	#region Internal
 
 	[Conditional("DEBUG")]
-	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
-	public static void ThrowImpossibleException()
+	[DebuggerStepThrough, DoesNotReturn]
+	public static void DebugThrowImpossibleException()
 	{
+#if DEBUG
+		throw new InternalImpossibleException();
+#else
+		// This method is excluded from non-debug builds, but as ConditionalAttribute isn't "smart" or valid on classes
+		// we have to throw a different exception in this empty body.
 		throw new InvalidOperationException();
+#endif
 	}
+
+#if DEBUG
+#pragma warning disable CA1064, S3871 // Exceptions should be public - Debug only exception.
+	private sealed class InternalImpossibleException : Exception
+#pragma warning restore CA1064, S3871 // Exceptions should be public - Debug only exception.
+	{
+		public InternalImpossibleException()
+		{
+		}
+
+		public InternalImpossibleException(string message) : base(message)
+		{
+		}
+
+		public InternalImpossibleException(string message, Exception innerException) : base(message, innerException)
+		{
+		}
+	}
+#endif // DEBUG
+	#endregion Internal
 }

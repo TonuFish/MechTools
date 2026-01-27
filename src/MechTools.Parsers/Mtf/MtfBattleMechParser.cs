@@ -15,12 +15,20 @@ public static class MtfBattleMechParser
 	{
 		if (source.IsEmpty)
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			ThrowHelper.ThrowUnspecifiedException();
 		}
 
 		DefaultBattleMechBuilder builder = new();
 		using BattleMechParser parser = new(builder);
-		parser.Parse(source);
+		try
+		{
+			parser.Parse(source);
+		}
+		catch (Exception ex)
+		{
+			throw WrapException(ex);
+		}
+
 		return builder.Build();
 	}
 
@@ -29,27 +37,41 @@ public static class MtfBattleMechParser
 		ArgumentNullException.ThrowIfNull(builder);
 		if (source.IsEmpty)
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			ThrowHelper.ThrowUnspecifiedException();
 		}
 
 		using BattleMechParser parser = new(builder);
-		parser.Parse(source);
+		try
+		{
+			parser.Parse(source);
+		}
+		catch (Exception ex)
+		{
+			throw WrapException(ex);
+		}
+
 		return builder.Build();
 	}
 
 	public static async Task<DefaultBattleMech> ParseAsync(Stream stream, CancellationToken ct)
 	{
-		// TODO: Docomment about consuming the stream
-
 		ArgumentNullException.ThrowIfNull(stream);
 		if (!stream.CanRead)
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			ThrowHelper.ThrowUnspecifiedException();
 		}
 
 		DefaultBattleMechBuilder builder = new();
 		using BattleMechParser parser = new(builder);
-		await parser.ParseAsync(PipeReader.Create(stream, _pipeReaderOptions), ct).ConfigureAwait(false);
+		try
+		{
+			await parser.ParseAsync(PipeReader.Create(stream, _pipeReaderOptions), ct).ConfigureAwait(false);
+		}
+		catch (Exception ex)
+		{
+			throw WrapException(ex);
+		}
+
 		return builder.Build();
 	}
 
@@ -59,11 +81,25 @@ public static class MtfBattleMechParser
 		ArgumentNullException.ThrowIfNull(builder);
 		if (!stream.CanRead)
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			ThrowHelper.ThrowUnspecifiedException();
 		}
 
 		using BattleMechParser parser = new(builder);
-		await parser.ParseAsync(PipeReader.Create(stream, _pipeReaderOptions), ct).ConfigureAwait(false);
+		try
+		{
+			await parser.ParseAsync(PipeReader.Create(stream, _pipeReaderOptions), ct).ConfigureAwait(false);
+		}
+		catch (Exception ex)
+		{
+			throw WrapException(ex);
+		}
+
 		return builder.Build();
+	}
+
+	private static Exception WrapException(Exception ex)
+	{
+		// TODO: This.
+		return ex;
 	}
 }

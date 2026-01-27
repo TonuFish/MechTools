@@ -33,7 +33,7 @@ internal static class EnumConversions
 			"REFLECTIVE" => Armour.Reflective,
 			"STANDARD" => Armour.Standard,
 			"STEALTH" => Armour.Stealth,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Armour>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Armour>(chars),
 		};
 	}
 
@@ -61,7 +61,7 @@ internal static class EnumConversions
 			Sections.ArmourLocation.RightArm => BattleMechArmourLocation.RightArm,
 			Sections.ArmourLocation.RightLeg => BattleMechArmourLocation.RightLeg,
 			Sections.ArmourLocation.RightTorso => BattleMechArmourLocation.RightTorso,
-			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechArmourLocation>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<BattleMechArmourLocation>(chars),
 		};
 	}
 
@@ -109,7 +109,7 @@ internal static class EnumConversions
 			"QUAD" => Configuration.Quad,
 			"QUADVEE" => Configuration.QuadVee,
 			"TRIPOD" => Configuration.Tripod,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Configuration>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Configuration>(chars),
 		};
 	}
 
@@ -162,7 +162,7 @@ internal static class EnumConversions
 			"STEAM" => Engine.Steam,
 			"XL" => Engine.Xl,
 			"XXL" => Engine.Xxl,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Engine>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Engine>(chars),
 		};
 	}
 
@@ -187,7 +187,7 @@ internal static class EnumConversions
 			Sections.EquipmentLocation.RightArm => BattleMechEquipmentLocation.RightArm,
 			Sections.EquipmentLocation.RightLeg => BattleMechEquipmentLocation.RightLeg,
 			Sections.EquipmentLocation.RightTorso => BattleMechEquipmentLocation.RightTorso,
-			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<BattleMechEquipmentLocation>(chars),
 		};
 	}
 
@@ -213,7 +213,7 @@ internal static class EnumConversions
 			"RA" => BattleMechEquipmentLocation.RightArm,
 			"RL" => BattleMechEquipmentLocation.RightLeg,
 			"RT" => BattleMechEquipmentLocation.RightTorso,
-			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<BattleMechEquipmentLocation>(chars),
 		};
 	}
 
@@ -232,7 +232,7 @@ internal static class EnumConversions
 			"STANDARD GYRO" => Gyro.Standard,
 			"SUPERHEAVY GYRO" => Gyro.SuperHeavyDuty,
 			"XL" or "XL GYRO" => Gyro.XL,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Gyro>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Gyro>(chars),
 		};
 	}
 
@@ -247,7 +247,7 @@ internal static class EnumConversions
 			"COMPACT" => HeatSink.Compact,
 			"DOUBLE" => HeatSink.Double,
 			"LASER" => HeatSink.Laser,
-			_ => ThrowHelper.ExceptionToSpecifyLater<HeatSink>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<HeatSink>(chars),
 		};
 	}
 
@@ -260,7 +260,7 @@ internal static class EnumConversions
 		{
 			"STANDARD" => Lam.Standard,
 			"BIMODAL" => Lam.Bimodal,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Lam>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Lam>(chars),
 		};
 	}
 
@@ -273,7 +273,7 @@ internal static class EnumConversions
 		{
 			"TRACK" => Motive.Track,
 			"WHEEL" => Motive.Wheel,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Motive>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Motive>(chars),
 		};
 	}
 
@@ -292,7 +292,7 @@ internal static class EnumConversions
 			"STANDARD" => Myomer.Standard,
 			"SUPER-COOLED" => Myomer.SuperCooled,
 			"TRIPLE STRENGTH MYOMER" or "TRIPLE-STRENGTH" => Myomer.TripleStrength,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Myomer>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Myomer>(chars),
 		};
 	}
 
@@ -312,7 +312,7 @@ internal static class EnumConversions
 			"SKIRMISHER" => Role.Skirmisher,
 			"SNIPER" => Role.Sniper,
 			"STRIKER" => Role.Striker,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Role>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Role>(chars),
 		};
 	}
 
@@ -325,7 +325,7 @@ internal static class EnumConversions
 			3 => RulesLevel.Advanced,
 			4 => RulesLevel.Experimental,
 			5 => RulesLevel.Unofficial,
-			_ => ThrowHelper.ExceptionToSpecifyLater<RulesLevel>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<RulesLevel>(num),
 		};
 	}
 
@@ -342,7 +342,7 @@ internal static class EnumConversions
 			"ENGINE" => SpecificSystem.Engine,
 			"JUMPJET" => SpecificSystem.JumpJet,
 			"TARGETING" => SpecificSystem.Targeting,
-			_ => ThrowHelper.ExceptionToSpecifyLater<SpecificSystem>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<SpecificSystem>(chars),
 		};
 	}
 
@@ -360,7 +360,7 @@ internal static class EnumConversions
 			"ENDO STEEL PROTOTYPE" or "ENDO-STEEL PROTOTYPE" => Structure.EndoSteelPrototype,
 			"INDUSTRIAL" => Structure.Industrial,
 			"REINFORCED" => Structure.Reinforced,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Structure>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Structure>(chars),
 		};
 	}
 
@@ -375,7 +375,7 @@ internal static class EnumConversions
 			"INNER SPHERE" => TechBase.InnerSphere,
 			"MIXED (CLAN CHASSIS)" => TechBase.MixedClanChassis,
 			"MIXED (IS CHASSIS)" => TechBase.MixedInnerSphereChassis,
-			_ => ThrowHelper.ExceptionToSpecifyLater<TechBase>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<TechBase>(chars),
 		};
 	}
 
@@ -402,7 +402,7 @@ internal static class EnumConversions
 			"TRIPOD INDUSTRIAL" => Cockpit.TripodIndustrialCockpit,
 			"TRIPOD" => Cockpit.TripodCockpit,
 			"VRPP" => Cockpit.VirtualRealityPilotingPod,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Cockpit>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Cockpit>(upper),
 		};
 	}
 }

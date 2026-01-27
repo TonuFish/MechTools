@@ -92,7 +92,7 @@ internal static class Program
 			catch (Exception ex)
 			{
 				brokenList ??= [];
-				brokenList.Add($"{filePath} ({ex.Message})");
+				brokenList.Add($"{filePath[(filePath.LastIndexOf('\\') + 1)..]} ({ex.Message})");
 			}
 		}
 

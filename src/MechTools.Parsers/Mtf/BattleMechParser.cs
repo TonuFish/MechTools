@@ -63,16 +63,11 @@ internal sealed class BattleMechParser : IDisposable
 
 				if (result.IsCompleted)
 				{
-					// TODO: If mech not completed, throw? Expand on this more.
 					break;
 				}
 
 				reader.AdvanceTo(buffer.Start, buffer.End);
 			}
-		}
-		catch (Exception ex)
-		{
-			// TODO: Error handling.
 		}
 		finally
 		{
@@ -161,32 +156,33 @@ internal sealed class BattleMechParser : IDisposable
 				}
 				else
 				{
-					ThrowHelper.ExceptionToSpecifyLater();
+					ThrowHelper.ThrowUnspecifiedException();
 				}
 				break;
 			default:
-				ThrowHelper.ThrowImpossibleException();
+				ThrowHelper.DebugThrowImpossibleException();
 				break;
 		}
 	}
 
 	private void ProcessDefaultLine(ReadOnlySpan<char> line)
 	{
+		const int MaxSectionLength = 64;
+
 		var delimiterIndex = line.IndexOf(':');
-		if ((uint)delimiterIndex > 64)
+		if ((uint)delimiterIndex > MaxSectionLength)
 		{
-			// TODO: `Antlion LK-3D` - Why on earth do we randomly have markup here?
-			ThrowHelper.ExceptionToSpecifyLater();
+			// TODO: Usually markup driven (having info over multiple lines) - Handle this.
+			MtfThrowHelper.ThrowMissingSectionTagException(line);
 		}
 
-		// TODO: Think harder about cutting whitespace off here - it might hurt text blobs, but it's very convenient...
 		var content = line.Length != delimiterIndex ? line[(delimiterIndex + 1)..].Trim() : [];
 
-		var section = (stackalloc char[64])[..delimiterIndex];
+		var section = (stackalloc char[MaxSectionLength])[..delimiterIndex];
+		// Invariant guarantees lengths will match, don't validate lengths.
 		_ = line[..delimiterIndex].ToUpperInvariant(section);
 
 		// TODO: Consider adding a call to the builder for starting each equipment section. Nop for defaults.
-		// TODO: Handle the unknown case.
 
 		switch (section.Length)
 		{
@@ -277,7 +273,7 @@ internal sealed class BattleMechParser : IDisposable
 					_equipmentLocation = BattleMechEquipmentLocation.Head;
 					break;
 				default:
-					ThrowHelper.ExceptionToSpecifyLater();
+					MtfThrowHelper.ThrowUnknownSectionTagException(section);
 					break;
 			}
 		}
@@ -368,7 +364,7 @@ internal sealed class BattleMechParser : IDisposable
 					_equipmentLocation = BattleMechEquipmentLocation.RightArm;
 					break;
 				default:
-					ThrowHelper.ExceptionToSpecifyLater();
+					MtfThrowHelper.ThrowUnknownSectionTagException(section);
 					break;
 			}
 		}
@@ -444,7 +440,7 @@ internal sealed class BattleMechParser : IDisposable
 					_equipmentLocation = BattleMechEquipmentLocation.RightTorso;
 					break;
 				default:
-					ThrowHelper.ExceptionToSpecifyLater();
+					MtfThrowHelper.ThrowUnknownSectionTagException(section);
 					break;
 			}
 		}
