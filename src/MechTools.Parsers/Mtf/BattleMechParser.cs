@@ -19,6 +19,8 @@ internal sealed class BattleMechParser : IDisposable
 		EquipmentAtLocation,
 	}
 
+	internal int LineNumber { get; private set; }
+
 	private const int ScratchBufferLength = 2_048;
 	private const int LongScratchBufferLength = ScratchBufferLength * 2;
 
@@ -128,6 +130,8 @@ internal sealed class BattleMechParser : IDisposable
 
 	private void ProcessLine(ReadOnlySpan<char> line)
 	{
+		LineNumber++;
+
 		var trimmedLine = line.Trim();
 		if (trimmedLine.IsEmpty)
 		{

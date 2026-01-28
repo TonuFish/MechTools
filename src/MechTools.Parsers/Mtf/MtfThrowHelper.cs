@@ -12,29 +12,40 @@ internal static class MtfThrowHelper
 	{
 		if (chars.IsWhiteSpace())
 		{
-			ThrowMissingDataException();
+			ThrowMissingValueException();
 		}
 	}
 
 	[DebuggerStepThrough, DoesNotReturn]
-	public static void ThrowMissingDataException()
+	public static void ThrowInvalidValueException(ReadOnlySpan<char> chars)
 	{
-		// TODO
-		throw new MtfException("TODO");
+		throw new MtfException($"Value could not be parsed from '{chars}'.");
+	}
+
+	[DebuggerStepThrough, DoesNotReturn]
+	[return: MaybeNull]
+	public static T ThrowInvalidValueException<T>(ReadOnlySpan<char> chars)
+	{
+		throw new MtfException($"Value could not be parsed from '{chars}'.");
 	}
 
 	[DebuggerStepThrough, DoesNotReturn]
 	public static void ThrowMissingSectionTagException(ReadOnlySpan<char> line)
 	{
-		// TODO
-		throw new MtfException("TODO");
+		throw new MtfException($"Section tag could not be parsed from line '{line}'.");
+	}
+
+	[DebuggerStepThrough, DoesNotReturn]
+	public static void ThrowMissingValueException()
+	{
+		throw new MtfException("Value may not be empty or whitespace.");
 	}
 
 	[DebuggerStepThrough, DoesNotReturn]
 	public static T ThrowUnknownEnumException<T>(int number) where T : struct, Enum
 	{
 		throw new MtfEnumException(
-			$"Unknown {nameof(T)}: {number}",
+			$"{nameof(T)} could not be converted from '{number}'.",
 			typeof(T));
 	}
 
@@ -42,14 +53,13 @@ internal static class MtfThrowHelper
 	public static T ThrowUnknownEnumException<T>(ReadOnlySpan<char> chars) where T : struct, Enum
 	{
 		throw new MtfEnumException(
-			$"Unknown {nameof(T)}: {chars}",
+			$"{nameof(T)} could not be parsed from '{chars}'.",
 			typeof(T));
 	}
 
 	[DebuggerStepThrough, DoesNotReturn]
 	public static void ThrowUnknownSectionTagException(ReadOnlySpan<char> section)
 	{
-		// TODO
-		throw new MtfException($"Unknown section: {section}");
+		throw new MtfException($"Section tag '{section}' is unknown.");
 	}
 }

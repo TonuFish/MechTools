@@ -6,17 +6,20 @@ namespace MechTools.Parsers;
 
 internal static class ThrowHelper
 {
-	[DebuggerStepThrough, DoesNotReturn]
-	public static void ThrowUnspecifiedException()
+	[DebuggerStepThrough, DoesNotReturn, StackTraceHidden]
+	public static void ThrowEmptySourceException()
 	{
-		throw new InvalidOperationException();
+#pragma warning disable S3928 // The parameter name 'source' is not declared in the argument list.
+		throw new ArgumentException("The source cannot be empty.", "source");
+#pragma warning restore S3928 // The parameter name 'source' is not declared in the argument list.
 	}
 
-	[DebuggerStepThrough, DoesNotReturn]
-	[return: MaybeNull]
-	public static T ThrowUnspecifiedException<T>()
+	[DebuggerStepThrough, DoesNotReturn, StackTraceHidden]
+	public static void ThrowEmptyStreamException()
 	{
-		throw new InvalidOperationException();
+#pragma warning disable S3928 // The parameter name 'stream' is not declared in the argument list.
+		throw new ArgumentException("The stream cannot be empty.", "stream");
+#pragma warning restore S3928 // The parameter name 'stream' is not declared in the argument list.
 	}
 
 	#region Internal

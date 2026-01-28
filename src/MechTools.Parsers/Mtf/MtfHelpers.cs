@@ -79,7 +79,7 @@ public static class MtfHelpers
 			var trimmedChars = chars.Trim();
 			var valueBound = trimmedChars.LastIndexOf(':');
 			(var armour, var origin) = GetArmour(trimmedChars[..valueBound]);
-			return new(ParseSimpleNumber(trimmedChars[(valueBound + 1)..].TrimStart()), armour, origin);
+			return new(ParseSimpleNumber(trimmedChars[(valueBound + 1)..]), armour, origin);
 		}
 	}
 
@@ -166,14 +166,14 @@ public static class MtfHelpers
 		}
 		else if (!trimmedChars.Contains(" ENGINE", StringComparison.OrdinalIgnoreCase))
 		{
-			ThrowHelper.ThrowUnspecifiedException();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		var sizeBound = trimmedChars.IndexOf(' ');
 		if (sizeBound == -1
 			|| !int.TryParse(trimmedChars[..sizeBound], NumberStyles.None, CultureInfo.InvariantCulture, out var size))
 		{
-			return ThrowHelper.ThrowUnspecifiedException<EngineData>();
+			return MtfThrowHelper.ThrowInvalidValueException<EngineData>(chars);
 		}
 
 		// TODO: Consider none handling... (none)
@@ -207,7 +207,7 @@ public static class MtfHelpers
 		}
 		else if (bound == 0)
 		{
-			ThrowHelper.ThrowUnspecifiedException();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		return GetAnnotatedEquipmentAtLocation(trimmedChars);
@@ -279,7 +279,7 @@ public static class MtfHelpers
 		if (countBound == -1
 			|| !int.TryParse(trimmedChars[..countBound], NumberStyles.None, CultureInfo.InvariantCulture, out var count))
 		{
-			return ThrowHelper.ThrowUnspecifiedException<HeatSinkData>();
+			return MtfThrowHelper.ThrowInvalidValueException<HeatSinkData>(chars);
 		}
 
 		Origin origin;
@@ -369,7 +369,7 @@ public static class MtfHelpers
 		var mass = ParseSimpleNumber(chars);
 		if (mass < 1)
 		{
-			ThrowHelper.ThrowUnspecifiedException();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 		return mass;
 	}
@@ -407,7 +407,7 @@ public static class MtfHelpers
 		var bound = trimmedChars.IndexOf(del);
 		if (bound < 1 || bound + 1 == trimmedChars.Length)
 		{
-			ThrowHelper.ThrowUnspecifiedException();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		return new(
@@ -486,13 +486,13 @@ public static class MtfHelpers
 	public static SpecificSystemData GetSystemManufacturer(ReadOnlySpan<char> chars)
 	{
 		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return GetSpecificSystem(chars.Trim());
+		return GetSpecificSystem(chars);
 	}
 
 	public static SpecificSystemData GetSystemModel(ReadOnlySpan<char> chars)
 	{
 		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return GetSpecificSystem(chars.Trim());
+		return GetSpecificSystem(chars);
 	}
 
 	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
@@ -507,7 +507,7 @@ public static class MtfHelpers
 		var walkMp = ParseSimpleNumber(chars);
 		if (walkMp < 1)
 		{
-			ThrowHelper.ThrowUnspecifiedException();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 		return walkMp;
 	}
@@ -523,7 +523,7 @@ public static class MtfHelpers
 		var lastBound = trimmedChars.LastIndexOf(stdDel, StringComparison.Ordinal);
 		if (lastBound == -1 || lastBound == trimmedChars.Length - stdDel.Length)
 		{
-			ThrowHelper.ThrowUnspecifiedException();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		int? count;
@@ -537,7 +537,7 @@ public static class MtfHelpers
 			count = int.Parse(trimmedChars[..nameBound].TrimEnd(), NumberStyles.None, CultureInfo.InvariantCulture);
 			if (count < 1)
 			{
-				ThrowHelper.ThrowUnspecifiedException();
+				MtfThrowHelper.ThrowInvalidValueException(chars);
 			}
 
 			const string ammoDel = "Ammo:";
@@ -563,7 +563,7 @@ public static class MtfHelpers
 		}
 		else if (trimmedChars[0] == '-')
 		{
-			return ThrowHelper.ThrowUnspecifiedException<WeaponListData>();
+			return MtfThrowHelper.ThrowInvalidValueException<WeaponListData>(chars);
 		}
 		else
 		{
@@ -576,7 +576,7 @@ public static class MtfHelpers
 
 		if (nameSlice.IsWhiteSpace())
 		{
-			ThrowHelper.ThrowUnspecifiedException();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		var isRear = false;
@@ -613,7 +613,7 @@ public static class MtfHelpers
 			|| chars.Count(':') != 3
 			|| chars.Contains([':', ':'], StringComparison.Ordinal))
 		{
-			ThrowHelper.ThrowUnspecifiedException();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		var enumerator = chars.Split(':');
@@ -629,14 +629,15 @@ public static class MtfHelpers
 		return new(location, name.ToString(), slot, weapon);
 	}
 
-	private static SpecificSystemData GetSpecificSystem(ReadOnlySpan<char> trimmedChars)
+	private static SpecificSystemData GetSpecificSystem(ReadOnlySpan<char> chars)
 	{
 		const char del = ':';
 
+		var trimmedChars = chars.Trim();
 		var bound = trimmedChars.IndexOf(del);
 		if (bound < 1 || bound + 1 == trimmedChars.Length)
 		{
-			ThrowHelper.ThrowUnspecifiedException();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		var nameSlice = trimmedChars[(bound + 1)..].TrimStart();
@@ -647,7 +648,7 @@ public static class MtfHelpers
 	{
 		if (!int.TryParse(chars.Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out var number))
 		{
-			ThrowHelper.ThrowUnspecifiedException();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		return number;
