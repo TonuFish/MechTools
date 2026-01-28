@@ -131,8 +131,9 @@ internal sealed class BattleMechParser : IDisposable
 		var trimmedLine = line.Trim();
 		if (trimmedLine.IsEmpty)
 		{
+			// Not clearing _equipmentLocation each empty line will leaves last value behind, but is side-effect free
+			// as it's not used further.
 			_mode = Mode.Default;
-			_equipmentLocation = null;
 			return;
 		}
 		else if (trimmedLine[0] == Sections.Comment)
@@ -150,14 +151,8 @@ internal sealed class BattleMechParser : IDisposable
 				_builder.AddWeaponToWeaponList(trimmedLine);
 				break;
 			case Mode.EquipmentAtLocation:
-				if (_equipmentLocation.HasValue)
-				{
-					_builder.AddEquipmentAtLocation(trimmedLine, _equipmentLocation.Value);
-				}
-				else
-				{
-					ThrowHelper.ThrowUnspecifiedException();
-				}
+				// Only set via ProcessDefaultLine.SetEquipmentAtLocationMode, will not be null.
+				_builder.AddEquipmentAtLocation(trimmedLine, _equipmentLocation!.Value);
 				break;
 			default:
 				ThrowHelper.DebugThrowImpossibleException();
@@ -269,8 +264,7 @@ internal sealed class BattleMechParser : IDisposable
 					_mode = Mode.Weapons;
 					break;
 				case Sections.EquipmentLocation.Head:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.Head;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.Head);
 					break;
 				default:
 					MtfThrowHelper.ThrowUnknownSectionTagException(section);
@@ -348,20 +342,16 @@ internal sealed class BattleMechParser : IDisposable
 					_builder.SetTechBase(content);
 					break;
 				case Sections.EquipmentLocation.LeftLeg:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.LeftLeg;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.LeftLeg);
 					break;
 				case Sections.EquipmentLocation.RightLeg:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.RightLeg;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.RightLeg);
 					break;
 				case Sections.EquipmentLocation.LeftArm:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.LeftArm;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.LeftArm);
 					break;
 				case Sections.EquipmentLocation.RightArm:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.RightArm;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.RightArm);
 					break;
 				default:
 					MtfThrowHelper.ThrowUnknownSectionTagException(section);
@@ -408,41 +398,40 @@ internal sealed class BattleMechParser : IDisposable
 					_builder.AddWeaponQuirk(content);
 					break;
 				case Sections.EquipmentLocation.CentreLeg:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.CentreLeg;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.CentreLeg);
 					break;
 				case Sections.EquipmentLocation.CentreTorso:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.CentreTorso;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.CentreTorso);
 					break;
 				case Sections.EquipmentLocation.FrontLeftLeg:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.LeftLeg;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.LeftLeg);
 					break;
 				case Sections.EquipmentLocation.FrontRightLeg:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.RightLeg;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.RightLeg);
 					break;
 				case Sections.EquipmentLocation.LeftTorso:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.LeftTorso;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.LeftTorso);
 					break;
 				case Sections.EquipmentLocation.RearLeftLeg:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.RearLeftLeg;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.RearLeftLeg);
 					break;
 				case Sections.EquipmentLocation.RearRightLeg:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.RearRightLeg;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.RearRightLeg);
 					break;
 				case Sections.EquipmentLocation.RightTorso:
-					_mode = Mode.EquipmentAtLocation;
-					_equipmentLocation = BattleMechEquipmentLocation.RightTorso;
+					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.RightTorso);
 					break;
 				default:
 					MtfThrowHelper.ThrowUnknownSectionTagException(section);
 					break;
 			}
+		}
+
+		[MemberNotNull(nameof(_equipmentLocation))]
+		void SetEquipmentAtLocationMode(BattleMechEquipmentLocation equipmentLocation)
+		{
+			_mode = Mode.EquipmentAtLocation;
+			_equipmentLocation = equipmentLocation;
 		}
 	}
 
