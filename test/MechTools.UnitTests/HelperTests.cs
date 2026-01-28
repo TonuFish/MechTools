@@ -13,7 +13,7 @@ public sealed class HelperTests
 	public void GetArmour_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetArmour(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -30,7 +30,7 @@ public sealed class HelperTests
 	public void GetArmourAtLocation_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetArmourAtLocation(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -47,7 +47,7 @@ public sealed class HelperTests
 	public void GetBaseChassisHeatSinks_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetBaseChassisHeatSinks(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -63,7 +63,7 @@ public sealed class HelperTests
 	public void GetCapabilities_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetCapabilities(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -79,7 +79,7 @@ public sealed class HelperTests
 	public void GetChassis_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetChassis(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -96,7 +96,7 @@ public sealed class HelperTests
 	public void GetClanName_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetClanName(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -114,7 +114,7 @@ public sealed class HelperTests
 	public void GetCockpit_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetCockpit(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -140,7 +140,7 @@ public sealed class HelperTests
 	public void GetConfiguration_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetConfiguration(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -156,7 +156,7 @@ public sealed class HelperTests
 	public void GetDeployment_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetDeployment(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -172,7 +172,7 @@ public sealed class HelperTests
 	public void GetEjection_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetEjection(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -189,7 +189,7 @@ public sealed class HelperTests
 	public void GetEngine_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetEngine(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -206,7 +206,7 @@ public sealed class HelperTests
 	public void GetEquipmentAtLocation_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetEquipmentAtLocation(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -223,7 +223,7 @@ public sealed class HelperTests
 	public void GetEra_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetEra(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -248,7 +248,7 @@ public sealed class HelperTests
 	public void GetGyro_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetGyro(input);
-		_ = action.ShouldThrow<Exception>();
+		action.ShouldThrow<MtfEnumException>().EnumType.ShouldBe(typeof(Gyro));
 	}
 
 	[Theory]
@@ -264,7 +264,7 @@ public sealed class HelperTests
 	public void GetHeatSinkKit_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetHeatSinkKit(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -281,7 +281,7 @@ public sealed class HelperTests
 	public void GetHeatSinks_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetHeatSinks(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -297,7 +297,7 @@ public sealed class HelperTests
 	public void GetHistory_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetHistory(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -322,7 +322,7 @@ public sealed class HelperTests
 	public void GetJumpMp_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetJumpMp(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -340,7 +340,7 @@ public sealed class HelperTests
 	public void GetLam_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetLam(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -356,7 +356,7 @@ public sealed class HelperTests
 	public void GetManufacturer_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetManufacturer(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -374,7 +374,7 @@ public sealed class HelperTests
 	public void GetMass_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetMass(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -408,7 +408,7 @@ public sealed class HelperTests
 	public void GetMotive_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetMotive(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -425,7 +425,7 @@ public sealed class HelperTests
 	public void GetMulId_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetMulId(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -441,7 +441,7 @@ public sealed class HelperTests
 	public void GetMyomer_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetMyomer(input);
-		_ = action.ShouldThrow<Exception>();
+		action.ShouldThrow<MtfEnumException>().EnumType.ShouldBe(typeof(Myomer));
 	}
 
 	[Theory]
@@ -459,7 +459,7 @@ public sealed class HelperTests
 	public void GetNoCrit_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetNoCrit(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -475,7 +475,7 @@ public sealed class HelperTests
 	public void GetNotes_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetNotes(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -491,7 +491,7 @@ public sealed class HelperTests
 	public void GetOverview_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetOverview(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -507,7 +507,7 @@ public sealed class HelperTests
 	public void GetPrimaryFactory_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetPrimaryFactory(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -523,7 +523,7 @@ public sealed class HelperTests
 	public void GetQuirk_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetQuirk(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -540,7 +540,7 @@ public sealed class HelperTests
 	public void GetRole_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetRole(input);
-		_ = action.ShouldThrow<Exception>();
+		action.ShouldThrow<MtfEnumException>().EnumType.ShouldBe(typeof(Role));
 	}
 
 	[Theory]
@@ -557,7 +557,7 @@ public sealed class HelperTests
 	public void GetRulesLevel_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetRulesLevel(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -573,7 +573,7 @@ public sealed class HelperTests
 	public void GetSource_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetSource(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -590,7 +590,7 @@ public sealed class HelperTests
 	public void GetStructure_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetStructure(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -609,7 +609,7 @@ public sealed class HelperTests
 	public void GetSystemManufacturer_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetSystemManufacturer(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -626,7 +626,7 @@ public sealed class HelperTests
 	public void GetSystemModel_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetSystemModel(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -643,7 +643,7 @@ public sealed class HelperTests
 	public void GetTechBase_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetTechBase(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -661,7 +661,7 @@ public sealed class HelperTests
 	public void GetWalkMp_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetWalkMp(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -678,7 +678,7 @@ public sealed class HelperTests
 	public void GetWeaponForWeaponList_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetWeaponForWeaponList(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -695,7 +695,7 @@ public sealed class HelperTests
 	public void GetWeaponListCount_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetWeaponListCount(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
@@ -712,7 +712,7 @@ public sealed class HelperTests
 	public void GetWeaponQuirk_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetWeaponQuirk(input);
-		_ = action.ShouldThrow<Exception>();
+		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
