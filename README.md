@@ -5,7 +5,7 @@ A small library for parsing BattleTech BattleMech `mtf` files.
 ## Basic Usage
 
 ```csharp
-public DefaultBattleMech ParseMtfFile(string mtfPath, CancellationToken ct)
+public DefaultBattleMech ParseMtfFile(string mtfPath)
 {
 	// Synchronously
 	var mtfFile = File.ReadAllText(mtfPath);
