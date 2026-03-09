@@ -181,8 +181,6 @@ internal sealed class BattleMechParser : IDisposable
 		// Invariant guarantees lengths will match, don't validate lengths.
 		_ = line[..delimiterIndex].ToUpperInvariant(section);
 
-		// TODO: Consider adding a call to the builder for starting each equipment section. Nop for defaults.
-
 		switch (section.Length)
 		{
 			case <= 7:

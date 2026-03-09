@@ -8,7 +8,6 @@ using System.Runtime.InteropServices;
 
 namespace MechTools.Parsers.Mtf;
 
-// TODO: Still have to decide if this is throw||try.
 // TODO: Consider trimming pattern here, EG: GetWeaponQuirk
 // TODO: Throw if Bound + 1 overflows
 public static class MtfHelpers
@@ -254,7 +253,6 @@ public static class MtfHelpers
 
 	public static string GetGenerator(ReadOnlySpan<char> chars)
 	{
-		// TODO: More parsing and better return object - Special handle the popular generators
 		return chars.ToString();
 	}
 

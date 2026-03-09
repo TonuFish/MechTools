@@ -30,7 +30,7 @@ public sealed class DefaultBattleMech
 	public Lam? Lam { get; set; }
 	public string? Manufacturer { get; set; }
 	public int Mass { get; set; }
-	public string? Model { get; set; } // TODO: Shouldn't allow null.
+	public string? Model { get; set; } // Model shouldn't be null.
 	public Motive? Motive { get; set; }
 	public int? MulId { get; set; }
 	public Myomer Myomer { get; set; }

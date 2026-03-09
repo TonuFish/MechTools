@@ -5,8 +5,6 @@ namespace MechTools.Parsers.Mtf;
 
 internal static class EnumConversions
 {
-	// TODO: Naming.
-
 	public static Armour GetArmour(ReadOnlySpan<char> chars)
 	{
 		var upper = (stackalloc char[64])[..chars.Length];
@@ -37,37 +35,8 @@ internal static class EnumConversions
 		};
 	}
 
-	public static BattleMechArmourLocation GetArmourLocation(ReadOnlySpan<char> chars)
-	{
-		// TODO: May not be necessarily at all.
-		var upper = (stackalloc char[64])[..chars.Length];
-		_ = chars.ToUpperInvariant(upper);
-
-		return upper switch
-		{
-			Sections.ArmourLocation.CentreLeg => BattleMechArmourLocation.CentreLeg,
-			Sections.ArmourLocation.CentreTorso => BattleMechArmourLocation.CentreTorso,
-			Sections.ArmourLocation.FrontLeftLeg => BattleMechArmourLocation.LeftLeg,
-			Sections.ArmourLocation.FrontRightLeg => BattleMechArmourLocation.RightLeg,
-			Sections.ArmourLocation.Head => BattleMechArmourLocation.Head,
-			Sections.ArmourLocation.LeftArm => BattleMechArmourLocation.LeftArm,
-			Sections.ArmourLocation.LeftLeg => BattleMechArmourLocation.LeftLeg,
-			Sections.ArmourLocation.LeftTorso => BattleMechArmourLocation.LeftTorso,
-			Sections.ArmourLocation.RearCentreTorso => BattleMechArmourLocation.RearCentreTorso,
-			Sections.ArmourLocation.RearLeftLeg => BattleMechArmourLocation.RearLeftLeg,
-			Sections.ArmourLocation.RearLeftTorso => BattleMechArmourLocation.RearLeftTorso,
-			Sections.ArmourLocation.RearRightLeg => BattleMechArmourLocation.RearRightLeg,
-			Sections.ArmourLocation.RearRightTorso => BattleMechArmourLocation.RearRightTorso,
-			Sections.ArmourLocation.RightArm => BattleMechArmourLocation.RightArm,
-			Sections.ArmourLocation.RightLeg => BattleMechArmourLocation.RightLeg,
-			Sections.ArmourLocation.RightTorso => BattleMechArmourLocation.RightTorso,
-			_ => MtfThrowHelper.ThrowUnknownEnumException<BattleMechArmourLocation>(chars),
-		};
-	}
-
 	public static Cockpit GetCockpit(ReadOnlySpan<char> chars)
 	{
-		// TODO: String cleanup.
 		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
@@ -98,7 +67,6 @@ internal static class EnumConversions
 
 	public static Configuration GetConfiguration(ReadOnlySpan<char> chars)
 	{
-		// TODO: String cleanup.
 		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
@@ -181,7 +149,7 @@ internal static class EnumConversions
 			Sections.EquipmentLocation.LeftArm => BattleMechEquipmentLocation.LeftArm,
 			Sections.EquipmentLocation.LeftLeg => BattleMechEquipmentLocation.LeftLeg,
 			Sections.EquipmentLocation.LeftTorso => BattleMechEquipmentLocation.LeftTorso,
-			Sections.EquipmentLocation.None => BattleMechEquipmentLocation.None, // TODO: ATAE-70 - Thonk.
+			Sections.EquipmentLocation.None => BattleMechEquipmentLocation.None, // ATAE-70 special case
 			Sections.EquipmentLocation.RearLeftLeg => BattleMechEquipmentLocation.RearLeftLeg,
 			Sections.EquipmentLocation.RearRightLeg => BattleMechEquipmentLocation.RearRightLeg,
 			Sections.EquipmentLocation.RightArm => BattleMechEquipmentLocation.RightArm,
@@ -193,7 +161,6 @@ internal static class EnumConversions
 
 	public static BattleMechEquipmentLocation GetEquipmentLocationFromAbbreviation(ReadOnlySpan<char> chars)
 	{
-		// TODO: Cleanup later, yick.
 		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
@@ -284,7 +251,7 @@ internal static class EnumConversions
 
 		return upper switch
 		{
-			// TODO: Consider handling of these legacy values... For now just default to standard.
+			// Legacy MASC values
 			"CLMASC" or "ISMASC" or "MASC" => Myomer.Standard,
 
 			"INDUSTRIAL TRIPLE-STRENGTH" => Myomer.IndustrialTripleStrength,
