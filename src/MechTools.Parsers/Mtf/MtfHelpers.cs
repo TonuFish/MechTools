@@ -8,10 +8,9 @@ using System.Runtime.InteropServices;
 
 namespace MechTools.Parsers.Mtf;
 
-// TODO: Still have to decide if this is throw||try.
 // TODO: Consider trimming pattern here, EG: GetWeaponQuirk
 // TODO: Throw if Bound + 1 overflows
-public static class MtfHelper
+public static class MtfHelpers
 {
 	private static readonly SearchValues<string> _engineDelimiterSearchValues =
 		SearchValues.Create(["(", " ENGINE"], StringComparison.OrdinalIgnoreCase);
@@ -20,7 +19,7 @@ public static class MtfHelper
 
 	public static ArmourData GetArmour(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
 
@@ -64,12 +63,12 @@ public static class MtfHelper
 			armourSlice = armourSlice[..^armourDel.Length].TrimEnd();
 		}
 
-		return new(MtfEnumConversions.GetArmour(armourSlice), origin);
+		return new(EnumConversions.GetArmour(armourSlice), origin);
 	}
 
 	public static LocationArmourData GetArmourAtLocation(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Contains(':')
 			? GetPatchworkArmourAtLocation(chars)
 			: new(ParseSimpleNumber(chars), null, null);
@@ -79,38 +78,38 @@ public static class MtfHelper
 			var trimmedChars = chars.Trim();
 			var valueBound = trimmedChars.LastIndexOf(':');
 			(var armour, var origin) = GetArmour(trimmedChars[..valueBound]);
-			return new(ParseSimpleNumber(trimmedChars[(valueBound + 1)..].TrimStart()), armour, origin);
+			return new(ParseSimpleNumber(trimmedChars[(valueBound + 1)..]), armour, origin);
 		}
 	}
 
 	public static int GetBaseChassisHeatSinks(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return ParseSimpleNumber(chars);
 	}
 
 	public static string GetCapabilities(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static string GetChassis(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static string GetClanName(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static Cockpit GetCockpit(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return MtfEnumConversions.GetCockpit(chars.Trim());
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return EnumConversions.GetCockpit(chars.Trim());
 	}
 	public static string GetComment(ReadOnlySpan<char> chars)
 	{
@@ -119,7 +118,7 @@ public static class MtfHelper
 
 	public static ConfigurationData GetConfiguration(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
 
@@ -139,25 +138,25 @@ public static class MtfHelper
 			configurationSlice = trimmedChars[..^omniMekDel.Length].TrimEnd();
 		}
 
-		var configuration = MtfEnumConversions.GetConfiguration(configurationSlice);
+		var configuration = EnumConversions.GetConfiguration(configurationSlice);
 		return new(configuration, isOmniMech);
 	}
 
 	public static string GetDeployment(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static string GetEjection(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static EngineData GetEngine(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
 		if (trimmedChars.Equals("(NONE)", StringComparison.OrdinalIgnoreCase))
@@ -166,13 +165,14 @@ public static class MtfHelper
 		}
 		else if (!trimmedChars.Contains(" ENGINE", StringComparison.OrdinalIgnoreCase))
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		var sizeBound = trimmedChars.IndexOf(' ');
-		if (sizeBound == -1 || !int.TryParse(trimmedChars[..sizeBound], NumberStyles.None, null, out var size))
+		if (sizeBound == -1
+			|| !int.TryParse(trimmedChars[..sizeBound], NumberStyles.None, CultureInfo.InvariantCulture, out var size))
 		{
-			return ThrowHelper.ExceptionToSpecifyLater<EngineData>();
+			return MtfThrowHelper.ThrowInvalidValueException<EngineData>(chars);
 		}
 
 		// TODO: Consider none handling... (none)
@@ -181,7 +181,7 @@ public static class MtfHelper
 		{
 			engineBound = trimmedChars.Length;
 		}
-		var engine = MtfEnumConversions.GetEngine(trimmedChars[(sizeBound + 1)..engineBound].Trim());
+		var engine = EnumConversions.GetEngine(trimmedChars[(sizeBound + 1)..engineBound].Trim());
 
 		var hasClanFlag = trimmedChars.Contains("(CLAN)", StringComparison.OrdinalIgnoreCase);
 		var hasInnerSphereFlag = trimmedChars.ContainsAny(_innerSphereMarkerSearchValues);
@@ -191,10 +191,10 @@ public static class MtfHelper
 
 	public static EquipmentData GetEquipmentAtLocation(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
-		if (MtfValues.Lookup.CommonEquipmentValues.TryGetValue(trimmedChars, out var cachedValue))
+		if (CommonValues.EquipmentLookup.TryGetValue(trimmedChars, out var cachedValue))
 		{
 			return new(false, false, false, cachedValue);
 		}
@@ -206,7 +206,7 @@ public static class MtfHelper
 		}
 		else if (bound == 0)
 		{
-			return ThrowHelper.ExceptionToSpecifyLater<EquipmentData>();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		return GetAnnotatedEquipmentAtLocation(trimmedChars);
@@ -225,7 +225,7 @@ public static class MtfHelper
 				ref nameBound);
 
 			//! Convincing the JIT to elide bounds check.
-			var name = MemoryMarshal.CreateReadOnlySpan(ref MemoryMarshal.GetReference(trimmedChars), (int)nameBound)
+			var name = MemoryMarshal.CreateReadOnlySpan(in MemoryMarshal.GetReference(trimmedChars), (int)nameBound)
 				.TrimEnd()
 				.ToString();
 
@@ -247,37 +247,37 @@ public static class MtfHelper
 
 	public static int GetEra(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return ParseSimpleNumber(chars);
 	}
 
 	public static string GetGenerator(ReadOnlySpan<char> chars)
 	{
-		// TODO: More parsing and better return object - Special handle the popular generators
 		return chars.ToString();
 	}
 
 	public static Gyro GetGyro(ReadOnlySpan<char> chars)
 	{
-		return MtfEnumConversions.GetGyro(chars.Trim());
+		return EnumConversions.GetGyro(chars.Trim());
 	}
 
 	public static string GetHeatSinkKit(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static HeatSinkData GetHeatSinks(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
 
 		var countBound = trimmedChars.IndexOf(' ');
-		if (countBound == -1 || !int.TryParse(trimmedChars[..countBound], NumberStyles.None, null, out var count))
+		if (countBound == -1
+			|| !int.TryParse(trimmedChars[..countBound], NumberStyles.None, CultureInfo.InvariantCulture, out var count))
 		{
-			return ThrowHelper.ExceptionToSpecifyLater<HeatSinkData>();
+			return MtfThrowHelper.ThrowInvalidValueException<HeatSinkData>(chars);
 		}
 
 		Origin origin;
@@ -303,7 +303,7 @@ public static class MtfHelper
 				origin = Origin.Unknown;
 			}
 
-			heatSink = MtfEnumConversions.GetHeatSinks(workingChars[..legacyBound].TrimEnd());
+			heatSink = EnumConversions.GetHeatSinks(workingChars[..legacyBound].TrimEnd());
 		}
 		else
 		{
@@ -326,7 +326,7 @@ public static class MtfHelper
 				origin = Origin.Unknown;
 			}
 
-			heatSink = MtfEnumConversions.GetHeatSinks(workingChars);
+			heatSink = EnumConversions.GetHeatSinks(workingChars);
 		}
 
 		return new(count, heatSink, origin);
@@ -334,7 +334,7 @@ public static class MtfHelper
 
 	public static string GetHistory(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
@@ -345,29 +345,29 @@ public static class MtfHelper
 
 	public static int GetJumpMp(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return ParseSimpleNumber(chars);
 	}
 
 	public static Lam GetLam(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return MtfEnumConversions.GetLam(chars.Trim());
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return EnumConversions.GetLam(chars.Trim());
 	}
 
 	public static string GetManufacturer(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static int GetMass(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		var mass = ParseSimpleNumber(chars);
 		if (mass < 1)
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 		return mass;
 	}
@@ -379,24 +379,24 @@ public static class MtfHelper
 
 	public static Motive GetMotive(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return MtfEnumConversions.GetMotive(chars.Trim());
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return EnumConversions.GetMotive(chars.Trim());
 	}
 
 	public static int GetMulId(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return ParseSimpleNumber(chars);
 	}
 
 	public static Myomer GetMyomer(ReadOnlySpan<char> chars)
 	{
-		return MtfEnumConversions.GetMyomer(chars.Trim());
+		return EnumConversions.GetMyomer(chars.Trim());
 	}
 
 	public static NoCritData GetNoCrit(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
 
@@ -405,52 +405,52 @@ public static class MtfHelper
 		var bound = trimmedChars.IndexOf(del);
 		if (bound < 1 || bound + 1 == trimmedChars.Length)
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		return new(
-			MtfEnumConversions.GetEquipmentLocationFromAbbreviation(trimmedChars[(bound + 1)..].TrimStart()),
+			EnumConversions.GetEquipmentLocationFromAbbreviation(trimmedChars[(bound + 1)..].TrimStart()),
 			trimmedChars[..bound].TrimEnd().ToString());
 	}
 
 	public static string GetNotes(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static string GetOverview(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static string GetPrimaryFactory(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static string GetQuirk(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Trim().ToString();
 	}
 
 	public static Role GetRole(ReadOnlySpan<char> chars)
 	{
-		return MtfEnumConversions.GetRole(chars.Trim());
+		return EnumConversions.GetRole(chars.Trim());
 	}
 
 	public static RulesLevel GetRulesLevel(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return MtfEnumConversions.GetRulesLevel(ParseSimpleNumber(chars));
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return EnumConversions.GetRulesLevel(ParseSimpleNumber(chars));
 	}
 
 	public static SourceData GetSource(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		// First ':' is type delimiter, remaining text assumed to be name.
 		// If a typeless name contains a colon... It shouldn't.
@@ -463,7 +463,7 @@ public static class MtfHelper
 
 	public static Structure GetStructure(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		const string clanDel = "CLAN ";
 		const string innerSphereDel = "IS ";
@@ -478,41 +478,41 @@ public static class MtfHelper
 			trimmedChars = trimmedChars[innerSphereDel.Length..].TrimStart();
 		}
 
-		return MtfEnumConversions.GetStructure(trimmedChars);
+		return EnumConversions.GetStructure(trimmedChars);
 	}
 
 	public static SpecificSystemData GetSystemManufacturer(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return GetSpecificSystem(chars.Trim());
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return GetSpecificSystem(chars);
 	}
 
 	public static SpecificSystemData GetSystemModel(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return GetSpecificSystem(chars.Trim());
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return GetSpecificSystem(chars);
 	}
 
 	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return MtfEnumConversions.GetTechBase(chars.Trim());
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return EnumConversions.GetTechBase(chars.Trim());
 	}
 
 	public static int GetWalkMp(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		var walkMp = ParseSimpleNumber(chars);
 		if (walkMp < 1)
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 		return walkMp;
 	}
 
 	public static WeaponListData GetWeaponForWeaponList(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		var trimmedChars = chars.Trim();
 
@@ -521,7 +521,7 @@ public static class MtfHelper
 		var lastBound = trimmedChars.LastIndexOf(stdDel, StringComparison.Ordinal);
 		if (lastBound == -1 || lastBound == trimmedChars.Length - stdDel.Length)
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		int? count;
@@ -535,7 +535,7 @@ public static class MtfHelper
 			count = int.Parse(trimmedChars[..nameBound].TrimEnd(), NumberStyles.None, CultureInfo.InvariantCulture);
 			if (count < 1)
 			{
-				return ThrowHelper.ExceptionToSpecifyLater<WeaponListData>();
+				MtfThrowHelper.ThrowInvalidValueException(chars);
 			}
 
 			const string ammoDel = "Ammo:";
@@ -561,7 +561,7 @@ public static class MtfHelper
 		}
 		else if (trimmedChars[0] == '-')
 		{
-			return ThrowHelper.ExceptionToSpecifyLater<WeaponListData>();
+			return MtfThrowHelper.ThrowInvalidValueException<WeaponListData>(chars);
 		}
 		else
 		{
@@ -574,7 +574,7 @@ public static class MtfHelper
 
 		if (nameSlice.IsWhiteSpace())
 		{
-			return ThrowHelper.ExceptionToSpecifyLater<WeaponListData>();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		var isRear = false;
@@ -591,19 +591,19 @@ public static class MtfHelper
 			nameSlice = nameSlice[..^rearDel.Length];
 		}
 
-		var location = MtfEnumConversions.GetEquipmentLocation(locationSlice);
+		var location = EnumConversions.GetEquipmentLocation(locationSlice);
 		return new(ammo, count, isRear, location, nameSlice.ToString());
 	}
 
 	public static int GetWeaponListCount(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return ParseSimpleNumber(chars);
 	}
 
 	public static WeaponQuirkData GetWeaponQuirk(ReadOnlySpan<char> chars)
 	{
-		ThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		if (chars.Length < 10
 			|| chars[0] == ':'
@@ -611,14 +611,14 @@ public static class MtfHelper
 			|| chars.Count(':') != 3
 			|| chars.Contains([':', ':'], StringComparison.Ordinal))
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		var enumerator = chars.Split(':');
 		_ = enumerator.MoveNext();
 		var name = chars[enumerator.Current].Trim();
 		_ = enumerator.MoveNext();
-		var location = MtfEnumConversions.GetEquipmentLocationFromAbbreviation(chars[enumerator.Current].Trim());
+		var location = EnumConversions.GetEquipmentLocationFromAbbreviation(chars[enumerator.Current].Trim());
 		_ = enumerator.MoveNext();
 		var slot = ParseSimpleNumber(chars[enumerator.Current]);
 		_ = enumerator.MoveNext();
@@ -627,25 +627,26 @@ public static class MtfHelper
 		return new(location, name.ToString(), slot, weapon);
 	}
 
-	private static SpecificSystemData GetSpecificSystem(ReadOnlySpan<char> trimmedChars)
+	private static SpecificSystemData GetSpecificSystem(ReadOnlySpan<char> chars)
 	{
 		const char del = ':';
 
+		var trimmedChars = chars.Trim();
 		var bound = trimmedChars.IndexOf(del);
 		if (bound < 1 || bound + 1 == trimmedChars.Length)
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		var nameSlice = trimmedChars[(bound + 1)..].TrimStart();
-		return new(nameSlice.ToString(), MtfEnumConversions.GetSpecificSystem(trimmedChars[..bound].TrimEnd()));
+		return new(nameSlice.ToString(), EnumConversions.GetSpecificSystem(trimmedChars[..bound].TrimEnd()));
 	}
 
 	private static int ParseSimpleNumber(ReadOnlySpan<char> chars)
 	{
 		if (!int.TryParse(chars.Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out var number))
 		{
-			ThrowHelper.ExceptionToSpecifyLater();
+			MtfThrowHelper.ThrowInvalidValueException(chars);
 		}
 
 		return number;

@@ -1,38 +1,59 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MechTools.Parsers;
 
 internal static class ThrowHelper
 {
-	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
-	public static void ExceptionToSpecifyLater()
+	[DebuggerStepThrough, DoesNotReturn, StackTraceHidden]
+	public static void ThrowEmptySourceException()
 	{
-		throw new InvalidOperationException();
+#pragma warning disable S3928 // The parameter name 'source' is not declared in the argument list.
+		throw new ArgumentException("The source cannot be empty.", "source");
+#pragma warning restore S3928 // The parameter name 'source' is not declared in the argument list.
 	}
 
-	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
-	public static T ExceptionToSpecifyLater<T>()
+	[DebuggerStepThrough, DoesNotReturn, StackTraceHidden]
+	public static void ThrowEmptyStreamException()
 	{
-		throw new InvalidOperationException();
+#pragma warning disable S3928 // The parameter name 'stream' is not declared in the argument list.
+		throw new ArgumentException("The stream cannot be empty.", "stream");
+#pragma warning restore S3928 // The parameter name 'stream' is not declared in the argument list.
 	}
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	[DebuggerHidden, StackTraceHidden]
-	public static void ThrowIfEmptyOrWhiteSpace(ReadOnlySpan<char> chars)
-	{
-		if (chars.IsWhiteSpace())
-		{
-			ExceptionToSpecifyLater();
-		}
-	}
+	#region Internal
 
 	[Conditional("DEBUG")]
-	[DoesNotReturn, DebuggerHidden, StackTraceHidden]
-	public static void ThrowImpossibleException()
+	[DebuggerStepThrough, DoesNotReturn]
+	public static void DebugThrowImpossibleException()
 	{
+#if DEBUG
+		throw new InternalImpossibleException();
+#else
+		// This method is excluded from non-debug builds, but as ConditionalAttribute isn't "smart" or valid on classes
+		// we have to throw a different exception in this empty body.
 		throw new InvalidOperationException();
+#endif
 	}
+
+#if DEBUG
+#pragma warning disable CA1064, S3871 // Exceptions should be public - Debug only exception.
+	private sealed class InternalImpossibleException : Exception
+#pragma warning restore CA1064, S3871 // Exceptions should be public - Debug only exception.
+	{
+		public InternalImpossibleException()
+		{
+		}
+
+		public InternalImpossibleException(string message) : base(message)
+		{
+		}
+
+		public InternalImpossibleException(string message, Exception innerException) : base(message, innerException)
+		{
+		}
+	}
+#endif // DEBUG
+	#endregion Internal
 }

@@ -3,10 +3,8 @@ using System;
 
 namespace MechTools.Parsers.Mtf;
 
-internal static class MtfEnumConversions
+internal static class EnumConversions
 {
-	// TODO: Naming.
-
 	public static Armour GetArmour(ReadOnlySpan<char> chars)
 	{
 		var upper = (stackalloc char[64])[..chars.Length];
@@ -33,41 +31,12 @@ internal static class MtfEnumConversions
 			"REFLECTIVE" => Armour.Reflective,
 			"STANDARD" => Armour.Standard,
 			"STEALTH" => Armour.Stealth,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Armour>(),
-		};
-	}
-
-	public static BattleMechArmourLocation GetArmourLocation(ReadOnlySpan<char> chars)
-	{
-		// TODO: May not be necessarily at all.
-		var upper = (stackalloc char[64])[..chars.Length];
-		_ = chars.ToUpperInvariant(upper);
-
-		return upper switch
-		{
-			MtfSections.ArmourLocation.CentreLeg => BattleMechArmourLocation.CentreLeg,
-			MtfSections.ArmourLocation.CentreTorso => BattleMechArmourLocation.CentreTorso,
-			MtfSections.ArmourLocation.FrontLeftLeg => BattleMechArmourLocation.LeftLeg,
-			MtfSections.ArmourLocation.FrontRightLeg => BattleMechArmourLocation.RightLeg,
-			MtfSections.ArmourLocation.Head => BattleMechArmourLocation.Head,
-			MtfSections.ArmourLocation.LeftArm => BattleMechArmourLocation.LeftArm,
-			MtfSections.ArmourLocation.LeftLeg => BattleMechArmourLocation.LeftLeg,
-			MtfSections.ArmourLocation.LeftTorso => BattleMechArmourLocation.LeftTorso,
-			MtfSections.ArmourLocation.RearCentreTorso => BattleMechArmourLocation.RearCentreTorso,
-			MtfSections.ArmourLocation.RearLeftLeg => BattleMechArmourLocation.RearLeftLeg,
-			MtfSections.ArmourLocation.RearLeftTorso => BattleMechArmourLocation.RearLeftTorso,
-			MtfSections.ArmourLocation.RearRightLeg => BattleMechArmourLocation.RearRightLeg,
-			MtfSections.ArmourLocation.RearRightTorso => BattleMechArmourLocation.RearRightTorso,
-			MtfSections.ArmourLocation.RightArm => BattleMechArmourLocation.RightArm,
-			MtfSections.ArmourLocation.RightLeg => BattleMechArmourLocation.RightLeg,
-			MtfSections.ArmourLocation.RightTorso => BattleMechArmourLocation.RightTorso,
-			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechArmourLocation>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Armour>(chars),
 		};
 	}
 
 	public static Cockpit GetCockpit(ReadOnlySpan<char> chars)
 	{
-		// TODO: String cleanup.
 		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
@@ -98,7 +67,6 @@ internal static class MtfEnumConversions
 
 	public static Configuration GetConfiguration(ReadOnlySpan<char> chars)
 	{
-		// TODO: String cleanup.
 		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
@@ -109,7 +77,7 @@ internal static class MtfEnumConversions
 			"QUAD" => Configuration.Quad,
 			"QUADVEE" => Configuration.QuadVee,
 			"TRIPOD" => Configuration.Tripod,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Configuration>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Configuration>(chars),
 		};
 	}
 
@@ -162,7 +130,7 @@ internal static class MtfEnumConversions
 			"STEAM" => Engine.Steam,
 			"XL" => Engine.Xl,
 			"XXL" => Engine.Xxl,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Engine>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Engine>(chars),
 		};
 	}
 
@@ -173,27 +141,26 @@ internal static class MtfEnumConversions
 
 		return upper switch
 		{
-			MtfSections.EquipmentLocation.CentreLeg => BattleMechEquipmentLocation.CentreLeg,
-			MtfSections.EquipmentLocation.CentreTorso => BattleMechEquipmentLocation.CentreTorso,
-			MtfSections.EquipmentLocation.FrontLeftLeg => BattleMechEquipmentLocation.LeftLeg,
-			MtfSections.EquipmentLocation.FrontRightLeg => BattleMechEquipmentLocation.RightLeg,
-			MtfSections.EquipmentLocation.Head => BattleMechEquipmentLocation.Head,
-			MtfSections.EquipmentLocation.LeftArm => BattleMechEquipmentLocation.LeftArm,
-			MtfSections.EquipmentLocation.LeftLeg => BattleMechEquipmentLocation.LeftLeg,
-			MtfSections.EquipmentLocation.LeftTorso => BattleMechEquipmentLocation.LeftTorso,
-			MtfSections.EquipmentLocation.None => BattleMechEquipmentLocation.None, // TODO: ATAE-70 - Thonk.
-			MtfSections.EquipmentLocation.RearLeftLeg => BattleMechEquipmentLocation.RearLeftLeg,
-			MtfSections.EquipmentLocation.RearRightLeg => BattleMechEquipmentLocation.RearRightLeg,
-			MtfSections.EquipmentLocation.RightArm => BattleMechEquipmentLocation.RightArm,
-			MtfSections.EquipmentLocation.RightLeg => BattleMechEquipmentLocation.RightLeg,
-			MtfSections.EquipmentLocation.RightTorso => BattleMechEquipmentLocation.RightTorso,
-			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
+			Sections.EquipmentLocation.CentreLeg => BattleMechEquipmentLocation.CentreLeg,
+			Sections.EquipmentLocation.CentreTorso => BattleMechEquipmentLocation.CentreTorso,
+			Sections.EquipmentLocation.FrontLeftLeg => BattleMechEquipmentLocation.LeftLeg,
+			Sections.EquipmentLocation.FrontRightLeg => BattleMechEquipmentLocation.RightLeg,
+			Sections.EquipmentLocation.Head => BattleMechEquipmentLocation.Head,
+			Sections.EquipmentLocation.LeftArm => BattleMechEquipmentLocation.LeftArm,
+			Sections.EquipmentLocation.LeftLeg => BattleMechEquipmentLocation.LeftLeg,
+			Sections.EquipmentLocation.LeftTorso => BattleMechEquipmentLocation.LeftTorso,
+			Sections.EquipmentLocation.None => BattleMechEquipmentLocation.None, // ATAE-70 special case
+			Sections.EquipmentLocation.RearLeftLeg => BattleMechEquipmentLocation.RearLeftLeg,
+			Sections.EquipmentLocation.RearRightLeg => BattleMechEquipmentLocation.RearRightLeg,
+			Sections.EquipmentLocation.RightArm => BattleMechEquipmentLocation.RightArm,
+			Sections.EquipmentLocation.RightLeg => BattleMechEquipmentLocation.RightLeg,
+			Sections.EquipmentLocation.RightTorso => BattleMechEquipmentLocation.RightTorso,
+			_ => MtfThrowHelper.ThrowUnknownEnumException<BattleMechEquipmentLocation>(chars),
 		};
 	}
 
 	public static BattleMechEquipmentLocation GetEquipmentLocationFromAbbreviation(ReadOnlySpan<char> chars)
 	{
-		// TODO: Cleanup later, yick.
 		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
@@ -213,7 +180,7 @@ internal static class MtfEnumConversions
 			"RA" => BattleMechEquipmentLocation.RightArm,
 			"RL" => BattleMechEquipmentLocation.RightLeg,
 			"RT" => BattleMechEquipmentLocation.RightTorso,
-			_ => ThrowHelper.ExceptionToSpecifyLater<BattleMechEquipmentLocation>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<BattleMechEquipmentLocation>(chars),
 		};
 	}
 
@@ -232,7 +199,7 @@ internal static class MtfEnumConversions
 			"STANDARD GYRO" => Gyro.Standard,
 			"SUPERHEAVY GYRO" => Gyro.SuperHeavyDuty,
 			"XL" or "XL GYRO" => Gyro.XL,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Gyro>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Gyro>(chars),
 		};
 	}
 
@@ -247,7 +214,7 @@ internal static class MtfEnumConversions
 			"COMPACT" => HeatSink.Compact,
 			"DOUBLE" => HeatSink.Double,
 			"LASER" => HeatSink.Laser,
-			_ => ThrowHelper.ExceptionToSpecifyLater<HeatSink>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<HeatSink>(chars),
 		};
 	}
 
@@ -260,7 +227,7 @@ internal static class MtfEnumConversions
 		{
 			"STANDARD" => Lam.Standard,
 			"BIMODAL" => Lam.Bimodal,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Lam>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Lam>(chars),
 		};
 	}
 
@@ -273,7 +240,7 @@ internal static class MtfEnumConversions
 		{
 			"TRACK" => Motive.Track,
 			"WHEEL" => Motive.Wheel,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Motive>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Motive>(chars),
 		};
 	}
 
@@ -284,7 +251,7 @@ internal static class MtfEnumConversions
 
 		return upper switch
 		{
-			// TODO: Consider handling of these legacy values... For now just default to standard.
+			// Legacy MASC values
 			"CLMASC" or "ISMASC" or "MASC" => Myomer.Standard,
 
 			"INDUSTRIAL TRIPLE-STRENGTH" => Myomer.IndustrialTripleStrength,
@@ -292,7 +259,7 @@ internal static class MtfEnumConversions
 			"STANDARD" => Myomer.Standard,
 			"SUPER-COOLED" => Myomer.SuperCooled,
 			"TRIPLE STRENGTH MYOMER" or "TRIPLE-STRENGTH" => Myomer.TripleStrength,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Myomer>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Myomer>(chars),
 		};
 	}
 
@@ -312,7 +279,7 @@ internal static class MtfEnumConversions
 			"SKIRMISHER" => Role.Skirmisher,
 			"SNIPER" => Role.Sniper,
 			"STRIKER" => Role.Striker,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Role>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Role>(chars),
 		};
 	}
 
@@ -325,7 +292,7 @@ internal static class MtfEnumConversions
 			3 => RulesLevel.Advanced,
 			4 => RulesLevel.Experimental,
 			5 => RulesLevel.Unofficial,
-			_ => ThrowHelper.ExceptionToSpecifyLater<RulesLevel>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<RulesLevel>(num),
 		};
 	}
 
@@ -342,7 +309,7 @@ internal static class MtfEnumConversions
 			"ENGINE" => SpecificSystem.Engine,
 			"JUMPJET" => SpecificSystem.JumpJet,
 			"TARGETING" => SpecificSystem.Targeting,
-			_ => ThrowHelper.ExceptionToSpecifyLater<SpecificSystem>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<SpecificSystem>(chars),
 		};
 	}
 
@@ -360,7 +327,7 @@ internal static class MtfEnumConversions
 			"ENDO STEEL PROTOTYPE" or "ENDO-STEEL PROTOTYPE" => Structure.EndoSteelPrototype,
 			"INDUSTRIAL" => Structure.Industrial,
 			"REINFORCED" => Structure.Reinforced,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Structure>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Structure>(chars),
 		};
 	}
 
@@ -375,7 +342,7 @@ internal static class MtfEnumConversions
 			"INNER SPHERE" => TechBase.InnerSphere,
 			"MIXED (CLAN CHASSIS)" => TechBase.MixedClanChassis,
 			"MIXED (IS CHASSIS)" => TechBase.MixedInnerSphereChassis,
-			_ => ThrowHelper.ExceptionToSpecifyLater<TechBase>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<TechBase>(chars),
 		};
 	}
 
@@ -402,7 +369,7 @@ internal static class MtfEnumConversions
 			"TRIPOD INDUSTRIAL" => Cockpit.TripodIndustrialCockpit,
 			"TRIPOD" => Cockpit.TripodCockpit,
 			"VRPP" => Cockpit.VirtualRealityPilotingPod,
-			_ => ThrowHelper.ExceptionToSpecifyLater<Cockpit>(),
+			_ => MtfThrowHelper.ThrowUnknownEnumException<Cockpit>(upper),
 		};
 	}
 }
