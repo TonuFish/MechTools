@@ -42,7 +42,7 @@ public readonly struct ArmourData : IEquatable<ArmourData>
 		return Armour == other.Armour && Origin == other.Origin;
 	}
 
-	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([NotNullWhen(true)] object? obj)
 	{
 		return obj is ArmourData armourData && Equals(armourData);
 	}

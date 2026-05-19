@@ -55,7 +55,7 @@ public readonly struct WeaponQuirkData : IEquatable<WeaponQuirkData>
 			&& Weapon.Equals(other.Weapon, StringComparison.Ordinal);
 	}
 
-	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([NotNullWhen(true)] object? obj)
 	{
 		return obj is WeaponQuirkData weaponQuirkData && Equals(weaponQuirkData);
 	}

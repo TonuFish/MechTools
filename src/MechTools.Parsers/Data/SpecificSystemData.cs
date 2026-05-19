@@ -42,7 +42,7 @@ public readonly struct SpecificSystemData : IEquatable<SpecificSystemData>
 		return Name.Equals(other.Name, StringComparison.Ordinal) && SpecificSystem == other.SpecificSystem;
 	}
 
-	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([NotNullWhen(true)] object? obj)
 	{
 		return obj is SpecificSystemData specificSystemData && Equals(specificSystemData);
 	}

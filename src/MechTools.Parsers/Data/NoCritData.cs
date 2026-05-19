@@ -42,7 +42,7 @@ public readonly struct NoCritData : IEquatable<NoCritData>
 		return Location == other.Location && Name.Equals(other.Name, StringComparison.Ordinal);
 	}
 
-	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([NotNullWhen(true)] object? obj)
 	{
 		return obj is NoCritData noCritData && Equals(noCritData);
 	}

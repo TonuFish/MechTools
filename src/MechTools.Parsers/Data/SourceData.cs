@@ -42,7 +42,7 @@ public readonly struct SourceData : IEquatable<SourceData>
 			&& string.Equals(Type, other.Type, StringComparison.Ordinal);
 	}
 
-	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([NotNullWhen(true)] object? obj)
 	{
 		return obj is SourceData sourceData && Equals(sourceData);
 	}

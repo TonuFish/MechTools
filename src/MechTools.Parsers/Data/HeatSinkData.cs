@@ -45,7 +45,7 @@ public readonly struct HeatSinkData : IEquatable<HeatSinkData>
 		return Count == other.Count && HeatSink == other.HeatSink && Origin == other.Origin;
 	}
 
-	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([NotNullWhen(true)] object? obj)
 	{
 		return obj is HeatSinkData heatSinkData && Equals(heatSinkData);
 	}

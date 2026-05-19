@@ -50,7 +50,7 @@ public readonly struct EquipmentData : IEquatable<EquipmentData>
 			&& IsTurret == other.IsTurret;
 	}
 
-	public readonly override bool Equals([MaybeNullWhen(false)] object? obj)
+	public readonly override bool Equals([NotNullWhen(true)] object? obj)
 	{
 		return obj is EquipmentData equipmentData && Equals(equipmentData);
 	}
