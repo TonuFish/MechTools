@@ -65,32 +65,19 @@ internal static class Program
 			try
 			{
 				var mech = MtfBattleMechParser.Parse(file);
-				if (mech is not null)
-				{
-					Console.WriteLine($"{mech.Chassis} ({mech.Model}) done.");
-				}
-				else
-				{
-					Console.WriteLine($"{filePath} failed.");
-				}
+				Console.WriteLine($"{mech.Chassis} ({mech.Model}) done.");
 			}
 #else
 			try
 			{
 				await using FileStream stream = new(filePath, FileMode.Open, FileAccess.Read);
 				var mech = await MtfBattleMechParser.ParseAsync(stream, ct).ConfigureAwait(false);
-				if (mech is not null)
-				{
-					Console.WriteLine($"{mech.Chassis} ({mech.Model}) done.");
-				}
-				else
-				{
-					Console.WriteLine($"{filePath} failed.");
-				}
+				Console.WriteLine($"{mech.Chassis} ({mech.Model}) done.");
 			}
 #endif
 			catch (Exception ex)
 			{
+				Console.WriteLine($"{filePath} failed.");
 				brokenList ??= [];
 				brokenList.Add($"{filePath[(filePath.LastIndexOf('\\') + 1)..]} ({ex.Message})");
 			}
