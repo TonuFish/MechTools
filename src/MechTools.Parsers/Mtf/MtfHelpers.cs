@@ -431,6 +431,13 @@ public static class MtfHelpers
 		return chars.Trim().ToString();
 	}
 
+	public static SourceData GetPublished(ReadOnlySpan<char> chars)
+	{
+		// TODO: Think around the `source` naming given this now exists.
+		// TODO: Double check for commas...
+		return GetSource(chars);
+	}
+
 	public static string GetQuirk(ReadOnlySpan<char> chars)
 	{
 		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);

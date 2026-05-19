@@ -39,6 +39,7 @@ public sealed class DefaultBattleMech
 	public List<string> Quirks { get; } = [];
 	public string? Overview { get; set; }
 	public string? PrimaryFactory { get; set; }
+	public SourceData Published { get; set; }
 	public Role? Role { get; set; }
 	public SourceData Source { get; set; }
 	public Structure Structure { get; set; }

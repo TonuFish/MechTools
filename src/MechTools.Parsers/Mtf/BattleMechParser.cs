@@ -337,6 +337,9 @@ internal sealed class BattleMechParser : IDisposable
 				case Sections.Overview:
 					_builder.SetOverview(content);
 					break;
+				case Sections.Published:
+					_builder.SetPublished(content);
+					break;
 				case Sections.Structure:
 					_builder.SetStructure(content);
 					break;

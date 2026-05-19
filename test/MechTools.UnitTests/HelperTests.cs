@@ -520,6 +520,22 @@ public sealed class HelperTests
 
 	[Theory]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetPublished_InvalidInput_Throws(string input)
+	{
+		Action action = () => MtfHelpers.GetPublished(input);
+		_ = action.ShouldThrow<MtfException>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidSource), MemberType = typeof(TestData))]
+	public void GetPublished_ValidInput_Works(string input, SourceData expected)
+	{
+		var result = MtfHelpers.GetPublished(input);
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetQuirk_InvalidInput_Throws(string input)
 	{
 		Action action = () => MtfHelpers.GetQuirk(input);

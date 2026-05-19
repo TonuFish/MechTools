@@ -32,6 +32,7 @@ internal static class Sections
 	public const string Notes = "NOTES";
 	public const string Overview = "OVERVIEW";
 	public const string PrimaryFactory = "PRIMARYFACTORY";
+	public const string Published = "PUBLISHED";
 	public const string Quirk = "QUIRK";
 	public const string Role = "ROLE";
 	public const string RulesLevel = "RULES LEVEL";

@@ -40,6 +40,7 @@ public interface IBattleMechBuilder
 	public void SetNotes(ReadOnlySpan<char> chars);
 	public void SetOverview(ReadOnlySpan<char> chars);
 	public void SetPrimaryFactory(ReadOnlySpan<char> chars);
+	public void SetPublished(ReadOnlySpan<char> chars);
 	public void SetRole(ReadOnlySpan<char> chars);
 	public void SetRulesLevel(ReadOnlySpan<char> chars);
 	public void SetSource(ReadOnlySpan<char> chars);

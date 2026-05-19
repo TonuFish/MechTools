@@ -224,6 +224,7 @@ internal static class TestData
 
 	public static TheoryData<string, SourceData> ValidSource()
 	{
+		// TODO: Naming around `source` / `published`
 		return new()
 		{
 			{ " Rec Guide:ilClan #24 ", new("ilClan #24", "Rec Guide") },

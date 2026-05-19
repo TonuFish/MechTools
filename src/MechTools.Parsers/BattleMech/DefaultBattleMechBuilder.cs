@@ -188,6 +188,11 @@ public sealed class DefaultBattleMechBuilder : IBattleMechBuilder<DefaultBattleM
 		_mech.PrimaryFactory = MtfHelpers.GetPrimaryFactory(chars);
 	}
 
+	public void SetPublished(ReadOnlySpan<char> chars)
+	{
+		_mech.Published = MtfHelpers.GetPublished(chars);
+	}
+
 	public void SetRole(ReadOnlySpan<char> chars)
 	{
 		_mech.Role = MtfHelpers.GetRole(chars);
