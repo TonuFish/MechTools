@@ -2,20 +2,25 @@
 using MechTools.Parsers.Enums;
 using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 namespace MechTools.Parsers.Mtf;
 
 // TODO: Consider trimming pattern here, EG: GetWeaponQuirk
 // TODO: Throw if Bound + 1 overflows
-public static class MtfHelpers
+public static partial class MtfHelpers
 {
 	private static readonly SearchValues<string> _engineDelimiterSearchValues =
 		SearchValues.Create(["(", " ENGINE"], StringComparison.OrdinalIgnoreCase);
 	private static readonly SearchValues<string> _innerSphereMarkerSearchValues =
 		SearchValues.Create(["(IS)", "(INNER SPHERE)"], StringComparison.OrdinalIgnoreCase);
+
+	[GeneratedRegex(@"^[\s,:]*$", RegexOptions.CultureInvariant)]
+	private static partial Regex InvalidPublishedRegex();
 
 	public static ArmourData GetArmour(ReadOnlySpan<char> chars)
 	{
@@ -431,11 +436,14 @@ public static class MtfHelpers
 		return chars.Trim().ToString();
 	}
 
-	public static SourceData GetPublished(ReadOnlySpan<char> chars)
+	public static List<SourceData> GetPublished(ReadOnlySpan<char> chars)
 	{
-		// TODO: Think around the `source` naming given this now exists.
-		// TODO: Double check for commas...
-		return GetSource(chars);
+		if (InvalidPublishedRegex().IsMatch(chars))
+		{
+			MtfThrowHelper.ThrowInvalidValueException(chars);
+		}
+
+		return ParseSource(chars);
 	}
 
 	public static string GetQuirk(ReadOnlySpan<char> chars)
@@ -455,17 +463,9 @@ public static class MtfHelpers
 		return EnumConversions.GetRulesLevel(ParseSimpleNumber(chars));
 	}
 
-	public static SourceData GetSource(ReadOnlySpan<char> chars)
+	public static List<SourceData> GetSource(ReadOnlySpan<char> chars)
 	{
-		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-
-		// First ':' is type delimiter, remaining text assumed to be name.
-		// If a typeless name contains a colon... It shouldn't.
-
-		var bound = chars.IndexOf(':');
-		return bound != -1 && bound != chars.Length - 1
-			? new(chars[(bound + 1)..].Trim().ToString(), chars[..bound].Trim().ToString())
-			: new(chars.Trim().ToString(), null);
+		return ParseSource(chars);
 	}
 
 	public static Structure GetStructure(ReadOnlySpan<char> chars)
@@ -491,13 +491,13 @@ public static class MtfHelpers
 	public static SpecificSystemData GetSystemManufacturer(ReadOnlySpan<char> chars)
 	{
 		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return GetSpecificSystem(chars);
+		return ParseSpecificSystem(chars);
 	}
 
 	public static SpecificSystemData GetSystemModel(ReadOnlySpan<char> chars)
 	{
 		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
-		return GetSpecificSystem(chars);
+		return ParseSpecificSystem(chars);
 	}
 
 	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
@@ -634,7 +634,42 @@ public static class MtfHelpers
 		return new(location, name.ToString(), slot, weapon);
 	}
 
-	private static SpecificSystemData GetSpecificSystem(ReadOnlySpan<char> chars)
+	private static List<SourceData> ParseSource(ReadOnlySpan<char> chars)
+	{
+		List<SourceData> sources = [];
+
+		foreach (var range in chars.Split(','))
+		{
+			var slice = chars[range];
+
+			// First ':' is type delimiter, remaining text assumed to be name.
+			// If a typeless name contains a colon... It shouldn't.
+			var bound = slice.IndexOf(':');
+			if (bound != -1 && bound != chars.Length - 1)
+			{
+				sources.Add(new(slice[(bound + 1)..].Trim().ToString(), slice[..bound].Trim().ToString()));
+			}
+			else
+			{
+				sources.Add(new(slice.Trim().ToString(), null));
+			}
+		}
+
+		sources.Capacity = sources.Count;
+		return sources;
+	}
+
+	private static int ParseSimpleNumber(ReadOnlySpan<char> chars)
+	{
+		if (!int.TryParse(chars.Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out var number))
+		{
+			MtfThrowHelper.ThrowInvalidValueException(chars);
+		}
+
+		return number;
+	}
+
+	private static SpecificSystemData ParseSpecificSystem(ReadOnlySpan<char> chars)
 	{
 		const char del = ':';
 
@@ -647,15 +682,5 @@ public static class MtfHelpers
 
 		var nameSlice = trimmedChars[(bound + 1)..].TrimStart();
 		return new(nameSlice.ToString(), EnumConversions.GetSpecificSystem(trimmedChars[..bound].TrimEnd()));
-	}
-
-	private static int ParseSimpleNumber(ReadOnlySpan<char> chars)
-	{
-		if (!int.TryParse(chars.Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out var number))
-		{
-			MtfThrowHelper.ThrowInvalidValueException(chars);
-		}
-
-		return number;
 	}
 }

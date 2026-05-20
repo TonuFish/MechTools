@@ -2,6 +2,7 @@
 using MechTools.Parsers.Enums;
 using MechTools.Parsers.Mtf;
 using System;
+using System.Collections.Generic;
 
 namespace MechTools.UnitTests;
 
@@ -522,13 +523,14 @@ public sealed class HelperTests
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetPublished_InvalidInput_Throws(string input)
 	{
+		// TODO: Consider handling around misplaced `:` for this and `source`.
 		Action action = () => MtfHelpers.GetPublished(input);
 		_ = action.ShouldThrow<MtfException>();
 	}
 
 	[Theory]
-	[MemberData(nameof(TestData.ValidSource), MemberType = typeof(TestData))]
-	public void GetPublished_ValidInput_Works(string input, SourceData expected)
+	[MemberData(nameof(TestData.ValidPublished), MemberType = typeof(TestData))]
+	public void GetPublished_ValidInput_Works(string input, List<SourceData> expected)
 	{
 		var result = MtfHelpers.GetPublished(input);
 		result.ShouldBe(expected);
@@ -585,16 +587,8 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
-	public void GetSource_InvalidInput_Throws(string input)
-	{
-		Action action = () => MtfHelpers.GetSource(input);
-		_ = action.ShouldThrow<MtfException>();
-	}
-
-	[Theory]
 	[MemberData(nameof(TestData.ValidSource), MemberType = typeof(TestData))]
-	public void GetSource_ValidInput_Works(string input, SourceData expected)
+	public void GetSource_ValidInput_Works(string input, List<SourceData> expected)
 	{
 		var result = MtfHelpers.GetSource(input);
 		result.ShouldBe(expected);

@@ -1,5 +1,6 @@
 ﻿using MechTools.Parsers.Data;
 using MechTools.Parsers.Enums;
+using System.Collections.Generic;
 
 namespace MechTools.UnitTests;
 
@@ -220,16 +221,46 @@ internal static class TestData
 
 	#endregion No Crit
 
-	#region Source
+	#region Published
 
-	public static TheoryData<string, SourceData> ValidSource()
+	public static TheoryData<string, List<SourceData>> ValidPublished()
 	{
-		// TODO: Naming around `source` / `published`
 		return new()
 		{
-			{ " Rec Guide:ilClan #24 ", new("ilClan #24", "Rec Guide") },
-			{ " Battle of Tukayyid ", new("Battle of Tukayyid", null) },
-			{ " TRO : 3067 ", new("3067", "TRO") },
+			{ " Battle of Tukayyid ", [new("Battle of Tukayyid", null),] },
+			{ " Rec Guide:ilClan #24 ", [new("ilClan #24", "Rec Guide"),] },
+			{
+				", RSFP:Wave 2,,RG17 ,RGv1,   , RSFP:KH ,",
+				[
+					new("Wave 2", "RSFP"),
+					new("RG17", null),
+					new("RGv1", null),
+					new("KH", "RSFP"),
+				]
+			},
+		};
+	}
+
+	#endregion Published
+
+	#region Source
+
+	public static TheoryData<string, List<SourceData>> ValidSource()
+	{
+		return new()
+		{
+			{ "", [] },
+			{ " Battle of Tukayyid ", [new("Battle of Tukayyid", null),] },
+			{ " Rec Guide:ilClan #24 ", [new("ilClan #24", "Rec Guide"),] },
+			{
+				", RSFP:Wave 2,,RG17 ,RGv1,   , RSFP:KH ,",
+				[
+					new("Wave 2", "RSFP"),
+					new("RG17", null),
+					new("RGv1", null),
+					new("KH", "RSFP"),
+				]
+			},
 		};
 	}
 

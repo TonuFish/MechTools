@@ -190,7 +190,7 @@ public sealed class DefaultBattleMechBuilder : IBattleMechBuilder<DefaultBattleM
 
 	public void SetPublished(ReadOnlySpan<char> chars)
 	{
-		_mech.Published = MtfHelpers.GetPublished(chars);
+		_mech.PublishedInSources.AddRange(MtfHelpers.GetPublished(chars));
 	}
 
 	public void SetRole(ReadOnlySpan<char> chars)
@@ -205,7 +205,7 @@ public sealed class DefaultBattleMechBuilder : IBattleMechBuilder<DefaultBattleM
 
 	public void SetSource(ReadOnlySpan<char> chars)
 	{
-		_mech.Source = MtfHelpers.GetSource(chars);
+		_mech.Sources.AddRange(MtfHelpers.GetSource(chars));
 	}
 
 	public void SetStructure(ReadOnlySpan<char> chars)
