@@ -14,6 +14,7 @@ internal static class Sections
 	public const string Ejection = "EJECTION";
 	public const string Engine = "ENGINE";
 	public const string Era = "ERA";
+	public const string Faction = "FACTION";
 	public const string FluffDate = "FLUFFDATE";
 	public const string Generator = "GENERATOR";
 	public const string Gyro = "GYRO";

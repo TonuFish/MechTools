@@ -98,6 +98,11 @@ public sealed class DefaultBattleMechBuilder : IBattleMechBuilder<DefaultBattleM
 		_mech.Era = MtfHelpers.GetEra(chars);
 	}
 
+	public void SetFaction(ReadOnlySpan<char> chars)
+	{
+		_mech.Faction = MtfHelpers.GetFaction(chars);
+	}
+
 	public void SetFluffDate(ReadOnlySpan<char> chars)
 	{
 		_mech.FluffDate = MtfHelpers.GetFluffDate(chars);

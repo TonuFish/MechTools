@@ -256,6 +256,11 @@ public static partial class MtfHelpers
 		return ParseSimpleNumber(chars);
 	}
 
+	public static string GetFaction(ReadOnlySpan<char> chars)
+	{
+		return chars.Trim().ToString();
+	}
+
 	public static DateTime GetFluffDate(ReadOnlySpan<char> chars)
 	{
 		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);

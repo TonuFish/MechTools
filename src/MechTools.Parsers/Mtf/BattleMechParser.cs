@@ -216,6 +216,9 @@ internal sealed class BattleMechParser : IDisposable
 				case Sections.Era:
 					_builder.SetEra(content);
 					break;
+				case Sections.Faction:
+					_builder.SetFaction(content);
+					break;
 				case Sections.Gyro:
 					_builder.SetGyro(content);
 					break;

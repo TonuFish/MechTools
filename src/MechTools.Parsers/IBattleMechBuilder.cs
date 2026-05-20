@@ -22,6 +22,7 @@ public interface IBattleMechBuilder
 	public void SetEjection(ReadOnlySpan<char> chars);
 	public void SetEngine(ReadOnlySpan<char> chars);
 	public void SetEra(ReadOnlySpan<char> chars);
+	public void SetFaction(ReadOnlySpan<char> chars);
 	public void SetFluffDate(ReadOnlySpan<char> chars);
 	public void SetGenerator(ReadOnlySpan<char> chars);
 	public void SetGyro(ReadOnlySpan<char> chars);

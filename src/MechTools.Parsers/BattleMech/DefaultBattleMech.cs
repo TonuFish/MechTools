@@ -21,6 +21,7 @@ public sealed class DefaultBattleMech
 	public EngineData Engine { get; set; }
 	public Dictionary<BattleMechEquipmentLocation, EquipmentData> EquipmentAtLocation { get; } = [];
 	public int Era { get; set; }
+	public string? Faction { get; set; }
 	public DateTime? FluffDate { get; set; }
 	public string? Generator { get; set; }
 	public Gyro? Gyro { get; set; }

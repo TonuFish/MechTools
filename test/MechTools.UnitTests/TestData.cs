@@ -7,6 +7,16 @@ namespace MechTools.UnitTests;
 
 internal static class TestData
 {
+	public static TheoryData<string?, string> AllowAnyTextAndTrimsStrings()
+	{
+		return new()
+		{
+			{ null, "" },
+			{ "   ", "" },
+			{ " This is a placeholder. ", "This is a placeholder." },
+		};
+	}
+
 	public static TheoryData<string?, string> AllowAnyTextStrings()
 	{
 		return new()

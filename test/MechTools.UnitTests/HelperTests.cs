@@ -236,6 +236,14 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[MemberData(nameof(TestData.AllowAnyTextAndTrimsStrings), MemberType = typeof(TestData))]
+	public void GetFaction_AnyInput_Works(string? input, string expected)
+	{
+		var result = MtfHelpers.GetFaction(input);
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
 	[InlineData("OtherValue")]
 	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
 	public void GetFluffDate_InvalidInput_Throws(string input)
