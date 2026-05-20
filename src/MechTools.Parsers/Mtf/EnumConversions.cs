@@ -106,7 +106,7 @@ internal static class EnumConversions
 		{
 			return Engine.Fusion;
 		}
-		else if (cleanChars.EndsWith(" FUSION", StringComparison.OrdinalIgnoreCase))
+		else if (cleanChars.EndsWith(fusionEngineMarker, StringComparison.OrdinalIgnoreCase))
 		{
 			cleanChars = cleanChars[..^fusionEngineMarker.Length].TrimEnd();
 		}
