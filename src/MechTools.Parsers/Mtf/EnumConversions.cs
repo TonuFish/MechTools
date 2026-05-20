@@ -307,7 +307,7 @@ internal static class EnumConversions
 			"CHASSIS" => SpecificSystem.Chassis,
 			"COMMUNICATIONS" => SpecificSystem.Communications,
 			"ENGINE" => SpecificSystem.Engine,
-			"JUMPJET" => SpecificSystem.JumpJet,
+			"JUMPJET" or "JUMP_JET" => SpecificSystem.JumpJet,
 			"TARGETING" => SpecificSystem.Targeting,
 			_ => MtfThrowHelper.ThrowUnknownEnumException<SpecificSystem>(chars),
 		};
@@ -346,7 +346,7 @@ internal static class EnumConversions
 		};
 	}
 
-	private static Cockpit GetShortCockpit(this ReadOnlySpan<char> upper)
+	private static Cockpit GetShortCockpit(ReadOnlySpan<char> upper)
 	{
 		// already uppercase.
 		return upper switch
