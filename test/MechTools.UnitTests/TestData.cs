@@ -1,5 +1,6 @@
 ﻿using MechTools.Parsers.Data;
 using MechTools.Parsers.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace MechTools.UnitTests;
@@ -157,6 +158,21 @@ internal static class TestData
 	}
 
 	#endregion Equipment at Location
+
+	#region Fluff Date
+
+	public static TheoryData<string, DateTime> ValidFluffDate()
+	{
+		// For the moment this should be exactly "yyyy-MM-dd HH:mm:ss". Who knows if it'll change.
+		// Tolerate other formats just in case.
+		return new()
+		{
+			{ "2026-03-03 03:03:03", new(year: 2026, month: 3, day: 3, hour: 3, minute: 3, second: 3, DateTimeKind.Unspecified) },
+			{ "2026-03-03", new(year: 2026, month: 3, day: 3, hour: 0, minute: 0, second: 0, DateTimeKind.Unspecified) },
+		};
+	}
+
+	#endregion Fluff Date
 
 	#region Heat Sinks
 

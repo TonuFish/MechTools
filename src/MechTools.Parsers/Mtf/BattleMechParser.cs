@@ -328,6 +328,9 @@ internal sealed class BattleMechParser : IDisposable
 				case Sections.Ejection:
 					_builder.SetEjection(content);
 					break;
+				case Sections.FluffDate:
+					_builder.SetFluffDate(content);
+					break;
 				case Sections.Generator:
 					_builder.SetGenerator(content);
 					break;

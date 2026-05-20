@@ -256,6 +256,18 @@ public static partial class MtfHelpers
 		return ParseSimpleNumber(chars);
 	}
 
+	public static DateTime GetFluffDate(ReadOnlySpan<char> chars)
+	{
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+
+		if (!DateTime.TryParse(chars.Trim(), CultureInfo.InvariantCulture, out var dateTime))
+		{
+			MtfThrowHelper.ThrowInvalidValueException(chars);
+		}
+
+		return dateTime;
+	}
+
 	public static string GetGenerator(ReadOnlySpan<char> chars)
 	{
 		return chars.ToString();

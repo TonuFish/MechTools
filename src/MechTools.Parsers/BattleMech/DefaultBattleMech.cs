@@ -1,5 +1,6 @@
 ﻿using MechTools.Parsers.Data;
 using MechTools.Parsers.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace MechTools.Parsers.BattleMech;
@@ -20,6 +21,7 @@ public sealed class DefaultBattleMech
 	public EngineData Engine { get; set; }
 	public Dictionary<BattleMechEquipmentLocation, EquipmentData> EquipmentAtLocation { get; } = [];
 	public int Era { get; set; }
+	public DateTime? FluffDate { get; set; }
 	public string? Generator { get; set; }
 	public Gyro? Gyro { get; set; }
 	public string? HeatSinkKit { get; set; }

@@ -236,6 +236,23 @@ public sealed class HelperTests
 	}
 
 	[Theory]
+	[InlineData("OtherValue")]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetFluffDate_InvalidInput_Throws(string input)
+	{
+		Action action = () => MtfHelpers.GetFluffDate(input);
+		_ = action.ShouldThrow<MtfException>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidFluffDate), MemberType = typeof(TestData))]
+	public void GetFluffDate_ValidInput_Works(string input, DateTime expected)
+	{
+		var result = MtfHelpers.GetFluffDate(input);
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
 	[MemberData(nameof(TestData.AllowAnyTextStrings), MemberType = typeof(TestData))]
 	public void GetGenerator_AnyInput_Works(string? input, string expected)
 	{
