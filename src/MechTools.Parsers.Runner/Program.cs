@@ -20,7 +20,7 @@ internal static class Program
 	{
 		List<string>? brokenList = null;
 
-		foreach (var filePath in Directory.EnumerateFiles(@"..\..\..\..\..\scratch"))
+		foreach (var filePath in Directory.EnumerateFiles(@"..\..\..\..\..\scratch", "*.mtf"))
 		{
 			const bool skipKnownDodgyFiles = true;
 			if (skipKnownDodgyFiles

@@ -93,7 +93,7 @@ internal sealed class BattleMechParser : IDisposable
 		}
 
 		var charCount = Encoding.UTF8.GetChars(in sequence, scratchBuffer);
-		return _longScratchBuffer.AsSpan(start: 0, length: charCount);
+		return scratchBuffer.AsSpan(start: 0, length: charCount);
 	}
 
 	private void ProcessBuffer(ref ReadOnlySequence<byte> buffer)
