@@ -657,18 +657,22 @@ public static partial class MtfHelpers
 
 		foreach (var range in chars.Split(','))
 		{
-			var slice = chars[range];
+			var trimmedChars = chars[range].Trim();
+			if (trimmedChars.IsEmpty)
+			{
+				continue;
+			}
 
 			// First ':' is type delimiter, remaining text assumed to be name.
 			// If a typeless name contains a colon... It shouldn't.
-			var bound = slice.IndexOf(':');
+			var bound = trimmedChars.IndexOf(':');
 			if (bound != -1 && bound != chars.Length - 1)
 			{
-				sources.Add(new(slice[(bound + 1)..].Trim().ToString(), slice[..bound].Trim().ToString()));
+				sources.Add(new(trimmedChars[(bound + 1)..].Trim().ToString(), trimmedChars[..bound].Trim().ToString()));
 			}
 			else
 			{
-				sources.Add(new(slice.Trim().ToString(), null));
+				sources.Add(new(trimmedChars.Trim().ToString(), null));
 			}
 		}
 
