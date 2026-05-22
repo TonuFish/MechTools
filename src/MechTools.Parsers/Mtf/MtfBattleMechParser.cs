@@ -11,12 +11,12 @@ public static class MtfBattleMechParser
 {
 	private static readonly StreamPipeReaderOptions _pipeReaderOptions = new(leaveOpen: true);
 
-	public static DefaultBattleMech Parse(ReadOnlySpan<char> source)
+	public static DefaultBattleMech Parse(ReadOnlySpan<char> source, bool strict = true)
 	{
-		return Parse(source, new DefaultBattleMechBuilder());
+		return Parse(source, new DefaultBattleMechBuilder(), strict);
 	}
 
-	public static T Parse<T>(ReadOnlySpan<char> source, IBattleMechBuilder<T> builder)
+	public static T Parse<T>(ReadOnlySpan<char> source, IBattleMechBuilder<T> builder, bool strict = true)
 	{
 		ArgumentNullException.ThrowIfNull(builder);
 		if (source.IsEmpty)
@@ -24,7 +24,7 @@ public static class MtfBattleMechParser
 			ThrowHelper.ThrowEmptySourceException();
 		}
 
-		using BattleMechParser parser = new(builder);
+		using BattleMechParser parser = new(builder, strict);
 		try
 		{
 			parser.Parse(source);
@@ -37,12 +37,16 @@ public static class MtfBattleMechParser
 		return builder.Build();
 	}
 
-	public static Task<DefaultBattleMech> ParseAsync(Stream stream, CancellationToken ct)
+	public static Task<DefaultBattleMech> ParseAsync(Stream stream, CancellationToken ct, bool strict = true)
 	{
-		return ParseAsync(stream, new DefaultBattleMechBuilder(), ct);
+		return ParseAsync(stream, new DefaultBattleMechBuilder(), ct, strict);
 	}
 
-	public static async Task<T> ParseAsync<T>(Stream stream, IBattleMechBuilder<T> builder, CancellationToken ct)
+	public static async Task<T> ParseAsync<T>(
+		Stream stream,
+		IBattleMechBuilder<T> builder,
+		CancellationToken ct,
+		bool strict = true)
 	{
 		ArgumentNullException.ThrowIfNull(stream);
 		ArgumentNullException.ThrowIfNull(builder);
@@ -51,7 +55,7 @@ public static class MtfBattleMechParser
 			ThrowHelper.ThrowEmptyStreamException();
 		}
 
-		using BattleMechParser parser = new(builder);
+		using BattleMechParser parser = new(builder, strict);
 		try
 		{
 			await parser.ParseAsync(PipeReader.Create(stream, _pipeReaderOptions), ct).ConfigureAwait(false);

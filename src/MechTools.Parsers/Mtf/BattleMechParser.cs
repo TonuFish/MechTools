@@ -25,6 +25,7 @@ internal sealed class BattleMechParser : IDisposable
 	private const int LongScratchBufferLength = ScratchBufferLength * 2;
 
 	private readonly IBattleMechBuilder _builder;
+	private readonly bool _isStrict;
 
 	private bool _disposed;
 	private BattleMechEquipmentLocation? _equipmentLocation;
@@ -32,9 +33,10 @@ internal sealed class BattleMechParser : IDisposable
 	private Mode _mode;
 	private char[]? _scratchBuffer;
 
-	public BattleMechParser(IBattleMechBuilder builder)
+	public BattleMechParser(IBattleMechBuilder builder, bool strict)
 	{
 		_builder = builder;
+		_isStrict = strict;
 	}
 
 	internal void Parse(ReadOnlySpan<char> chars)
@@ -124,7 +126,7 @@ internal sealed class BattleMechParser : IDisposable
 
 			ProcessLine(line);
 
-			buffer = buffer.Slice(buffer.GetPosition(1, position.Value));
+			buffer = buffer.Slice(buffer.GetPosition(1L, position.Value));
 		}
 	}
 
@@ -140,27 +142,36 @@ internal sealed class BattleMechParser : IDisposable
 			_mode = Mode.Default;
 			return;
 		}
-		else if (trimmedLine[0] == Sections.Comment)
-		{
-			_builder.AddComment(trimmedLine);
-			return;
-		}
 
-		switch (_mode)
+		try
 		{
-			case Mode.Default:
-				ProcessDefaultLine(trimmedLine);
-				break;
-			case Mode.Weapons:
-				_builder.AddWeaponToWeaponList(trimmedLine);
-				break;
-			case Mode.EquipmentAtLocation:
-				// Only set via ProcessDefaultLine.SetEquipmentAtLocationMode, will not be null.
-				_builder.AddEquipmentAtLocation(trimmedLine, _equipmentLocation!.Value);
-				break;
-			default:
-				ThrowHelper.DebugThrowImpossibleException();
-				break;
+			if (trimmedLine[0] == Sections.Comment)
+			{
+				_builder.AddComment(trimmedLine);
+				return;
+			}
+
+			switch (_mode)
+			{
+				case Mode.Default:
+					ProcessDefaultLine(trimmedLine);
+					break;
+				case Mode.Weapons:
+					_builder.AddWeaponToWeaponList(trimmedLine);
+					break;
+				case Mode.EquipmentAtLocation:
+					// Only set via ProcessDefaultLine.SetEquipmentAtLocationMode, will not be null.
+					_builder.AddEquipmentAtLocation(trimmedLine, _equipmentLocation!.Value);
+					break;
+				default:
+					ThrowHelper.DebugThrowImpossibleException();
+					break;
+			}
+		}
+		catch when (!_isStrict)
+		{
+			// Hackjob swallow the exception when errors aren't fatal.
+			// TODO: Add some logging to this.
 		}
 	}
 
