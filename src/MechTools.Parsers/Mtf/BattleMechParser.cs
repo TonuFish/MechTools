@@ -57,10 +57,7 @@ internal sealed class BattleMechParser : IDisposable
 			while (true)
 			{
 				var result = await reader.ReadAsync(ct).ConfigureAwait(false);
-				if (result.IsCanceled)
-				{
-					break;
-				}
+				ct.ThrowIfCancellationRequested();
 
 				var buffer = result.Buffer;
 				ProcessBuffer(ref buffer);

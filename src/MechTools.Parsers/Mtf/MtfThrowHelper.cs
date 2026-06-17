@@ -53,7 +53,7 @@ internal static class MtfThrowHelper
 	public static T ThrowUnknownEnumException<T>(ReadOnlySpan<char> chars) where T : struct, Enum
 	{
 		throw new MtfEnumException(
-			$"{nameof(T)} could not be parsed from '{chars}'.",
+			$"{typeof(T).Name} could not be parsed from '{chars}'.",
 			typeof(T));
 	}
 

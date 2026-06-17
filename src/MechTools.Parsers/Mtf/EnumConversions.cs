@@ -251,8 +251,6 @@ internal static class EnumConversions
 		var upper = (stackalloc char[16])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
-		// TODO: There's exactly one entry of a gyro without " Gyro" suffix... Sigh.
-
 		return upper switch
 		{
 			"COMPACT GYRO" => Gyro.Compact,
