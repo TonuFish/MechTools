@@ -82,7 +82,7 @@ public static partial class MtfHelpers
 		{
 			var trimmedChars = chars.Trim();
 			var valueBound = trimmedChars.LastIndexOf(':');
-			(var armour, var origin) = GetArmour(trimmedChars[..valueBound]);
+			var (armour, origin) = GetArmour(trimmedChars[..valueBound]);
 			return new(ParseSimpleNumber(trimmedChars[(valueBound + 1)..]), armour, origin);
 		}
 	}

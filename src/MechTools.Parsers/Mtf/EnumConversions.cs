@@ -7,7 +7,12 @@ internal static class EnumConversions
 {
 	public static Armour GetArmour(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 25)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<Armour>(chars);
+		}
+
+		var upper = (stackalloc char[32])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -37,6 +42,11 @@ internal static class EnumConversions
 
 	public static Cockpit GetCockpit(ReadOnlySpan<char> chars)
 	{
+		if (chars.Length > 36)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<Cockpit>(chars);
+		}
+
 		var upper = (stackalloc char[64])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
@@ -63,11 +73,42 @@ internal static class EnumConversions
 			"VIRTUAL REALITY PILOTING POD" => Cockpit.VirtualRealityPilotingPod,
 			_ => GetShortCockpit(upper),
 		};
+
+		static Cockpit GetShortCockpit(ReadOnlySpan<char> upper)
+		{
+			return upper switch
+			{
+				"DUAL" => Cockpit.DualCockpit,
+				"INDUSTRIAL" => Cockpit.IndustrialCockpit,
+				"INTERFACE" => Cockpit.InterfaceCockpit,
+				"PRIMITIVE INDUSTRIAL" => Cockpit.PrimitiveIndustrialCockpit,
+				"PRIMITIVE" => Cockpit.PrimitiveCockpit,
+				"QUADVEE" => Cockpit.QuadVeeCockpit,
+				"SMALL COMMAND" => Cockpit.SmallCommandConsole,
+				"SMALL" => Cockpit.SmallCockpit,
+				"STANDARD" => Cockpit.StandardCockpit,
+				"SUPERHEAVY COMMAND" => Cockpit.SuperHeavyCommandConsole,
+				"SUPERHEAVY INDUSTRIAL" => Cockpit.SuperHeavyIndustrialCockpit,
+				"SUPERHEAVY TRIPOD INDUSTRIAL" => Cockpit.SuperHeavyTripodIndustrialCockpit,
+				"SUPERHEAVY TRIPOD" => Cockpit.SuperHeavyTripodCockpit,
+				"SUPERHEAVY" => Cockpit.SuperHeavyCockpit,
+				"TORSO MOUNTED" => Cockpit.TorsoMountedCockpit,
+				"TRIPOD INDUSTRIAL" => Cockpit.TripodIndustrialCockpit,
+				"TRIPOD" => Cockpit.TripodCockpit,
+				"VRPP" => Cockpit.VirtualRealityPilotingPod,
+				_ => MtfThrowHelper.ThrowUnknownEnumException<Cockpit>(upper),
+			};
+		}
 	}
 
 	public static Configuration GetConfiguration(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 7)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<Configuration>(chars);
+		}
+
+		var upper = (stackalloc char[8])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -111,7 +152,12 @@ internal static class EnumConversions
 			cleanChars = cleanChars[..^fusionEngineMarker.Length].TrimEnd();
 		}
 
-		var upper = (stackalloc char[64])[..cleanChars.Length];
+		if (cleanChars.Length > 9)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<Engine>(chars);
+		}
+
+		var upper = (stackalloc char[16])[..cleanChars.Length];
 		_ = cleanChars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -136,7 +182,12 @@ internal static class EnumConversions
 
 	public static BattleMechEquipmentLocation GetEquipmentLocation(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 15)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<BattleMechEquipmentLocation>(chars);
+		}
+
+		var upper = (stackalloc char[16])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -161,7 +212,13 @@ internal static class EnumConversions
 
 	public static BattleMechEquipmentLocation GetEquipmentLocationFromAbbreviation(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 4)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<BattleMechEquipmentLocation>(chars);
+		}
+
+		Span<char> upper = ['\0', '\0', '\0', '\0',];
+		upper = upper[.. chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -186,7 +243,12 @@ internal static class EnumConversions
 
 	public static Gyro GetGyro(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 15)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<Gyro>(chars);
+		}
+
+		var upper = (stackalloc char[16])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		// TODO: There's exactly one entry of a gyro without " Gyro" suffix... Sigh.
@@ -205,7 +267,12 @@ internal static class EnumConversions
 
 	public static HeatSink GetHeatSinks(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 7)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<HeatSink>(chars);
+		}
+
+		var upper = (stackalloc char[8])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -220,7 +287,12 @@ internal static class EnumConversions
 
 	public static Lam GetLam(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 8)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<Lam>(chars);
+		}
+
+		var upper = (stackalloc char[8])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -233,7 +305,12 @@ internal static class EnumConversions
 
 	public static Motive GetMotive(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 5)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<Motive>(chars);
+		}
+
+		var upper = (stackalloc char[8])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -246,7 +323,12 @@ internal static class EnumConversions
 
 	public static Myomer GetMyomer(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 26)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<Myomer>(chars);
+		}
+
+		var upper = (stackalloc char[32])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -265,7 +347,12 @@ internal static class EnumConversions
 
 	public static Role GetRole(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 12)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<Role>(chars);
+		}
+
+		var upper = (stackalloc char[16])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -298,7 +385,12 @@ internal static class EnumConversions
 
 	public static SpecificSystem GetSpecificSystem(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 14)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<SpecificSystem>(chars);
+		}
+
+		var upper = (stackalloc char[16])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -315,7 +407,12 @@ internal static class EnumConversions
 
 	public static Structure GetStructure(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 20)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<Structure>(chars);
+		}
+
+		var upper = (stackalloc char[32])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -333,7 +430,12 @@ internal static class EnumConversions
 
 	public static TechBase GetTechBase(ReadOnlySpan<char> chars)
 	{
-		var upper = (stackalloc char[64])[..chars.Length];
+		if (chars.Length > 20)
+		{
+			return MtfThrowHelper.ThrowUnknownEnumException<TechBase>(chars);
+		}
+
+		var upper = (stackalloc char[32])[..chars.Length];
 		_ = chars.ToUpperInvariant(upper);
 
 		return upper switch
@@ -343,33 +445,6 @@ internal static class EnumConversions
 			"MIXED (CLAN CHASSIS)" => TechBase.MixedClanChassis,
 			"MIXED (IS CHASSIS)" => TechBase.MixedInnerSphereChassis,
 			_ => MtfThrowHelper.ThrowUnknownEnumException<TechBase>(chars),
-		};
-	}
-
-	private static Cockpit GetShortCockpit(ReadOnlySpan<char> upper)
-	{
-		// already uppercase.
-		return upper switch
-		{
-			"DUAL" => Cockpit.DualCockpit,
-			"INDUSTRIAL" => Cockpit.IndustrialCockpit,
-			"INTERFACE" => Cockpit.InterfaceCockpit,
-			"PRIMITIVE INDUSTRIAL" => Cockpit.PrimitiveIndustrialCockpit,
-			"PRIMITIVE" => Cockpit.PrimitiveCockpit,
-			"QUADVEE" => Cockpit.QuadVeeCockpit,
-			"SMALL COMMAND" => Cockpit.SmallCommandConsole,
-			"SMALL" => Cockpit.SmallCockpit,
-			"STANDARD" => Cockpit.StandardCockpit,
-			"SUPERHEAVY COMMAND" => Cockpit.SuperHeavyCommandConsole,
-			"SUPERHEAVY INDUSTRIAL" => Cockpit.SuperHeavyIndustrialCockpit,
-			"SUPERHEAVY TRIPOD INDUSTRIAL" => Cockpit.SuperHeavyTripodIndustrialCockpit,
-			"SUPERHEAVY TRIPOD" => Cockpit.SuperHeavyTripodCockpit,
-			"SUPERHEAVY" => Cockpit.SuperHeavyCockpit,
-			"TORSO MOUNTED" => Cockpit.TorsoMountedCockpit,
-			"TRIPOD INDUSTRIAL" => Cockpit.TripodIndustrialCockpit,
-			"TRIPOD" => Cockpit.TripodCockpit,
-			"VRPP" => Cockpit.VirtualRealityPilotingPod,
-			_ => MtfThrowHelper.ThrowUnknownEnumException<Cockpit>(upper),
 		};
 	}
 }
