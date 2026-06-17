@@ -129,10 +129,17 @@ public static partial class MtfHelpers
 
 		const string omniMechDel = " OmniMech";
 		const string omniMekDel = " OmniMek";
+		const string frankenMekDel = " FrankenMek";
 
 		var configurationSlice = trimmedChars;
+		var isFrankenMech = false;
 		var isOmniMech = false;
-		if (trimmedChars.EndsWith(omniMechDel, StringComparison.OrdinalIgnoreCase))
+		if (trimmedChars.EndsWith(frankenMekDel, StringComparison.OrdinalIgnoreCase))
+		{
+			isFrankenMech = true;
+			configurationSlice = trimmedChars[..^frankenMekDel.Length].TrimEnd();
+		}
+		else if (trimmedChars.EndsWith(omniMechDel, StringComparison.OrdinalIgnoreCase))
 		{
 			isOmniMech = true;
 			configurationSlice = trimmedChars[..^omniMechDel.Length].TrimEnd();
@@ -144,7 +151,7 @@ public static partial class MtfHelpers
 		}
 
 		var configuration = EnumConversions.GetConfiguration(configurationSlice);
-		return new(configuration, isOmniMech);
+		return new(configuration, isFrankenMech, isOmniMech);
 	}
 
 	public static string GetDeployment(ReadOnlySpan<char> chars)

@@ -9,25 +9,28 @@ namespace MechTools.Parsers.Data;
 public readonly struct ConfigurationData : IEquatable<ConfigurationData>
 {
 	public readonly required Configuration Configuration { get; init; }
+	public readonly required bool IsFrankenMech { get; init; }
 	public readonly required bool IsOmniMech { get; init; }
 
 	[SetsRequiredMembers]
-	public ConfigurationData(Configuration configuration, bool isOmniMech)
+	public ConfigurationData(Configuration configuration, bool isFrankenMech, bool isOmniMech)
 	{
 		Configuration = configuration;
+		IsFrankenMech = isFrankenMech;
 		IsOmniMech = isOmniMech;
 	}
 
-	public readonly void Deconstruct(out Configuration configuration, out bool isOmniMech)
+	public readonly void Deconstruct(out Configuration configuration, out bool isFrankenMech, out bool isOmniMech)
 	{
 		configuration = Configuration;
+		isFrankenMech = IsFrankenMech;
 		isOmniMech = IsOmniMech;
 	}
 
 #if DEBUG
 	public readonly override string ToString()
 	{
-		return $"{Configuration}```{IsOmniMech}";
+		return $"{Configuration}```{IsFrankenMech}```{IsOmniMech}";
 	}
 
 #endif
@@ -39,7 +42,9 @@ public readonly struct ConfigurationData : IEquatable<ConfigurationData>
 
 	public readonly bool Equals(ConfigurationData other)
 	{
-		return Configuration == other.Configuration && IsOmniMech == other.IsOmniMech;
+		return Configuration == other.Configuration
+			&& IsFrankenMech == other.IsFrankenMech
+			&& IsOmniMech == other.IsOmniMech;
 	}
 
 	public readonly override bool Equals([NotNullWhen(true)] object? obj)
@@ -49,7 +54,7 @@ public readonly struct ConfigurationData : IEquatable<ConfigurationData>
 
 	public readonly override int GetHashCode()
 	{
-		return HashCode.Combine(Configuration, IsOmniMech);
+		return HashCode.Combine(Configuration, IsFrankenMech, IsOmniMech);
 	}
 
 	#endregion Equality

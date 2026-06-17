@@ -109,9 +109,10 @@ internal static class TestData
 	{
 		return new()
 		{
-			{ " QuadVee ", new(Configuration.QuadVee, false) },
-			{ " Biped Omnimech ", new(Configuration.Biped, true) },
-			{ " Biped Omnimek ", new(Configuration.Biped, true) },
+			{ " QuadVee ", new(Configuration.QuadVee, false, false) },
+			{ " Biped FrankenMek ", new(Configuration.Biped, true, false) },
+			{ " Biped Omnimech ", new(Configuration.Biped, false, true) },
+			{ " Biped Omnimek ", new(Configuration.Biped, false, true) },
 		};
 	}
 
