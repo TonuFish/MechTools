@@ -45,7 +45,8 @@ public sealed class DefaultBattleMech
 	public List<SourceData> PublishedInSources { get; } = [];
 	public Role? Role { get; set; }
 	public List<SourceData> Sources { get; } = [];
-	public Structure Structure { get; set; }
+	public StructureData Structure { get; set; }
+	public Dictionary<BattleMechStructureLocation, LocationStructureData> StructureAtLocation { get; } = [];
 	public List<SpecificSystemData> SystemManufacturers { get; } = [];
 	public List<SpecificSystemData> SystemModels { get; } = [];
 	public RulesLevel RulesLevel { get; set; }

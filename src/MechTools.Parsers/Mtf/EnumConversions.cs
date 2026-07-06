@@ -420,6 +420,7 @@ internal static class EnumConversions
 			"ENDO-COMPOSITE" => Structure.EndoComposite,
 			"ENDO STEEL" or "ENDO-STEEL" => Structure.EndoSteel,
 			"ENDO STEEL PROTOTYPE" or "ENDO-STEEL PROTOTYPE" => Structure.EndoSteelPrototype,
+			"HYBRID" => Structure.Hybrid,
 			"INDUSTRIAL" => Structure.Industrial,
 			"REINFORCED" => Structure.Reinforced,
 			_ => MtfThrowHelper.ThrowUnknownEnumException<Structure>(chars),

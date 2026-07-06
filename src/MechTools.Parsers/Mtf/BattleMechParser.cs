@@ -391,31 +391,6 @@ internal sealed class BattleMechParser : IDisposable
 				case Sections.Deployment:
 					_builder.SetDeployment(content);
 					break;
-				case Sections.HeatSinkKit:
-					_builder.SetHeatSinkKit(content);
-					break;
-				case Sections.HeatSinks:
-					_builder.SetHeatSinks(content);
-					break;
-				case Sections.Manufacturer:
-					_builder.SetManufacturer(content);
-					break;
-				case Sections.PrimaryFactory:
-					_builder.SetPrimaryFactory(content);
-					break;
-				case Sections.RulesLevel:
-					_builder.SetRulesLevel(content);
-					break;
-				case Sections.SystemManufacturer:
-					_builder.SetSystemManufacturer(content);
-					break;
-				case Sections.SystemModel:
-				case Sections.SystemModelTypo:
-					_builder.SetSystemModel(content);
-					break;
-				case Sections.WeaponQuirk:
-					_builder.AddWeaponQuirk(content);
-					break;
 				case Sections.EquipmentLocation.CentreLeg:
 					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.CentreLeg);
 					break;
@@ -439,6 +414,55 @@ internal sealed class BattleMechParser : IDisposable
 					break;
 				case Sections.EquipmentLocation.RightTorso:
 					SetEquipmentAtLocationMode(BattleMechEquipmentLocation.RightTorso);
+					break;
+				case Sections.HeatSinkKit:
+					_builder.SetHeatSinkKit(content);
+					break;
+				case Sections.HeatSinks:
+					_builder.SetHeatSinks(content);
+					break;
+				case Sections.Manufacturer:
+					_builder.SetManufacturer(content);
+					break;
+				case Sections.PrimaryFactory:
+					_builder.SetPrimaryFactory(content);
+					break;
+				case Sections.RulesLevel:
+					_builder.SetRulesLevel(content);
+					break;
+				case Sections.StructureLocation.CentreTorso:
+					_builder.SetStructureAtLocation(content, BattleMechStructureLocation.CentreTorso);
+					break;
+				case Sections.StructureLocation.Head:
+					_builder.SetStructureAtLocation(content, BattleMechStructureLocation.Head);
+					break;
+				case Sections.StructureLocation.LeftArm:
+					_builder.SetStructureAtLocation(content, BattleMechStructureLocation.LeftArm);
+					break;
+				case Sections.StructureLocation.LeftLeg:
+					_builder.SetStructureAtLocation(content, BattleMechStructureLocation.LeftLeg);
+					break;
+				case Sections.StructureLocation.LeftTorso:
+					_builder.SetStructureAtLocation(content, BattleMechStructureLocation.LeftTorso);
+					break;
+				case Sections.StructureLocation.RightArm:
+					_builder.SetStructureAtLocation(content, BattleMechStructureLocation.RightArm);
+					break;
+				case Sections.StructureLocation.RightLeg:
+					_builder.SetStructureAtLocation(content, BattleMechStructureLocation.RightLeg);
+					break;
+				case Sections.StructureLocation.RightTorso:
+					_builder.SetStructureAtLocation(content, BattleMechStructureLocation.RightTorso);
+					break;
+				case Sections.SystemManufacturer:
+					_builder.SetSystemManufacturer(content);
+					break;
+				case Sections.SystemModel:
+				case Sections.SystemModelTypo:
+					_builder.SetSystemModel(content);
+					break;
+				case Sections.WeaponQuirk:
+					_builder.AddWeaponQuirk(content);
 					break;
 				default:
 					MtfThrowHelper.ThrowUnknownSectionTagException(section);

@@ -85,4 +85,16 @@ internal static class Sections
 		public const string RightLeg = "RIGHT LEG";
 		public const string RightTorso = "RIGHT TORSO";
 	}
+
+	public static class StructureLocation
+	{
+		public const string CentreTorso = "CT STRUCTURE";
+		public const string Head = "HD STRUCTURE";
+		public const string LeftArm = "LA STRUCTURE";
+		public const string LeftLeg = "LL STRUCTURE";
+		public const string LeftTorso = "LT STRUCTURE";
+		public const string RightArm = "RA STRUCTURE";
+		public const string RightLeg = "RL STRUCTURE";
+		public const string RightTorso = "RT STRUCTURE";
+	}
 }

@@ -7,6 +7,7 @@ public enum Structure
 	EndoComposite,
 	EndoSteel,
 	EndoSteelPrototype,
+	Hybrid,
 	Industrial,
 	Reinforced,
 }

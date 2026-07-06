@@ -73,6 +73,8 @@ public static partial class MtfHelpers
 
 	public static LocationArmourData GetArmourAtLocation(ReadOnlySpan<char> chars)
 	{
+		// TODO: Make LocationArmourData match StructureArmourData.
+
 		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Contains(':')
 			? GetPatchworkArmourAtLocation(chars)
@@ -492,24 +494,42 @@ public static partial class MtfHelpers
 		return ParseSource(chars);
 	}
 
-	public static Structure GetStructure(ReadOnlySpan<char> chars)
+	public static StructureData GetStructure(ReadOnlySpan<char> chars)
 	{
 		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 
 		const string clanDel = "CLAN ";
 		const string innerSphereDel = "IS ";
 
+		Origin? origin = null;
+
 		var trimmedChars = chars.Trim();
 		if (trimmedChars.StartsWith(clanDel, StringComparison.OrdinalIgnoreCase))
 		{
 			trimmedChars = trimmedChars[clanDel.Length..].TrimStart();
+			origin = Origin.Clan;
 		}
 		else if (trimmedChars.StartsWith(innerSphereDel, StringComparison.OrdinalIgnoreCase))
 		{
 			trimmedChars = trimmedChars[innerSphereDel.Length..].TrimStart();
+			origin = Origin.InnerSphere;
 		}
 
-		return EnumConversions.GetStructure(trimmedChars);
+		return new(EnumConversions.GetStructure(trimmedChars), origin);
+	}
+
+	public static LocationStructureData GetStructureAtLocation(ReadOnlySpan<char> chars)
+	{
+		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
+		return chars.Contains(':')
+			? GetHybridStructureAtLocation(chars)
+			: new(ParseSimpleNumber(chars), null);
+
+		static LocationStructureData GetHybridStructureAtLocation(ReadOnlySpan<char> chars)
+		{
+			var valueBound = chars.LastIndexOf(':');
+			return new(ParseSimpleNumber(chars[(valueBound + 1)..]), GetStructure(chars[..valueBound]));
+		}
 	}
 
 	public static SpecificSystemData GetSystemManufacturer(ReadOnlySpan<char> chars)

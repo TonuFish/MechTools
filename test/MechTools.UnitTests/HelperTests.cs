@@ -629,12 +629,27 @@ public sealed class HelperTests
 	}
 
 	[Theory]
-	[InlineData(" Standard ", Structure.Standard)]
-	[InlineData(" IS Composite ", Structure.Composite)]
-	[InlineData(" Clan Endo Steel ", Structure.EndoSteel)]
-	public void GetStructure_ValidInput_Works(string input, Structure expected)
+	[MemberData(nameof(TestData.ValidStructure), MemberType = typeof(TestData))]
+	public void GetStructure_ValidInput_Works(string input, StructureData expected)
 	{
 		var result = MtfHelpers.GetStructure(input);
+		result.ShouldBe(expected);
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.InvalidStructureAtLocation), MemberType = typeof(TestData))]
+	[MemberData(nameof(TestData.EmptyAndWhiteSpaceStrings), MemberType = typeof(TestData))]
+	public void GetStructureAtLocation_InvalidInput_Throws(string input)
+	{
+		Action action = () => MtfHelpers.GetStructureAtLocation(input);
+		_ = action.ShouldThrow<MtfException>();
+	}
+
+	[Theory]
+	[MemberData(nameof(TestData.ValidStructureAtLocation), MemberType = typeof(TestData))]
+	public void GetStructureAtLocation_ValidInput_Works(string input, LocationStructureData expected)
+	{
+		var result = MtfHelpers.GetStructureAtLocation(input);
 		result.ShouldBe(expected);
 	}
 

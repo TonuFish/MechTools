@@ -223,6 +223,11 @@ public sealed class DefaultBattleMechBuilder : IBattleMechBuilder<DefaultBattleM
 		_mech.Structure = MtfHelpers.GetStructure(chars);
 	}
 
+	public void SetStructureAtLocation(ReadOnlySpan<char> chars, BattleMechStructureLocation location)
+	{
+		_mech.StructureAtLocation[location] = MtfHelpers.GetStructureAtLocation(chars);
+	}
+
 	public void SetSystemManufacturer(ReadOnlySpan<char> chars)
 	{
 		_mech.SystemManufacturers.Add(MtfHelpers.GetSystemManufacturer(chars));

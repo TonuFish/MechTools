@@ -47,6 +47,7 @@ public interface IBattleMechBuilder
 	public void SetRulesLevel(ReadOnlySpan<char> chars);
 	public void SetSource(ReadOnlySpan<char> chars);
 	public void SetStructure(ReadOnlySpan<char> chars);
+	public void SetStructureAtLocation(ReadOnlySpan<char> chars, BattleMechStructureLocation location);
 	public void SetSystemManufacturer(ReadOnlySpan<char> chars);
 	public void SetSystemModel(ReadOnlySpan<char> chars);
 	public void SetTechBase(ReadOnlySpan<char> chars);

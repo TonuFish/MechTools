@@ -320,6 +320,43 @@ internal static class TestData
 
 	#endregion Specific System
 
+	#region Structure
+
+	public static TheoryData<string, StructureData> ValidStructure()
+	{
+		return new()
+		{
+			{ " Standard ", new(Structure.Standard, null) },
+			{ " IS Composite ", new(Structure.Composite, Origin.InnerSphere) },
+			{ " Clan Endo Steel ", new(Structure.EndoSteel, Origin.Clan) },
+		};
+	}
+
+	#endregion Structure
+
+	#region Structure at Location
+
+	public static TheoryData<string> InvalidStructureAtLocation()
+	{
+		return new(
+			" OtherValue ",
+			" -20 ",
+			" 34:Clan Endo Steel ");
+	}
+
+	public static TheoryData<string, LocationStructureData> ValidStructureAtLocation()
+	{
+		return new()
+		{
+			{ " 20 ", new(20, null) },
+			{ " 90 ", new(90, null) },
+			{ " Standard:26 ", new(26, new(Structure.Standard, null)) },
+			{ " Clan Endo Steel:34 ", new(34, new(Structure.EndoSteel, Origin.Clan)) },
+		};
+	}
+
+	#endregion Structure at Location
+
 	#region Weapon For Weapon List
 
 	public static TheoryData<string> InvalidWeaponForWeaponList()
