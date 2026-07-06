@@ -1,37 +1,32 @@
-﻿using MechTools.Parsers.Enums;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 
 namespace MechTools.Parsers.Data;
 
-[StructLayout(LayoutKind.Sequential)] // 0-offset Value as Armour/Origin are rarely used.
+[StructLayout(LayoutKind.Sequential)] // 0-offset Value as ArmourData is rarely used.
 public readonly struct LocationArmourData : IEquatable<LocationArmourData>
 {
 	public readonly required int Value { get; init; }
-	public readonly required Armour? Armour { get; init; }
-	public readonly required Origin? Origin { get; init; }
+	public readonly required ArmourData? ArmourData { get; init; }
 
 	[SetsRequiredMembers]
-	public LocationArmourData(int value, Armour? armour, Origin? origin)
+	public LocationArmourData(int value, ArmourData? armourData)
 	{
 		Value = value;
-		Armour = armour;
-		Origin = origin;
+		ArmourData = armourData;
 	}
 
-	public readonly void Deconstruct(
-		out int value, out Armour? armour, out Origin? origin)
+	public readonly void Deconstruct(out int value, out ArmourData? armourData)
 	{
 		value = Value;
-		armour = Armour;
-		origin = Origin;
+		armourData = ArmourData;
 	}
 
 #if DEBUG
 	public readonly override string ToString()
 	{
-		return $"{Value}```{Armour}```{Origin}";
+		return $"{Value}```{ArmourData}";
 	}
 
 #endif
@@ -43,7 +38,7 @@ public readonly struct LocationArmourData : IEquatable<LocationArmourData>
 
 	public readonly bool Equals(LocationArmourData other)
 	{
-		return Value == other.Value && Armour == other.Armour && Origin == other.Origin;
+		return Value == other.Value && ArmourData == other.ArmourData;
 	}
 
 	public readonly override bool Equals([NotNullWhen(true)] object? obj)
@@ -53,7 +48,7 @@ public readonly struct LocationArmourData : IEquatable<LocationArmourData>
 
 	public readonly override int GetHashCode()
 	{
-		return HashCode.Combine(Value, Armour, Origin);
+		return HashCode.Combine(Value, ArmourData);
 	}
 
 	#endregion Equality

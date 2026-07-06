@@ -29,18 +29,18 @@ public static partial class MtfHelpers
 		var trimmedChars = chars.Trim();
 
 		ReadOnlySpan<char> armourSlice;
-		Origin origin;
+		Origin? origin;
 		var originBound = trimmedChars.IndexOf('(');
 		if (originBound == -1)
 		{
 			armourSlice = trimmedChars;
-			origin = Origin.Unknown;
+			origin = null;
 		}
 		else
 		{
 			armourSlice = trimmedChars[..originBound].TrimEnd();
-			var originSlice = trimmedChars[originBound..];
 
+			var originSlice = trimmedChars[originBound..];
 			if (originSlice.ContainsAny(_innerSphereMarkerSearchValues))
 			{
 				origin = Origin.InnerSphere;
@@ -51,7 +51,7 @@ public static partial class MtfHelpers
 			}
 			else
 			{
-				// Should be either "IS/Clan" or "(Unknown Technology Base)" - but all non-standard values are unknown.
+				// Expecting "IS/Clan" or "(Unknown Technology Base)" - but all non-standard values are unknown.
 				origin = Origin.Unknown;
 			}
 		}
@@ -73,19 +73,15 @@ public static partial class MtfHelpers
 
 	public static LocationArmourData GetArmourAtLocation(ReadOnlySpan<char> chars)
 	{
-		// TODO: Make LocationArmourData match StructureArmourData.
-
 		MtfThrowHelper.ThrowIfEmptyOrWhiteSpace(chars);
 		return chars.Contains(':')
 			? GetPatchworkArmourAtLocation(chars)
-			: new(ParseSimpleNumber(chars), null, null);
+			: new(ParseSimpleNumber(chars), null);
 
 		static LocationArmourData GetPatchworkArmourAtLocation(ReadOnlySpan<char> chars)
 		{
-			var trimmedChars = chars.Trim();
-			var valueBound = trimmedChars.LastIndexOf(':');
-			var (armour, origin) = GetArmour(trimmedChars[..valueBound]);
-			return new(ParseSimpleNumber(trimmedChars[(valueBound + 1)..]), armour, origin);
+			var valueBound = chars.LastIndexOf(':');
+			return new(ParseSimpleNumber(chars[(valueBound + 1)..]), GetArmour(chars[..valueBound]));
 		}
 	}
 
@@ -501,8 +497,7 @@ public static partial class MtfHelpers
 		const string clanDel = "CLAN ";
 		const string innerSphereDel = "IS ";
 
-		Origin? origin = null;
-
+		Origin? origin;
 		var trimmedChars = chars.Trim();
 		if (trimmedChars.StartsWith(clanDel, StringComparison.OrdinalIgnoreCase))
 		{
@@ -513,6 +508,10 @@ public static partial class MtfHelpers
 		{
 			trimmedChars = trimmedChars[innerSphereDel.Length..].TrimStart();
 			origin = Origin.InnerSphere;
+		}
+		else
+		{
+			origin = null;
 		}
 
 		return new(EnumConversions.GetStructure(trimmedChars), origin);

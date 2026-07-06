@@ -58,7 +58,7 @@ internal static class TestData
 		return new()
 		{
 			// Basic case
-			{ " Standard ", new(Armour.Standard, Origin.Unknown) },
+			{ " Standard ", new(Armour.Standard, null) },
 			// Concatenated case
 			{ " Heavy Ferro-Fibrous(Inner Sphere) ", new(Armour.HeavyFerroFibrous, Origin.InnerSphere) },
 			// Armour case
@@ -94,10 +94,10 @@ internal static class TestData
 	{
 		return new()
 		{
-			{ " 20 ", new(20, null, null) },
-			{ " 90 ", new(90, null, null) },
-			{ " Standard(IS/Clan):26 ", new(26, Armour.Standard, Origin.Unknown) },
-			{ " Reactive(Inner Sphere):34 ", new(34, Armour.Reactive, Origin.InnerSphere) },
+			{ " 20 ", new(20, null) },
+			{ " 90 ", new(90, null) },
+			{ " Standard(IS/Clan):26 ", new(26, new(Armour.Standard, Origin.Unknown)) },
+			{ " Reactive(Inner Sphere):34 ", new(34, new(Armour.Reactive, Origin.InnerSphere)) },
 		};
 	}
 
