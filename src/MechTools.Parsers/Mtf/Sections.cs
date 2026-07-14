@@ -7,6 +7,7 @@ internal static class Sections
 	public const string BaseChassisHeatSinks = "BASE CHASSIS HEAT SINKS";
 	public const string Capabilities = "CAPABILITIES";
 	public const string Chassis = "CHASSIS";
+	public const string ClanCaseOptedOutLocations = "CLANCASEOPTEDOUTLOCS";
 	public const string ClanName = "CLANNAME";
 	public const string Cockpit = "COCKPIT";
 	public const string Configuration = "CONFIG";

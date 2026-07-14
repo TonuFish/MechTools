@@ -63,6 +63,11 @@ public sealed class DefaultBattleMechBuilder : IBattleMechBuilder<DefaultBattleM
 		_mech.Chassis = MtfHelpers.GetChassis(chars);
 	}
 
+	public void SetClanCaseOptedOutLocations(ReadOnlySpan<char> chars)
+	{
+		// TODO: This.
+	}
+
 	public void SetClanName(ReadOnlySpan<char> chars)
 	{
 		_mech.ClanName = MtfHelpers.GetClanName(chars);

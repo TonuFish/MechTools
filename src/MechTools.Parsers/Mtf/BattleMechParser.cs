@@ -388,6 +388,9 @@ internal sealed class BattleMechParser : IDisposable
 				case Sections.Capabilities:
 					_builder.SetCapabilities(content);
 					break;
+				case Sections.ClanCaseOptedOutLocations:
+					_builder.SetClanCaseOptedOutLocations(content);
+					break;
 				case Sections.Deployment:
 					_builder.SetDeployment(content);
 					break;

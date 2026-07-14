@@ -15,6 +15,7 @@ public interface IBattleMechBuilder
 	public void SetBaseChassisHeatSinks(ReadOnlySpan<char> chars);
 	public void SetCapabilities(ReadOnlySpan<char> chars);
 	public void SetChassis(ReadOnlySpan<char> chars);
+	public void SetClanCaseOptedOutLocations(ReadOnlySpan<char> chars);
 	public void SetClanName(ReadOnlySpan<char> chars);
 	public void SetCockpit(ReadOnlySpan<char> chars);
 	public void SetConfiguration(ReadOnlySpan<char> chars);
